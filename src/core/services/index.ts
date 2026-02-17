@@ -8,6 +8,7 @@ export { storageService } from './storage.service';
 export { visionService } from './vision.service';
 export { workflowService } from './workflow.service';
 export { scriptTemplateService } from '../templates/script.templates';
+export { editorService, EditorService } from './editor.service';
 
 // 重新导出类型
 export type { AIResponse, RequestConfig } from './ai.service';
@@ -19,3 +20,8 @@ export type {
   TimelineData,
   WorkflowStep
 } from './workflow.service';
+export type {
+  EditorConfig,
+  EditorAction,
+  EditorHistory
+} from './editor.service';
