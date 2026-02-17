@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "AI-powered video content creation platform for filmmakers and content creators",
   "author": "Agions <agions@example.com>",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

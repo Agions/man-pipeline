@@ -1,112 +1,21 @@
-ReelForge License Agreement
-Version 1.0, February 2025
+MIT License
 
-Copyright (c) 2025 Agions. All rights reserved.
+Copyright (c) 2025 Agions
 
-TERMS AND CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-1. DEFINITIONS
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-   "Software" refers to the ReelForge application, including all source code,
-   documentation, configuration files, and associated materials.
-
-   "Non-Commercial Use" means use of the Software for personal, educational,
-   research, or evaluation purposes only, without any commercial benefit.
-
-   "Commercial Use" means any use of the Software for monetary compensation
-   or commercial advantage, including but not limited to:
-   - Selling, licensing, or distributing the Software
-   - Using the Software in commercial products or services
-   - Using the Software for business operations
-   - Generating revenue directly or indirectly from the Software
-
-2. GRANT OF LICENSE
-
-   Subject to the terms and conditions of this License, the copyright holder
-   grants you a limited, non-exclusive, non-transferable license to:
-
-   a) Use the Software for Non-Commercial purposes only
-   b) Modify the Software for personal use
-   c) Share the Software with others for Non-Commercial purposes
-
-3. RESTRICTIONS
-
-   You MAY NOT:
-
-   a) Use the Software for any Commercial purpose without explicit written
-      permission from the copyright holder
-
-   b) Sell, rent, lease, sublicense, or otherwise transfer rights to the
-      Software
-
-   c) Remove or alter any copyright notices, trademarks, or proprietary
-      legends from the Software
-
-   d) Use the Software to develop competing products or services
-
-   e) Use the Software in any manner that violates applicable laws or
-      regulations
-
-4. SOURCE CODE AVAILABILITY
-
-   The source code of this Software is made available for transparency,
-   educational purposes, and community contribution. However, availability
-   of source code does NOT grant any additional rights beyond those
-   explicitly stated in this License.
-
-5. MODIFICATIONS AND DERIVATIVE WORKS
-
-   You may create modifications or derivative works of the Software for
-   Non-Commercial purposes only. Any derivative work:
-
-   a) Must retain this License in its entirety
-   b) Must clearly indicate it is a modified version
-   c) Must not use the ReelForge name or branding without permission
-   d) Is also subject to the Non-Commercial restriction
-
-6. CONTRIBUTIONS
-
-   By submitting contributions to this Software, you grant the copyright
-   holder a perpetual, worldwide, non-exclusive, royalty-free license to
-   use, reproduce, modify, and distribute your contributions.
-
-7. TERMINATION
-
-   This License automatically terminates if you violate any of its terms.
-   Upon termination, you must cease all use of the Software and destroy
-   all copies in your possession.
-
-8. DISCLAIMER OF WARRANTY
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-9. LIMITATION OF LIABILITY
-
-   IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES
-   OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE.
-
-10. COMMERCIAL LICENSING
-
-    For Commercial Use licensing inquiries, please contact:
-    agions@example.com
-
-    Commercial licenses are available for businesses and organizations
-    wishing to use the Software for commercial purposes.
-
-11. GOVERNING LAW
-
-    This License shall be governed by and construed in accordance with the
-    laws of the jurisdiction where the copyright holder resides.
-
-12. ENTIRE AGREEMENT
-
-    This License constitutes the entire agreement between you and the
-    copyright holder concerning the Software.
-
-By using, copying, or distributing this Software, you acknowledge that
-you have read, understood, and agree to be bound by the terms of this License.
-
-For questions about this License, please contact: agions@example.com
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
