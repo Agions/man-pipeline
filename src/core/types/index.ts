@@ -63,19 +63,6 @@ export interface VideoInfo {
   createdAt: string;
 }
 
-// 视频分析结果
-export interface VideoAnalysis {
-  id: string;
-  videoId: string;
-  scenes: Scene[];
-  keyframes: Keyframe[];
-  audioTranscript?: AudioTranscript;
-  objects: DetectedObject[];
-  emotions: EmotionSegment[];
-  summary: string;
-  createdAt: string;
-}
-
 // 场景
 export interface Scene {
   id: string;
@@ -84,6 +71,11 @@ export interface Scene {
   thumbnail: string;
   description?: string;
   tags: string[];
+  type?: string;
+  confidence?: number;
+  features?: any;
+  objectCount?: number;
+  dominantEmotion?: string;
 }
 
 // 关键帧
@@ -94,48 +86,79 @@ export interface Keyframe {
   description?: string;
 }
 
-// 音频转录
-export interface AudioTranscript {
-  segments: TranscriptSegment[];
-  fullText: string;
-  language: string;
-}
-
-// 转录片段
-export interface TranscriptSegment {
+// 物体检测
+export interface ObjectDetection {
   id: string;
-  startTime: number;
-  endTime: number;
-  text: string;
-  speaker?: string;
-  confidence: number;
-}
-
-// 检测到的对象
-export interface DetectedObject {
-  id: string;
+  sceneId: string;
+  category: string;
   label: string;
   confidence: number;
-  timestamps: number[];
-  boundingBoxes?: BoundingBox[];
-}
-
-// 边界框
-export interface BoundingBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  bbox: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
   timestamp: number;
 }
 
-// 情感片段
-export interface EmotionSegment {
+// 情感分析
+export interface EmotionAnalysis {
+  id: string;
+  sceneId: string;
+  timestamp: number;
+  emotions: Array<{
+    id: string;
+    name: string;
+    score: number;
+  }>;
+  dominant: string;
+  intensity: number;
+}
+
+// 视频分析结果
+export interface VideoAnalysis {
+  id: string;
+  videoId: string;
+  scenes: Scene[];
+  keyframes: Keyframe[];
+  objects: ObjectDetection[];
+  emotions: EmotionAnalysis[];
+  summary: string;
+  stats?: {
+    sceneCount: number;
+    objectCount: number;
+    avgSceneDuration: number;
+    sceneTypes: Record<string, number>;
+    objectCategories: Record<string, number>;
+    dominantEmotions: Record<string, number>;
+  };
+  createdAt: string;
+}
+
+// 脚本片段
+export interface ScriptSegment {
   id: string;
   startTime: number;
   endTime: number;
-  emotion: 'happy' | 'sad' | 'angry' | 'neutral' | 'excited' | 'fear';
-  confidence: number;
+  content: string;
+  type: 'narration' | 'dialogue' | 'action' | 'transition';
+  notes?: string;
+}
+
+// 脚本元数据
+export interface ScriptMetadata {
+  style: string;
+  tone: string;
+  length: 'short' | 'medium' | 'long';
+  targetAudience: string;
+  language: string;
+  wordCount: number;
+  estimatedDuration: number;
+  generatedBy: string;
+  generatedAt: string;
+  template?: string;
+  templateName?: string;
 }
 
 // 脚本数据
@@ -145,33 +168,8 @@ export interface ScriptData {
   content: string;
   segments: ScriptSegment[];
   metadata: ScriptMetadata;
-  videoId?: string;
   createdAt: string;
   updatedAt: string;
-}
-
-// 脚本片段
-export interface ScriptSegment {
-  id: string;
-  startTime: number;
-  endTime: number;
-  content: string;
-  type: 'narration' | 'dialogue' | 'subtitle' | 'action';
-  speaker?: string;
-  emotion?: string;
-}
-
-// 脚本元数据
-export interface ScriptMetadata {
-  style: string;
-  tone: string;
-  length: 'short' | 'medium' | 'long';
-  targetAudience?: string;
-  language: string;
-  wordCount: number;
-  estimatedDuration: number;
-  generatedBy: string;
-  generatedAt: string;
 }
 
 // 项目数据
@@ -179,124 +177,13 @@ export interface ProjectData {
   id: string;
   name: string;
   description?: string;
-  status: 'draft' | 'processing' | 'completed' | 'archived';
-  video?: VideoInfo;
+  status: 'draft' | 'completed' | 'archived';
+  videos: VideoInfo[];
+  scripts: ScriptData[];
   analysis?: VideoAnalysis;
-  script?: ScriptData;
-  edit?: EditData;
-  settings: ProjectSettings;
+  settings?: ProjectSettings;
   createdAt: string;
   updatedAt: string;
-}
-
-// 编辑数据
-export interface EditData {
-  id: string;
-  timeline: TimelineTrack[];
-  transitions: Transition[];
-  effects: Effect[];
-  subtitles: SubtitleTrack[];
-  audio: AudioTrack[];
-  exportSettings: ExportSettings;
-}
-
-// 时间轴轨道
-export interface TimelineTrack {
-  id: string;
-  type: 'video' | 'audio' | 'subtitle';
-  clips: TimelineClip[];
-  isLocked: boolean;
-  isMuted: boolean;
-  volume: number;
-}
-
-// 时间轴片段
-export interface TimelineClip {
-  id: string;
-  sourceId: string;
-  sourceType: 'video' | 'image' | 'audio';
-  startTime: number;
-  endTime: number;
-  sourceStart: number;
-  sourceEnd: number;
-  position: { x: number; y: number };
-  scale: number;
-  rotation: number;
-  opacity: number;
-}
-
-// 转场效果
-export interface Transition {
-  id: string;
-  type: 'fade' | 'dissolve' | 'wipe' | 'slide' | 'zoom';
-  duration: number;
-  fromClipId: string;
-  toClipId: string;
-  params?: Record<string, unknown>;
-}
-
-// 特效
-export interface Effect {
-  id: string;
-  type: string;
-  startTime: number;
-  endTime: number;
-  clipId: string;
-  params: Record<string, unknown>;
-}
-
-// 字幕轨道
-export interface SubtitleTrack {
-  id: string;
-  segments: SubtitleSegment[];
-  style: SubtitleStyle;
-}
-
-// 字幕片段
-export interface SubtitleSegment {
-  id: string;
-  startTime: number;
-  endTime: number;
-  text: string;
-  style?: Partial<SubtitleStyle>;
-}
-
-// 字幕样式
-export interface SubtitleStyle {
-  fontFamily: string;
-  fontSize: number;
-  fontColor: string;
-  backgroundColor: string;
-  backgroundOpacity: number;
-  outline: boolean;
-  outlineColor: string;
-  outlineWidth: number;
-  position: 'top' | 'middle' | 'bottom';
-  alignment: 'left' | 'center' | 'right';
-  lineSpacing: number;
-  letterSpacing: number;
-}
-
-// 音频轨道
-export interface AudioTrack {
-  id: string;
-  type: 'music' | 'sfx' | 'voice';
-  clips: AudioClip[];
-  volume: number;
-  isMuted: boolean;
-}
-
-// 音频片段
-export interface AudioClip {
-  id: string;
-  sourceId: string;
-  startTime: number;
-  endTime: number;
-  sourceStart: number;
-  sourceEnd: number;
-  fadeIn: number;
-  fadeOut: number;
-  volume: number;
 }
 
 // 项目设置
@@ -309,6 +196,18 @@ export interface ProjectSettings {
   videoCodec: 'h264' | 'h265' | 'vp9';
   subtitleEnabled: boolean;
   subtitleStyle: SubtitleStyle;
+}
+
+// 字幕样式
+export interface SubtitleStyle {
+  fontFamily: string;
+  fontSize: number;
+  color: string;
+  backgroundColor: string;
+  outline: boolean;
+  outlineColor: string;
+  position: 'top' | 'middle' | 'bottom';
+  alignment: 'left' | 'center' | 'right';
 }
 
 // 导出设置
@@ -326,13 +225,37 @@ export interface ExportSettings {
   };
 }
 
-// 应用状态
-export interface AppState {
-  theme: 'light' | 'dark' | 'system';
-  language: string;
-  sidebarCollapsed: boolean;
-  recentProjects: string[];
-  preferences: UserPreferences;
+// 导出记录
+export interface ExportRecord {
+  id: string;
+  projectId: string;
+  format: string;
+  quality: string;
+  filePath: string;
+  fileSize: number;
+  createdAt: string;
+}
+
+// 脚本模板
+export interface ScriptTemplate {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  tags: string[];
+  structure: Array<{
+    type: 'intro' | 'hook' | 'body' | 'transition' | 'conclusion' | 'cta';
+    name: string;
+    duration: number;
+    description: string;
+  }>;
+  style: {
+    tone: string;
+    pace: 'slow' | 'medium' | 'fast';
+    formality: 'casual' | 'neutral' | 'formal';
+  };
+  examples: string[];
+  recommended?: boolean;
 }
 
 // 用户偏好
@@ -362,23 +285,6 @@ export interface APIResponse<T = unknown> {
     total?: number;
     timestamp: string;
   };
-}
-
-// 分页参数
-export interface PaginationParams {
-  page: number;
-  pageSize: number;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
-}
-
-// 过滤参数
-export interface FilterParams {
-  search?: string;
-  status?: string[];
-  dateFrom?: string;
-  dateTo?: string;
-  tags?: string[];
 }
 
 // 任务状态
