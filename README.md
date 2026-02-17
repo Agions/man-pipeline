@@ -1,79 +1,184 @@
 # ReelForge - AI 驱动的专业视频内容创作平台
 
-CineForge 是一款面向影视创作者和内容创作者的专业 AI 视频内容创作平台，提供智能脚本生成、视频分析和混剪功能。
+ReelForge 是一款面向影视创作者和内容创作者的专业 AI 视频内容创作平台，提供智能脚本生成、视频分析和混剪功能。
 
 > 📄 **许可声明**: 本项目采用 **MIT License**，允许自由使用、修改和分发。详见 [LICENSE](./LICENSE)
 
-## 更新日志 (2026年2月17日)
+---
 
-### 新增功能
-- **视频混剪功能**：
-  - 添加了可视化视频混剪编辑器，支持基于脚本进行视频剪辑
-  - 实现了片段预览功能，可以在导出前查看效果
-  - 支持多种转场效果（淡入淡出、交叉溶解、擦除效果、滑动效果）
-  - 支持音量调整功能，可以对整个视频的音量进行控制
-  - 支持添加字幕功能，将脚本内容作为字幕显示
-  - 增强了导出设置，支持多种导出格式和质量选项
+## 更新日志 (2026-02-17)
 
-### 修复问题
-- 修复了API密钥申请按钮无法正确跳转到对应大模型申请官网的问题
-- 修复了视频处理进度显示不准确的问题
-- 优化了视频处理过程中的用户体验，添加了更详细的进度提示
-- 修复了多项类型错误和界面布局问题
+### v1.0.0 - 正式发布
 
-### 技术改进
-- 重构了视频处理逻辑，通过事件监听方式改进了进度反馈机制
-- 后端添加了预览生成和临时文件清理功能
-- 增强了错误处理和用户反馈机制
-- 改进了暗黑模式下的UI适配
+#### 核心功能
+- ✅ **AI 脚本生成**: 支持 8 大 AI 提供商，智能生成视频解说脚本
+- ✅ **视频分析**: 自动提取关键帧、场景检测、内容摘要
+- ✅ **视频混剪**: 可视化编辑器，支持转场效果和字幕
+- ✅ **项目管理**: 完整的项目生命周期管理
+- ✅ **多模型支持**: OpenAI, Anthropic, Google, 百度, 阿里, 智谱, 讯飞, 腾讯
 
-## 主要功能
+#### 技术特性
+- ✅ **React 18 + TypeScript**: 现代化前端架构
+- ✅ **Zustand 状态管理**: 轻量级、高性能状态管理
+- ✅ **Tauri 桌面应用**: 跨平台桌面应用支持
+- ✅ **Ant Design 5**: 企业级 UI 组件库
+- ✅ **模块化架构**: 核心层、服务层、组件层分离
 
-- **视频分析**：自动分析视频内容，识别关键时刻和情感变化
-- **脚本生成**：基于视频分析结果，生成符合视频内容的解说脚本
-- **脚本编辑**：提供友好的编辑界面，方便用户修改和优化脚本
-- **项目管理**：支持多个项目的创建和管理
-- **导出功能**：支持导出脚本为多种格式
-- **视频混剪**：基于脚本自动生成剪辑视频
+---
+
+## 功能模块
+
+### 1. AI 模型管理
+- **模型选择器**: 智能推荐最适合任务的 AI 模型
+- **成本估算**: 实时显示 API 调用成本
+- **多提供商支持**:
+  - OpenAI (GPT-4o, GPT-4o-mini)
+  - Anthropic (Claude 3 Opus, Claude 3.5 Sonnet)
+  - Google (Gemini 1.5 Pro, Gemini 1.5 Flash)
+  - 百度 (ERNIE 4.0)
+  - 阿里 (Qwen Max, Qwen Plus)
+  - 智谱 (GLM-4)
+  - 讯飞 (星火 V3.5)
+  - 腾讯 (混元 Pro)
+
+### 2. 视频处理
+- **视频上传**: 拖拽上传，支持多种格式
+- **视频分析**: 自动提取关键帧和场景
+- **缩略图生成**: 智能生成视频预览图
+- **格式转换**: 支持 MP4, MOV, WebM, AVI 等格式
+- **导出设置**: 多种质量和分辨率选项
+
+### 3. 脚本生成
+- **智能生成**: 基于视频内容自动生成解说脚本
+- **风格定制**: 专业/轻松/幽默/情感/技术/营销
+- **语气调整**: 友好/权威/热情/平静/幽默
+- **长度控制**: 简短(1-3分钟)/适中(3-5分钟)/详细(5-10分钟)
+- **多语言**: 中文/英文
+- **实时预览**: 生成过程可视化
+
+### 4. 脚本编辑
+- **富文本编辑**: 支持格式化文本
+- **段落管理**: 添加/删除/调整段落
+- **时间轴同步**: 脚本与视频时间轴关联
+- **版本历史**: 自动保存编辑历史
+
+### 5. 视频混剪
+- **可视化编辑器**: 拖拽式剪辑界面
+- **转场效果**: 淡入淡出/交叉溶解/擦除/滑动/缩放
+- **字幕添加**: 自动生成和编辑字幕
+- **音频控制**: 音量调整和背景音乐
+- **导出预览**: 导出前预览效果
+
+### 6. 项目管理
+- **项目列表**: 网格/列表视图
+- **搜索过滤**: 按名称、状态、日期筛选
+- **导入导出**: JSON 格式项目数据
+- **自动保存**: 定时自动保存项目
+
+### 7. 用户设置
+- **API 配置**: 管理各平台 API 密钥
+- **偏好设置**: 主题/语言/自动保存等
+- **导出历史**: 查看导出记录
+
+---
 
 ## 技术栈
 
-- **前端**：React 18、TypeScript、Ant Design 5、Zustand
-- **桌面应用框架**：Tauri (Rust)
-- **API 请求**：Axios
-- **路由管理**：React Router
-- **视频处理**：FFmpeg
-- **AI接口**：各大模型API
+### 前端
+- **框架**: React 18 + TypeScript 5
+- **构建**: Vite 4
+- **UI 库**: Ant Design 5
+- **状态管理**: Zustand 4
+- **动画**: Framer Motion
+- **样式**: Less + CSS Modules
 
-## 开发环境要求
+### 桌面应用
+- **框架**: Tauri (Rust)
+- **API**: 原生系统 API 调用
 
-- Node.js 16+
-- npm 7+ 或 pnpm 8+
-- Rust 环境（用于 Tauri 开发）
+### 工具链
+- **代码规范**: ESLint + Prettier
+- **类型检查**: TypeScript
+- **包管理**: pnpm/npm
 
-## 安装和运行
+---
+
+## 项目结构
+
+```
+src/
+├── core/                    # 核心层
+│   ├── api/                 # API 客户端
+│   │   └── client.ts        # 统一 HTTP 请求
+│   ├── config/              # 配置文件
+│   │   ├── app.config.ts    # 应用配置
+│   │   └── models.config.ts # AI 模型配置
+│   ├── constants/           # 常量定义
+│   │   └── index.ts         # 所有常量
+│   ├── hooks/               # 自定义 Hooks
+│   │   ├── useModel.ts      # 模型管理
+│   │   ├── useProject.ts    # 项目管理
+│   │   └── useVideo.ts      # 视频处理
+│   ├── services/            # 服务层
+│   │   ├── ai.service.ts    # AI 服务
+│   │   ├── video.service.ts # 视频服务
+│   │   └── storage.service.ts # 存储服务
+│   ├── store/               # 状态管理
+│   │   ├── app.store.ts     # 应用状态
+│   │   ├── project.store.ts # 项目状态
+│   │   └── user.store.ts    # 用户状态
+│   ├── types/               # 类型定义
+│   │   └── index.ts         # 所有类型
+│   └── utils/               # 工具函数
+│       ├── index.ts         # 通用工具
+│       └── hooks.ts         # 通用 Hooks
+├── components/              # 组件层
+│   ├── common/              # 通用组件
+│   │   ├── Button/          # 按钮组件
+│   │   └── Card/            # 卡片组件
+│   ├── ModelSelector/       # 模型选择器
+│   ├── VideoUploader/       # 视频上传
+│   ├── ScriptGenerator/     # 脚本生成器
+│   └── ScriptGeneratorV2/   # 优化版本
+├── pages/                   # 页面层
+│   ├── Home/                # 首页
+│   ├── Dashboard/           # 仪表盘
+│   ├── Projects/            # 项目列表
+│   ├── ProjectDetail/       # 项目详情
+│   ├── Editor/              # 编辑器
+│   ├── VideoStudio/         # 视频工作室
+│   └── Settings/            # 设置
+├── layouts/                 # 布局组件
+├── assets/                  # 静态资源
+└── App.tsx                  # 应用入口
+```
+
+---
+
+## 快速开始
+
+### 环境要求
+- Node.js 18+
+- pnpm 8+ 或 npm 9+
+- Rust 环境（Tauri 开发）
 
 ### 安装依赖
 
 ```bash
-# 使用 npm
-npm install
-
-# 或使用 pnpm
+# 使用 pnpm（推荐）
 pnpm install
+
+# 或使用 npm
+npm install
 ```
 
 ### 开发模式
 
 ```bash
 # 启动前端开发服务器
-npm run dev
-# 或
 pnpm dev
 
-# 启动 Tauri 应用（前端+后端）
-npm run tauri dev
-# 或
+# 启动 Tauri 应用
 pnpm tauri dev
 ```
 
@@ -81,79 +186,85 @@ pnpm tauri dev
 
 ```bash
 # 构建生产版本
-npm run tauri build
-# 或
 pnpm tauri build
 ```
 
-## 项目结构
+---
 
-```
-src/
-  ├── assets/        # 静态资源
-  ├── components/    # 公共组件
-  ├── hooks/         # 自定义 Hooks
-  ├── layouts/       # 布局组件
-  ├── pages/         # 页面组件
-  ├── services/      # API 服务
-  ├── store/         # 状态管理
-  ├── styles/        # 全局样式
-  ├── types/         # 类型定义
-  └── utils/         # 工具函数
-```
-
-## 主要功能模块
-
-1. **项目管理**：创建、编辑、删除和浏览项目
-2. **视频分析**：上传视频并进行内容分析
-3. **脚本生成**：基于分析结果自动生成脚本
-4. **脚本编辑**：编辑和优化生成的脚本
-5. **导出功能**：导出脚本到不同格式
-6. **视频混剪**：基于脚本自动生成剪辑视频
-7. **设置**：配置 AI 模型和应用选项
-
-## 开发说明
-
-### 技术架构
-
-- 项目使用 TypeScript 进行类型检查
-- 使用 Zustand 进行状态管理
-- 使用 Ant Design 作为 UI 组件库
-- 使用 Less 进行样式开发
-- 开发环境下使用模拟数据进行测试
-- 采用分层架构设计：UI 层(components/pages)、业务逻辑层(services)、状态管理层(store)
-- 使用 React Hooks 进行组件逻辑封装
-- 采用 Tauri 提供的 Rust 后端处理视频分析和文件操作
-
-### UI 设计规范
-
-- 色彩系统：主色#1890ff(蓝色)，辅色#13c2c2(青色)，文字色#333(深灰)
-- 字体：系统默认字体，优先使用 Ant Design 的 Typography 组件
-- 间距：8px 基准单位，使用 Ant Design 的 Space 组件保持一致性
-- 动效：所有交互元素需有 0.3s 过渡动画
-- 响应式：适配桌面端 1440px 以上分辨率
+## 开发指南
 
 ### 代码规范
 
-- 组件命名：PascalCase(如 VideoUploader)
-- 方法命名：camelCase(如 handleUpload)
-- 接口命名：I 前缀+PascalCase(如 IVideoInfo)
-- 状态管理：使用 Zustand 的 slice 模式组织 store
-- 类型定义：所有 props 和 state 必须有 TypeScript 类型定义
+- **组件命名**: PascalCase (如 `VideoUploader`)
+- **方法命名**: camelCase (如 `handleUpload`)
+- **常量命名**: UPPER_SNAKE_CASE (如 `SCRIPT_STYLES`)
+- **文件组织**: 按功能模块分组
 
-### 测试指南
+### 状态管理
 
-- 单元测试：使用 Jest + Testing Library
-- 组件测试：覆盖核心交互和状态变化
-- API 测试：使用 Mock Service Worker 模拟 API
-- E2E 测试：使用 Cypress 测试关键用户流程
+使用 Zustand 进行状态管理：
 
-### 部署流程
+```typescript
+// 使用应用状态
+const { theme, setTheme } = useAppStore();
 
-1. 开发环境：`npm run dev`启动前端，`npm run tauri dev`启动桌面应用
-2. 生产构建：`npm run tauri build`生成安装包
-3. 持续集成：GitHub Actions 自动运行测试和构建
-4. 发布渠道：GitHub Releases 分发安装包
+// 使用项目状态
+const { projects, createProject } = useProjectStore();
+
+// 使用用户状态
+const { preferences, updatePreferences } = useUserStore();
+```
+
+### 服务调用
+
+```typescript
+// AI 服务
+import { aiService } from '@/core/services';
+const script = await aiService.generateScript(model, settings, params);
+
+// 视频服务
+import { videoService } from '@/core/services';
+const info = await videoService.getVideoInfo(file);
+
+// 存储服务
+import { storageService } from '@/core/services';
+storageService.projects.save(project);
+```
+
+### 常量使用
+
+```typescript
+import {
+  SCRIPT_STYLES,
+  TONE_OPTIONS,
+  SCRIPT_LENGTHS,
+  TARGET_AUDIENCES
+} from '@/core/constants';
+```
+
+---
+
+## 路线图
+
+### v1.1.0 (计划中)
+- [ ] 批量视频处理
+- [ ] 云端同步
+- [ ] 团队协作
+- [ ] 更多 AI 提供商
+
+### v1.2.0 (计划中)
+- [ ] 语音合成 (TTS)
+- [ ] 自动字幕生成
+- [ ] 视频模板
+- [ ] 插件系统
+
+### v2.0.0 (远期)
+- [ ] AI 视频生成
+- [ ] 实时协作
+- [ ] 移动端应用
+- [ ] 云服务版本
+
+---
 
 ## 贡献指南
 
@@ -163,12 +274,16 @@ src/
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 创建 Pull Request
 
+---
+
 ## 许可证
 
-MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+MIT License - 详见 [LICENSE](LICENSE) 文件
 
-## 开发指南
-请查看 [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) 文件以了解如何设置开发环境和进行开发。
+---
 
-## 设计系统
-请查看 [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) 文件以了解应用的设计规范和UI组件。
+## 支持
+
+如有问题或建议，欢迎提交 Issue 或联系开发者。
+
+**GitHub**: https://github.com/Agions/reelforge
