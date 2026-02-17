@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1.0] - 2026-02-17
 
+### Renamed
+- **Project Name**: ReelForge → CineCraft (电影工坊)
+  - New ASCII art logo
+  - Updated all documentation references
+
 ### Added
 - **9-Step Workflow**: Complete video creation workflow (upload → analyze → template → generate → dedup → uniqueness → edit → timeline → export)
 - **8 Dedup Variants**: Conservative, Balanced, Aggressive, Creative, Academic, Casual, Poetic, Technical
