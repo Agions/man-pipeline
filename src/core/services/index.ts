@@ -5,6 +5,17 @@
 export { aiService } from './ai.service';
 export { videoService } from './video.service';
 export { storageService } from './storage.service';
+export { visionService } from './vision.service';
+export { workflowService } from './workflow.service';
+export { scriptTemplateService } from '../templates/script.templates';
 
 // 重新导出类型
 export type { AIResponse, RequestConfig } from './ai.service';
+export type {
+  WorkflowState,
+  WorkflowData,
+  WorkflowConfig,
+  WorkflowCallbacks,
+  TimelineData,
+  WorkflowStep
+} from './workflow.service';
