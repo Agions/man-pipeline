@@ -188,10 +188,11 @@ export const ANIMATION_CONFIG = {
 // 数据来源：各厂商官方 API 文档
 export const LLM_MODELS = {
   // 百度千帆 - ERNIE 5.0 (2026-01)
+  // API: https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-5.0
   BAIDU: {
     provider: 'baidu',
     name: 'ERNIE 5.0',
-    modelId: 'ernie-5.0-latest',
+    modelId: 'ernie-5.0',
     version: '2026-01',
     maxTokens: 8192,
     contextWindow: 128000,
@@ -203,10 +204,11 @@ export const LLM_MODELS = {
   },
 
   // 阿里通义 - Qwen 3.5 (2026-01)
+  // API: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
   ALIBABA: {
     provider: 'alibaba',
     name: 'Qwen 3.5',
-    modelId: 'qwen-3.5-latest',
+    modelId: 'qwen-3.5',
     version: '2026-01',
     maxTokens: 8192,
     contextWindow: 128000,
@@ -218,10 +220,11 @@ export const LLM_MODELS = {
   },
 
   // 月之暗面 - Kimi k2.5 (2025-07)
+  // API: https://api.moonshot.cn/v1/chat/completions
   MOONSHOT: {
     provider: 'moonshot',
     name: 'Kimi k2.5',
-    modelId: 'kimi-k2.5-latest',
+    modelId: 'kimi-k2.5',
     version: '2025-07',
     maxTokens: 8192,
     contextWindow: 200000,
@@ -233,10 +236,11 @@ export const LLM_MODELS = {
   },
 
   // 智谱 AI - GLM-5 (2026-01)
+  // API: https://open.bigmodel.cn/api/paas/v4/chat/completions
   ZHIPU: {
     provider: 'zhipu',
     name: 'GLM-5',
-    modelId: 'glm-5-latest',
+    modelId: 'glm-5',
     version: '2026-01',
     maxTokens: 4096,
     contextWindow: 128000,
@@ -248,6 +252,7 @@ export const LLM_MODELS = {
   },
 
   // MiniMax - minimax-m2.5 (2025-12)
+  // API: https://api.minimax.chat/v1/text/chatcompletion_v2
   MINIMAX: {
     provider: 'minimax',
     name: 'MiniMax M2.5',
@@ -263,6 +268,7 @@ export const LLM_MODELS = {
   },
 
   // OpenAI - GPT-5 (2026-01，海外)
+  // API: https://api.openai.com/v1/chat/completions
   OPENAI: {
     provider: 'openai',
     name: 'GPT-5',
@@ -278,6 +284,7 @@ export const LLM_MODELS = {
   },
 
   // Anthropic - Claude 4 (2026-01，海外)
+  // API: https://api.anthropic.com/v1/messages
   ANTHROPIC: {
     provider: 'anthropic',
     name: 'Claude 4',
