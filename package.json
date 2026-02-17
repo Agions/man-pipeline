@@ -1,7 +1,10 @@
 {
-  "name": "blazecut",
+  "name": "cineforge",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "AI-powered video content creation platform for filmmakers and content creators",
+  "author": "Agions <agions@example.com>",
+  "license": "CC-BY-NC-4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
