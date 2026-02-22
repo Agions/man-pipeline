@@ -5,7 +5,7 @@
 
 // 应用信息
 export const APP_CONFIG = {
-  name: 'InkMotion',
+  name: 'ClipAiMan',
   nameZh: '墨动',
   version: '2.0.0',
   description: 'AI-Powered Comic Drama Video Creation Platform',
@@ -15,12 +15,12 @@ export const APP_CONFIG = {
 
 // 存储配置
 export const STORAGE_CONFIG = {
-  prefix: 'inkmotion_',
+  prefix: 'clipaiman_',
   keys: {
-    store: 'inkmotion-store',
-    settings: 'inkmotion-settings',
-    projects: 'inkmotion-projects',
-    cache: 'inkmotion-cache'
+    store: 'clipaiman-store',
+    settings: 'clipaiman-settings',
+    projects: 'clipaiman-projects',
+    cache: 'clipaiman-cache'
   }
 } as const;
 

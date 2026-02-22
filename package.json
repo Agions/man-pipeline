@@ -1,9 +1,9 @@
 {
-  "name": "inkmotion",
+  "name": "clipaiman",
   "private": true,
   "version": "2.0.0",
-  "description": "InkMotion (墨动) - AI-Powered Comic Drama Video Creation Platform",
-  "author": "InkMotion <inkmotion@example.com>",
+  "description": "ClipAiMan (墨动) - AI-Powered Comic Drama Video Creation Platform",
+  "author": "ClipAiMan <inkmotion@example.com>",
   "license": "MIT",
   "type": "module",
   "scripts": {

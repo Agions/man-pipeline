@@ -922,7 +922,7 @@ const Settings: React.FC = () => {
               <h3 className={styles.sectionTitle}>数据存储</h3>
               
               <Paragraph>
-                InkMotion高度重视您的隐私。所有API密钥和个人设置仅存储在您的本地设备上，没有任何数据会传输到我们的服务器。
+                ClipAiMan高度重视您的隐私。所有API密钥和个人设置仅存储在您的本地设备上，没有任何数据会传输到我们的服务器。
               </Paragraph>
               
               <Paragraph style={{ marginBottom: 24 }}>
@@ -933,9 +933,9 @@ const Settings: React.FC = () => {
                 message="本地存储位置"
                 description={
                   <div style={{ marginTop: 8 }}>
-                    <Text code>~/Library/Application Support/InkMotion</Text> (macOS)<br />
-                    <Text code>%APPDATA%\InkMotion</Text> (Windows)<br />
-                    <Text code>~/.config/inkmotion</Text> (Linux)
+                    <Text code>~/Library/Application Support/ClipAiMan</Text> (macOS)<br />
+                    <Text code>%APPDATA%\ClipAiMan</Text> (Windows)<br />
+                    <Text code>~/.config/clipaiman</Text> (Linux)
                   </div>
                 }
                 type="info"

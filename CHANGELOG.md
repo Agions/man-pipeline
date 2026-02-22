@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-02-22
 
 ### 🎉 项目重命名
-- 漫剧师 (Manjushi) → **InkMotion (墨动)**
+- 漫剧师 (Manjushi) → **ClipAiMan (ClipAiMan)**
 - 全新品牌标识、ASCII Art Logo
 - 更新所有配置、代码注释、文档引用
 
