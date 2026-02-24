@@ -36,11 +36,73 @@ import {
   ExportOutlined,
   EditOutlined,
   BookOutlined,
-  FileSearchOutlined
+  FileSearchOutlined,
+  UnorderedListOutlined,
+  ExpandOutlined
 } from '@ant-design/icons';
+
+import { WORKFLOW_CONFIGS } from '@/core/config/workflow-config';
+import { WORKFLOW_CONFIGS } from '@/core/config/workflow-config';
 import styles from './index.module.less';
 
 const { Title, Text, Paragraph } = Typography;
+
+// 初始化配置值
+const getDefaultConfig = () => ({
+  import: {
+    importType: 'novel',
+    fileEncoding: 'auto',
+    parseChapter: true,
+    extractCharacters: true
+  },
+  generate: {
+    model: 'gpt-4',
+    episodes: 12,
+    episodesPerChapter: 2,
+    scriptStyle: 'comic',
+    dialogueDetail: 3,
+    autoReview: true
+  },
+  storyboard: {
+    aspectRatio: '9:16',
+    resolution: '1080p',
+    framesPerScene: 3,
+    transitionStyle: 'auto',
+    cameraMovement: true,
+    addPanz: true
+  },
+  character: {
+    style: 'anime',
+    consistency: true,
+    expressionVariation: 6,
+    poseVariation: 4,
+    clothingVariation: true,
+    voiceMatch: true
+  },
+  render: {
+    engine: 'fast',
+    backgroundStyle: 'ai-generated',
+    lighting: 'auto',
+    colorGrade: 'auto',
+    renderQuality: 80
+  },
+  animate: {
+    animationType: 'auto',
+    fps: '30',
+    transitionEffect: 'fade',
+    addEffects: true,
+    addParticles: false
+  },
+  export: {
+    format: 'mp4',
+    quality: 'medium',
+    addSubtitles: true,
+    subtitleStyle: 'modern',
+    addWatermark: false,
+    exportThumbnails: true,
+    splitEpisodes: true
+  }
+});
 
 // 7步工作流配置 (优化后)
 const WORKFLOW_STEPS = [
@@ -125,6 +187,21 @@ const WorkflowPage: React.FC = () => {
   const [episodes, setEpisodes] = useState(12);
   const [novelContent, setNovelContent] = useState('');
   const [promptContent, setPromptContent] = useState('');
+  
+  // 工作流详细配置
+  const [workflowConfig, setWorkflowConfig] = useState(getDefaultConfig());
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // 更新配置
+  const updateConfig = (step: string, key: string, value: any) => {
+    setWorkflowConfig(prev => ({
+      ...prev,
+      [step]: {
+        ...prev[step as keyof typeof prev],
+        [key]: value
+      }
+    }));
+  };
 
   // 导入类型配置
   const IMPORT_TYPES = [
@@ -159,9 +236,9 @@ const WorkflowPage: React.FC = () => {
       projectName, 
       selectedTemplate, 
       selectedModel, 
-      chapters,
+      chapters: episodes,
       importType,
-      episodes,
+      workflowConfig,
       novelContent: importType === 'novel' ? novelContent : null,
       promptContent: importType === 'prompt' ? promptContent : null
     });
