@@ -100,42 +100,43 @@ npm run tauri build
 
 ---
 
-## 🤖 AI 模型支持
+## 🤖 AI 模型支持 (全部国产)
 
 ### 文本生成
 
-| 提供商 | 模型 |
-|--------|------|
-| OpenAI | GPT-4o, GPT-4 |
-| Anthropic | Claude 3.5 Sonnet |
-| Google | Gemini 1.5 Pro |
-| 阿里 | Qwen 2.5, Qwen Max |
-| 百度 | ERNIE 4.0, ERNIE Speed |
-| 智谱 | GLM-4, GLM-4-Vision |
-| MiniMax | MiniMax-M3 |
+| 厂商 | 模型 |
+|------|------|
+| 智谱 | GLM-5 |
+| MiniMax | M2.5 |
+| 月之暗面 | Kimi K2.5 |
+| 字节 | 豆包 2.0 |
+| 阿里 | Qwen 2.5 |
+| 百度 | ERNIE 4.0 |
 
 ### 图像生成
 
-| 提供商 | 模型 |
-|--------|------|
-| Seedream | 5.0 (字节) |
-| 可灵 | 1.6 (快手) |
-| Vidu | 2.0 (生数) |
-| Flux | Pro |
-| Ideogram | 3.0 |
-| Recraft | V3 |
-| OpenAI | DALL-E 3 |
-| Midjourney | V6 |
+| 厂商 | 模型 |
+|------|------|
+| 字节 | Seedream 5.0 |
+| 快手 | 可灵 1.6 |
+| 生数 | Vidu 2.0 |
+
+### 视频生成
+
+| 厂商 | 模型 |
+|------|------|
+| 字节 | Seedance 2.0 |
+| 快手 | 可灵 1.6 |
+| 生数 | Vidu 2.0 |
 
 ### 语音合成
 
-| 提供商 | 模型 |
-|--------|------|
-| Edge TTS | 40+ 音色 |
-| Azure TTS | 神经网络语音 |
-| 阿里云 TTS | 盖亚配音 |
-| 百度 TTS | 情感合成 |
-| 讯飞 TTS | 多语言 |
+| 厂商 | 特点 |
+|------|------|
+| Edge TTS | 免费、音色多 |
+| 阿里云 TTS | 中文优势 |
+| 百度 TTS | 中文优势 |
+| 讯飞 TTS | 多语言支持 |
 
 ---
 
