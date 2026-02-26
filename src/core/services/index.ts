@@ -18,7 +18,25 @@ export { dramaTemplateService, DramaTemplateService } from './drama-template.ser
 export { ttsService, TTSService } from './tts.service';
 export { generationService, GenerationService } from './generation.service';
 export { ffmpegService, FFmpegService } from './ffmpeg.service';
-export { workflowService, WorkflowService } from './workflow.service';
+// 新工作流服务（优化版）
+export {
+  workflowService,
+  WorkflowService,
+} from './workflow';
+export type {
+  WorkflowStepType,
+  WorkflowStep,
+  WorkflowConfig,
+  ComicDramaProject,
+  StoryboardItem,
+  Character,
+  Scene,
+  WorkflowEvent,
+  WorkflowEventListener,
+} from './workflow';
+
+// 旧工作流服务（兼容）
+export { workflowService as legacyWorkflowService } from './workflow.service';
 
 // 工作流增强
 export {
