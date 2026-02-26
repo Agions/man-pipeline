@@ -10,6 +10,8 @@ import {
   TrendingUpOutlined,
   HeartOutlined,
   PlayCircleOutlined,
+  EditOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.less';
@@ -105,31 +107,34 @@ const getRecommendations = (navigate: (path: string) => void): RecommendItem[] =
 const getQuickActions = (navigate: (path: string) => void) => [
   {
     id: 'quick1',
-    title: '新建项目',
+    title: '新建漫剧',
     icon: <ThunderboltOutlined />,
     color: '#722ed1',
     action: () => navigate('/workflow'),
   },
   {
     id: 'quick2',
-    title: '图像生成',
-    icon: <FireOutlined />,
-    color: '#fa8c16',
-    action: () => navigate('/workflow'),
+    title: '继续创作',
+    icon: <EditOutlined />,
+    color: '#1890ff',
+    action: () => navigate('/projects'),
   },
   {
     id: 'quick3',
-    title: '视频剪辑',
-    icon: <PlayCircleOutlined />,
-    color: '#13c2c2',
-    action: () => navigate('/editor'),
+    title: '查看模板',
+    icon: <StarOutlined />,
+    color: '#fa8c16',
+    action: () => navigate('/templates'),
   },
   {
     id: 'quick4',
-    title: '智能配音',
-    icon: <TrendingUpOutlined />,
-    color: '#1890ff',
-    action: () => navigate('/workflow'),
+    title: '使用指南',
+    icon: <BookOutlined />,
+    color: '#52c41a',
+    action: () => {
+      // 打开使用指南
+      window.open('https://github.com/Agions/ManGaAI/blob/main/README.md', '_blank');
+    },
   },
 ];
 
