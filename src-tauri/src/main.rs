@@ -419,7 +419,7 @@ async fn cut_video(params: CutVideoParams, window: Window) -> Result<String, Str
         
         // 构建FFmpeg命令 - 使用动态编码器
         let ffmpeg_command = format!(
-            "ffmpeg -y -ss {} -i \"{}\" -t {} {} {} -c:v {} -c:a aac -strict experimental \"{}\"",
+            "ffmpeg -y -ss {} -i \"{}\" -t {} {} -c:v {} {} -c:a aac -strict experimental \"{}\"",
             segment.start,
             params.input_path,
             duration,
@@ -534,7 +534,7 @@ async fn cut_video(params: CutVideoParams, window: Window) -> Result<String, Str
     };
     
     let concat_command = format!(
-        "ffmpeg -y -f concat -safe 0 -i \"{}\" -c:v {} -c:a {} -strict experimental \"{}\"",
+        "ffmpeg -y -f concat -safe 0 -i \"{}\" -c:v {} -c:a {} -strict -2 \"{}\"",
         list_file.to_string_lossy(),
         output_video_codec,
         output_audio_codec,

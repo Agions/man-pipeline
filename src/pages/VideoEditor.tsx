@@ -590,9 +590,10 @@ const VideoEditor: React.FC = () => {
                       <Dropdown
                         menu={{
                           items: [
-                            { key: 'mp4', label: 'MP4' },
-                            { key: 'mov', label: 'MOV' },
-                            { key: 'webm', label: 'WebM' }
+                            { key: 'mp4', label: 'MP4 (H.264+AAC)' },
+                            { key: 'mov', label: 'MOV (H.264+AAC)' },
+                            { key: 'mkv', label: 'MKV (H.264+AAC)' },
+                            { key: 'webm', label: 'WebM (VP9+Opus)' }
                           ],
                           onClick: ({ key }) => setOutputFormat(key)
                         }}
@@ -608,9 +609,10 @@ const VideoEditor: React.FC = () => {
                       <Dropdown
                         menu={{
                           items: [
-                            { key: 'low', label: '低 (720p)' },
-                            { key: 'medium', label: '中 (1080p)' },
-                            { key: 'high', label: '高 (原始分辨率)' }
+                            { key: 'low', label: '低 (720p, 1.5Mbps)' },
+                            { key: 'medium', label: '中 (1080p, 4Mbps)' },
+                            { key: 'high', label: '高 (1080p, 8Mbps)' },
+                            { key: 'ultra', label: '超清 (原画, 15Mbps)' }
                           ],
                           onClick: ({ key }) => setVideoQuality(key)
                         }}
@@ -618,7 +620,8 @@ const VideoEditor: React.FC = () => {
                         <Button>
                           {videoQuality === 'low' ? '低 (720p)' : 
                            videoQuality === 'medium' ? '中 (1080p)' : 
-                           '高 (原始分辨率)'} <DownloadOutlined />
+                           videoQuality === 'high' ? '高 (1080p)' :
+                           '超清 (原画)'} <DownloadOutlined />
                         </Button>
                       </Dropdown>
                     </div>
