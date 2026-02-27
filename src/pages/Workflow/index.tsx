@@ -41,7 +41,7 @@ import {
   ExpandOutlined
 } from '@ant-design/icons';
 
-import { WORKFLOW_CONFIGS } from '@/core/config/workflow-config';
+import { WORKFLOW_STEPS, WORKFLOW_CONFIGS } from '@/core/config/workflow-config';
 import { dramaWorkflowService } from '@/core/services';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -105,59 +105,6 @@ const getDefaultConfig = () => ({
     splitEpisodes: true
   }
 });
-
-// 7步工作流配置 (优化后)
-const WORKFLOW_STEPS = [
-  { 
-    key: 'import', 
-    title: '📥 导入', 
-    icon: <UploadOutlined />,
-    color: '#6366f1',
-    description: '上传小说/漫画素材'
-  },
-  { 
-    key: 'generate', 
-    title: '🤖 生成', 
-    icon: <ThunderboltOutlined />,
-    color: '#8b5cf6',
-    description: 'AI 智能生成内容'
-  },
-  { 
-    key: 'storyboard', 
-    title: '🎬 分镜', 
-    icon: <PictureOutlined />,
-    color: '#ec4899',
-    description: 'AI 智能分镜设计'
-  },
-  { 
-    key: 'character', 
-    title: '👤 角色', 
-    icon: <FileTextOutlined />,
-    color: '#f59e0b',
-    description: '角色形象设计'
-  },
-  { 
-    key: 'render', 
-    title: '🎨 渲染', 
-    icon: <PlayCircleOutlined />,
-    color: '#10b981',
-    description: '场景与角色渲染'
-  },
-  { 
-    key: 'animate', 
-    title: '✨ 合成', 
-    icon: <SettingOutlined />,
-    color: '#06b6d4',
-    description: '动态合成与转场'
-  },
-  { 
-    key: 'export', 
-    title: '📤 导出', 
-    icon: <ExportOutlined />,
-    color: '#f97316',
-    description: '导出视频/合集'
-  },
-];
 
 // 模板选项
 const TEMPLATES = [

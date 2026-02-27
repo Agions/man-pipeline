@@ -141,6 +141,7 @@ const Projects: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   // 项目操作菜单
   const getProjectMenu = (project: Project): MenuProps['items'] => [
@@ -179,11 +180,20 @@ const Projects: React.FC = () => {
                        p.description.toLowerCase().includes(searchText.toLowerCase());
     const matchTags = selectedTags.length === 0 || 
                      selectedTags.some(tag => p.tags.includes(tag));
-    return matchSearch && matchTags;
+    const matchStatus = statusFilter === 'all' || p.status === statusFilter;
+    return matchSearch && matchTags && matchStatus;
   });
 
   // 全部标签
   const allTags = Array.from(new Set(mockProjects.flatMap(p => p.tags)));
+
+  // 状态筛选选项
+  const statusOptions = [
+    { label: '全部状态', value: 'all' },
+    { label: '草稿', value: 'draft' },
+    { label: '进行中', value: 'processing' },
+    { label: '已完成', value: 'completed' },
+  ];
 
   return (
     <div className={styles.projects}>
@@ -198,14 +208,22 @@ const Projects: React.FC = () => {
         
         <Space>
           <Search
-            placeholder="搜索项目..."
+            placeholder="搜索项目名称或描述..."
             prefix={<SearchOutlined />}
             className={styles.searchInput}
+            allowClear
             onChange={(e) => setSearchText(e.target.value)}
           />
           <Select
+            placeholder="状态筛选"
+            className={styles.statusFilter}
+            value={statusFilter}
+            onChange={setStatusFilter}
+            options={statusOptions}
+          />
+          <Select
             mode="multiple"
-            placeholder="筛选标签"
+            placeholder="标签筛选"
             className={styles.tagFilter}
             allowClear
             value={selectedTags}
