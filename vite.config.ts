@@ -3,22 +3,11 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react({
-    babel: {
-      plugins: [
-        ['import', {
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: false,
-        }, 'antd'],
-        ['import', {
-          libraryName: '@ant-design/icons',
-          libraryDirectory: 'es/icons',
-          camel2DashComponentName: false,
-        }, '@ant-design/icons'],
-      ],
-    },
-  })],
+  plugins: [react()],
+  
+  esbuild: {
+    jsx: 'automatic',
+  },
   
   clearScreen: false,
 
@@ -56,8 +45,8 @@ export default defineConfig({
   },
 
   build: {
+    minify: false,
     target: 'esnext',
-    minify: 'terser',
     chunkSizeWarningLimit: 500,
     terserOptions: {
       compress: {
