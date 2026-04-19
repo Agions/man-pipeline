@@ -205,10 +205,10 @@ export const templateToCharacter = (
     role: template.category as any,
     description: overrides?.description || template.description,
     appearance: { ...template.appearance, ...overrides },
-    clothing: template.clothing,
-    expressions: template.expressions,
+    clothing: template.clothing as any,
+    expressions: template.expressions as any,
     consistency: { ...template.consistency },
-    voice: template.recommendedVoice,
+    voice: template.recommendedVoice as any,
     tags: template.tags,
   };
 };

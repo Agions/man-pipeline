@@ -262,12 +262,22 @@ export interface EmotionAnalysis {
   intensity: number;
 }
 
+// Simple emotion tag used in video analysis
+export interface Emotion {
+  timestamp: number;
+  type: string;
+  intensity: number;
+}
+
 export interface VideoAnalysis {
   id: string;
   videoId: string;
+  title?: string;
+  duration?: number;
   scenes: Scene[];
   keyframes: Keyframe[];
   objects: ObjectDetection[];
+  keyMoments?: KeyMoment[];
   emotions: EmotionAnalysis[];
   summary: string;
   stats?: {
@@ -314,6 +324,15 @@ export interface Script {
   updatedAt: string;
   videoId?: string;
   modelUsed?: string;
+}
+
+export interface Project {
+  id?: string;
+  name: string;
+  description?: string;
+  videoUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProjectData {
@@ -560,18 +579,35 @@ export interface Character {
   name: string;
   aliases?: string[];
   description?: string;
-  appearance?: string;
+  appearance?: string | CharacterAppearance;
   personality?: string;
   background?: string;
-  role: 'main' | 'supporting' | 'minor';
-  importance: number;
+  role: 'main' | 'supporting' | 'minor' | 'protagonist' | 'antagonist';
+  importance?: number;
   firstAppearance?: {
     chapterId: string;
     chapterTitle: string;
     position: number;
   };
-  dialogues: string[];
+  dialogues?: string[];
   relationships?: CharacterRelationship[];
+  clothing?: string[];
+  expressions?: string[];
+  consistency?: string | CharacterConsistency;
+  voice?: string;
+  tags?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  gender?: string;
+  age?: string;
+  hairStyle?: string;
+  hairColor?: string;
+  eyeColor?: string;
+  skinTone?: string;
+  bodyType?: string;
+  height?: string;
+  weight?: string;
+  features?: string[];
 }
 
 export interface CharacterRelationship {
@@ -717,15 +753,15 @@ export interface StoryAnalysis {
 // ========== Composition/Animation Types ==========
 
 export interface CharacterAppearance {
-  gender: 'male' | 'female' | 'other';
-  age: number;
-  hairStyle: string;
-  hairColor: string;
-  eyeColor: string;
-  skinTone: string;
-  bodyType: 'slim' | 'average' | 'athletic' | 'heavy';
-  height?: number;
-  weight?: number;
+  gender?: string;
+  age?: string | number;
+  hairStyle?: string;
+  hairColor?: string;
+  eyeColor?: string;
+  skinTone?: string;
+  bodyType?: string;
+  height?: string | number;
+  weight?: string | number;
   features?: string[];
 }
 
@@ -873,6 +909,8 @@ export interface KeyMoment {
   time: number;
   description: string;
   type: 'action' | 'transition' | 'highlight';
+  importance?: number;
+  timestamp?: number;
 }
 
 export interface SceneInfo {
