@@ -272,7 +272,7 @@ PlotCraft/
 
 ## 📄 许可证
 
-MIT License · © 2026 PlotCraft
+MIT License · © 2026 Agions
 
 [![License](https://img.shields.io/badge/License-MIT-45B8AC?style=for-the-badge&logo=license&logoColor=white)](https://opensource.org/licenses/MIT)
 
