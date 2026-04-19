@@ -11,20 +11,21 @@ on:
         required: true
         type: string
 
+env:
+  NODE_VERSION: '20'
+  TAURI_VERSION: '0.3.0'
+
 jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.info.outputs.version }}
+      tag: ${{ steps.info.outputs.tag }}
     steps:
       - id: info
         run: |
           VERSION=${{ github.event.inputs.version || github.ref_name }}
-          echo "version=${VERSION#v}" >> $GITHUB_OUTPUT
           echo "tag=${VERSION}" >> $GITHUB_OUTPUT
-
-      - uses: actions/checkout@v4
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -43,13 +44,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: npm install
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
       - run: npm run build
       - name: Build Tauri
-        uses: tauri-action@v2
-        with:
-          args: --target x86_64-pc-windows-msvc
+        run: |
+          cd src-tauri
+          cargo tauri build --target x86_64-pc-windows-msvc
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
@@ -69,13 +72,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: npm install
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
       - run: npm run build
       - name: Build Tauri
-        uses: tauri-action@v2
-        with:
-          args: --target aarch64-apple-darwin
+        run: |
+          cd src-tauri
+          cargo tauri build --target aarch64-apple-darwin
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
@@ -83,7 +88,6 @@ jobs:
           draft: true
           files: |
             src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
-            src-tauri/target/aarch64-apple-darwin/release/bundle/app/*.app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -95,16 +99,19 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      - run: |
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux deps
+        run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev patchelf libssl-dev
-      - run: npm install
+      - run: npm ci
       - run: npm run build
       - name: Build Tauri
-        uses: tauri-action@v2
-        with:
-          args: --target x86_64-unknown-linux-gnu
+        run: |
+          cd src-tauri
+          cargo tauri build --target x86_64-unknown-linux-gnu
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
@@ -113,6 +120,5 @@ jobs:
           files: |
             src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb
             src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/AppImage/*.AppImage
-            src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/rpm/*.rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
