@@ -11,6 +11,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+
 env:
   NODE_VERSION: '20'
   TAURI_VERSION: '0.3.0'
