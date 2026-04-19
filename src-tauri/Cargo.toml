@@ -1,0 +1,46 @@
+[package]
+name = "manga-ai"
+version = "2.1.0"
+description = "ManGa AI - AI 漫剧视频智能创作平台"
+authors = ["ManGa AI Team"]
+license = "MIT"
+repository = "https://github.com/Agions/ManGaAI"
+edition = "2021"
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = [
+    "fs-all",
+    "clipboard-all",
+    "window-all",
+    "dialog-all",
+    "shell-open",
+    "path-all",
+    "global-shortcut-all",
+    "notification-all",
+    "process-all",
+    "os-all",
+    "app-all",
+    "system-tray"
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+env_logger = "0.10"
+lazy_static = "1.4"
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
