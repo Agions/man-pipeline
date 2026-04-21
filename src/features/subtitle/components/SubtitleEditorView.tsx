@@ -1,0 +1,31 @@
+import React from 'react';
+import { Typography } from 'antd';
+import SubtitleEditor from './SubtitleEditor';
+import styles from './SubtitleEditorView.module.less';
+
+const { Title, Text } = Typography;
+
+/**
+ * 字幕编辑视图组件
+ * 组合字幕编辑功能
+ */
+interface SubtitleEditorViewProps {
+  projectId?: string;
+  videoPath?: string;
+  onSave?: (subtitleData: any) => void;
+}
+
+const SubtitleEditorView: React.FC<SubtitleEditorViewProps> = ({ projectId, videoPath, onSave }) => {
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <Title level={2}>字幕编辑</Title>
+        <Text type="secondary">编辑视频字幕和时间轴</Text>
+      </div>
+
+      <SubtitleEditor projectId={projectId} videoPath={videoPath} onSave={onSave} />
+    </div>
+  );
+};
+
+export default SubtitleEditorView;

@@ -44,6 +44,8 @@ REFORM_PLAN*.md
 *.tmp
 *.temp
 
+docs/ui-redesign/
+
 PIPELINE_DESIGN.md
 PlotCraft-plan/
 AS_ANY_AUDIT.md

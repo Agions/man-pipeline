@@ -2,5 +2,5 @@
  * AI feature - AI Model selection and configuration
  */
 
-export { AIModelSelector } from './AIModelSelector';
-export { ModelSelector } from './ModelSelector';
+export { default as AIModelSelector } from './AIModelSelector';
+export { default as ModelSelector } from './ModelSelector';

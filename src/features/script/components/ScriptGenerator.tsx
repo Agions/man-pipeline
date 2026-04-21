@@ -39,7 +39,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useModel, useModelCost } from '@/core/hooks/useModel';
 import { useProject } from '@/core/hooks/useProject';
-import ModelSelector from '@/components/business/ModelSelector';
+import ModelSelector from '@/features/ai/components/ModelSelector';
 import type { ScriptData, ScriptSegment } from '@/core/types';
 import styles from './index.module.less';
 

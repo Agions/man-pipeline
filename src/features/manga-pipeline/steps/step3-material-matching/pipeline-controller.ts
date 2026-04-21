@@ -1,0 +1,62 @@
+import { PipelineStep, StepInput, StepOutput } from '../../../../core/pipeline/step.interface';
+import { Storyboard } from '../../step2-storyboard';
+import { MaterialMatch, MaterialItem, searchMaterial, batchSearch } from './services/material-searcher';
+import { MaterialGroup, groupMaterials } from './services/smart-grouper';
+import { BatchGenerationPlan, createAIGenerationPlan } from './services/ai-material-generator';
+
+export interface MaterialMatchingResult {
+  storyboard: Storyboard;
+  matches: MaterialMatch[];
+  groups: MaterialGroup[];
+  aiGenerationPlan: BatchGenerationPlan | null;
+  coverage: number;  // 0-1，有素材覆盖的场景比例
+}
+
+export class MaterialMatchingPipeline implements PipelineStep {
+  id = 'material-matching';
+  name = 'Material Matching';
+
+  private _checkpoint: any = null;
+
+  async process(input: StepInput): Promise<StepOutput> {
+    const { storyboard } = input as StepInput & { storyboard: Storyboard };
+
+    // Step 1: 批量搜索素材
+    const matches = await batchSearch(storyboard, { maxResultsPerScene: 3 });
+
+    // Step 2: 智能分组
+    const groups = groupMaterials(matches);
+
+    // Step 3: 为未匹配场景生成 AI 方案
+    const scenesNeedingAI = matches
+      .filter(m => m.matches.length === 0)
+      .map(m => storyboard.scenes.find(s => s.sceneId === m.sceneId)!)
+      .filter(Boolean);
+    
+    const aiGenerationPlan = scenesNeedingAI.length > 0
+      ? createAIGenerationPlan(scenesNeedingAI)
+      : null;
+
+    // Step 4: 计算覆盖率
+    const coveredScenes = matches.filter(m => m.matches.length > 0).length;
+    const coverage = coveredScenes / matches.length;
+
+    const result: MaterialMatchingResult = {
+      storyboard,
+      matches,
+      groups,
+      aiGenerationPlan,
+      coverage,
+    };
+
+    return { materialMatching: result } as StepOutput;
+  }
+
+  getCheckpoint() {
+    return this._checkpoint;
+  }
+
+  restore(state: any) {
+    this._checkpoint = state;
+  }
+}
