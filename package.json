@@ -25,7 +25,9 @@
     "test:coverage": "jest --coverage",
     "test:ci": "npm run test:ci:core",
     "test:ci:core": "npm test -- --runInBand src/__tests__/services/review-export.service.test.ts src/__tests__/services/collaboration.service.test.ts src/__tests__/services/cost.service.test.ts src/__tests__/services/evaluation.service.test.ts src/__tests__/services/quality-gate.service.test.ts src/__tests__/utils/idle.test.ts src/__tests__/router/page-preload.test.ts && npm run build:check",
-    "test:ci:full": "jest --ci --reporters=default"
+    "test:ci:full": "jest --ci --reporters=default",
+    "docs:vp:build": "vitepress build docs",
+    "docs:vp:dev": "vitepress dev docs"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -70,6 +72,7 @@
     "typedoc": "^0.24.8",
     "typescript": "^5.0.2",
     "vite": "^4.4.4",
-    "vite-plugin-compression": "^0.5.1"
+    "vite-plugin-compression": "^0.5.1",
+    "vitepress": "^1.6.4"
   }
 }

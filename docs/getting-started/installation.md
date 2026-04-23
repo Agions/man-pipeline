@@ -8,16 +8,16 @@ PlotCraft 的详细安装说明。
 - **操作系统**：Windows 10+、macOS 10.15+、Ubuntu 20.04+
 - **内存**：8GB
 - **存储空间**：2GB 可用空间
-- **网络**：稳定的互联网连接用于 AI API 调用
+- **网络**：稳定的互联网连接（用于 AI API 调用）
 
 ### 推荐配置
 - **内存**：16GB+
-- **显卡**：NVIDIA 6GB+ 显存 GPU（用于本地 AI 模型）
+- **显卡**：NVIDIA 6GB+ 显存 GPU（用于本地渲染加速）
 - **存储空间**：SSD 10GB+ 可用空间
 
 ## 安装方法
 
-### 方法一：Web 开发
+### 方法一：Web 开发（推荐）
 
 ```bash
 # 克隆仓库
@@ -31,20 +31,24 @@ npm install
 npm run dev
 ```
 
-### 方法二：桌面应用（Tauri）
+应用运行在 `http://localhost:5173`。
+
+### 方法二：桌面应用（Tauri 2.0）
 
 #### 前置条件
 
 **macOS/Linux：**
+
 ```bash
 # 安装 Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# 安装必需的系统依赖（macOS）
-brew installwebkit2gtk
+# macOS 额外依赖
+brew installwebkit2gtk python3 gtkmm3 libsoup3
 ```
 
 **Windows：**
+
 - 安装 [Rust](https://rustup.rs/)
 - 安装 [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 
@@ -63,22 +67,24 @@ npm run tauri build
 ## 依赖
 
 ### 核心依赖
+
 | 包 | 版本 | 用途 |
-|---------|---------|---------|
+|-----|------|------|
 | react | ^18.2 | UI 框架 |
 | react-dom | ^18.2 | DOM 渲染 |
-| vite | ^4.5 | 构建工具 |
+| vite | ^4.4 | 构建工具 |
 | typescript | ^5.0 | 类型安全 |
 | zustand | ^4.4 | 状态管理 |
-| antd | ^5.0 | UI 组件库 |
-| @tauri-apps/api | ^1.5 | 桌面集成 |
+| antd | ^5.11 | UI 组件库 |
+| @tauri-apps/api | ^2.0 | 桌面集成 |
+| framer-motion | ^12.10 | 动画 |
 
 ### AI 服务依赖
+
 | 包 | 用途 |
-|---------|---------|
-| openai | OpenAI API 客户端 |
-| @azure/openai | Azure OpenAI 客户端 |
-| volcengine | 火山引擎 API |
+|-----|------|
+| axios | HTTP 客户端 |
+| i18next | 国际化 |
 
 ## 故障排除
 
@@ -111,5 +117,5 @@ cargo --version
 
 ## 下一步
 
-- [配置指南](configuration.md)
-- [快速入门](quick-start.md)
+- [配置指南](./configuration.md)
+- [快速入门](./quick-start.md)
