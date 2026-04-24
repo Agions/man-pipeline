@@ -137,21 +137,21 @@ export class ApiClient {
    * POST 请求
    */
   async post<T>(path: string, data?: unknown): Promise<T> {
-    return this.request<T>(path, { method: 'POST', body: data });
+    return this.request<T>(path, { method: 'POST', body: data as BodyInit });
   }
 
   /**
    * PUT 请求
    */
   async put<T>(path: string, data?: unknown): Promise<T> {
-    return this.request<T>(path, { method: 'PUT', body: data });
+    return this.request<T>(path, { method: 'PUT', body: data as BodyInit });
   }
 
   /**
    * PATCH 请求
    */
   async patch<T>(path: string, data?: unknown): Promise<T> {
-    return this.request<T>(path, { method: 'PATCH', body: data });
+    return this.request<T>(path, { method: 'PATCH', body: data as BodyInit });
   }
 
   /**

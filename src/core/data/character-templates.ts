@@ -3,7 +3,8 @@
  * 提供常用角色类型的预设配置
  */
 
-import type { Character, CharacterAppearance, ClothingItem, CharacterExpression, CharacterConsistency } from '@/core/types';
+import type { Character, CharacterAppearance, ClothingItem, CharacterExpression } from '@/core/types';
+import type { CharacterConsistency } from '@/shared/types';
 
 // 基础模板类型
 export interface CharacterTemplate {

@@ -1,5 +1,5 @@
 import { PipelineStep, StepInput, StepOutput } from '../../../../core/pipeline/step.interface';
-import { Storyboard } from '../../step2-storyboard';
+import type { Storyboard } from '@/features/manga-pipeline/steps/step2-storyboard/storyboard-composer';
 import { MaterialMatch, MaterialItem, searchMaterial, batchSearch } from './services/material-searcher';
 import { MaterialGroup, groupMaterials } from './services/smart-grouper';
 import { BatchGenerationPlan, createAIGenerationPlan } from './services/ai-material-generator';

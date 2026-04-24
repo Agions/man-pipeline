@@ -3,10 +3,10 @@
  */
 
 export { default as HomeView } from './Home/HomeView';
-export { CTASection } from './Home/CTASection';
-export { Features } from './Home/Features';
-export { HeroSection } from './Home/HeroSection';
-export { ModelCard } from './Home/ModelCard';
-export { ProjectGrid, type Project } from './Home/ProjectGrid';
-export { StatsCards } from './Home/StatsCards';
-export { WorkflowSteps } from './Home/WorkflowSteps';
+export { default as CTASection } from './Home/CTASection';
+export { default as Features } from './Home/Features';
+export { default as HeroSection } from './Home/HeroSection';
+export { default as ModelCard } from './Home/ModelCard';
+export { default as ProjectGrid, type Project } from './Home/ProjectGrid';
+export { default as StatsCards } from './Home/StatsCards';
+export { default as WorkflowSteps } from './Home/WorkflowSteps';

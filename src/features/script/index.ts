@@ -3,5 +3,5 @@
  * Script feature exports - Script generation and import
  */
 
-export { ScriptGenerator } from './components/ScriptGenerator';
-export { NovelImporter } from './components/NovelImporter';
+export { default as ScriptGenerator } from './components/ScriptGenerator';
+export { default as NovelImporter } from './components/NovelImporter';

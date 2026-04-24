@@ -3,4 +3,4 @@
  * Audio feature exports - Audio editing and management
  */
 
-export { AudioEditor } from './components/AudioEditor';
+export { default as AudioEditor } from './components/AudioEditor';

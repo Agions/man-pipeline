@@ -1,5 +1,10 @@
-export { generateCharacterCards, GenerateCharacterCardsOptions } from './character-card-generator';
-export { createCharacterCardStorage, CharacterCardStorage } from './character-card-storage';
-export { generateScenes, SceneGenerationOptions } from './scene-generator';
-export { generateDialogue, DialogueGenerationOptions } from './dialogue-generator';
-export { integrateScript, ScriptIntegrationOptions } from './script-integrator';
+export { generateCharacterCards } from './character-card-generator';
+export type { GenerateCharacterCardsOptions } from './character-card-generator';
+export { createCharacterCardStorage } from './character-card-storage';
+export type { CharacterCardStorage } from './character-card-storage';
+export { generateScenes } from './scene-generator';
+export type { SceneGenerationOptions } from './scene-generator';
+export { generateDialogue } from './dialogue-generator';
+export type { DialogueGenerationOptions } from './dialogue-generator';
+export { integrateScript } from './script-integrator';
+export type { ScriptIntegrationOptions } from './script-integrator';

@@ -5,8 +5,8 @@ import { useAppStore } from '@/shared/stores';
 import styles from './NotificationCenter.module.less';
 
 interface NotificationCenterProps {
-  open: boolean;
-  onClose: () => void;
+  open?: boolean;
+  onClose?: () => void;
 }
 
 const NotificationCenter: React.FC<NotificationCenterProps> = ({ open, onClose }) => {

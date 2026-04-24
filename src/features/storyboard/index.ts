@@ -4,7 +4,7 @@
  */
 
 // Component
-export { StoryboardEditor } from './components/StoryboardEditor';
+export { default as StoryboardEditor } from './components/StoryboardEditor';
 
 // Service
 export { getStoryboardService, resetStoryboardService } from '@/core/services/storyboard.service';

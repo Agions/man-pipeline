@@ -1,5 +1,5 @@
-import { ClassifiedParagraph } from '../../parser/paragraph-classifier';
-import { StoryEvent } from '../../parser/event-extractor';
+import { ClassifiedParagraph } from '../parser/paragraph-classifier';
+import { StoryEvent } from '../parser/event-extractor';
 
 export type RelationType = 'family' | 'friend' | 'enemy' | 'romantic' | 'colleague' | 'unknown';
 

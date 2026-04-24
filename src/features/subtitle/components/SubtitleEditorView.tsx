@@ -15,7 +15,7 @@ interface SubtitleEditorViewProps {
   onSave?: (subtitleData: any) => void;
 }
 
-const SubtitleEditorView: React.FC<SubtitleEditorViewProps> = ({ projectId, videoPath, onSave }) => {
+const SubtitleEditorView: React.FC<SubtitleEditorViewProps> = ({ projectId: _projectId, videoPath: _videoPath, onSave: _onSave }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -23,7 +23,7 @@ const SubtitleEditorView: React.FC<SubtitleEditorViewProps> = ({ projectId, vide
         <Text type="secondary">编辑视频字幕和时间轴</Text>
       </div>
 
-      <SubtitleEditor projectId={projectId} videoPath={videoPath} onSave={onSave} />
+      <SubtitleEditor subtitles={[]} onChange={() => {}} />
     </div>
   );
 };

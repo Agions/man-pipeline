@@ -18,11 +18,11 @@ interface EditorViewProps {
   projectId?: string;
 }
 
-const EditorView: React.FC<EditorViewProps> = ({ projectId }) => {
+const EditorView: React.FC<EditorViewProps> = ({ projectId: _projectId }) => {
   return (
     <Layout className={styles.container}>
       <Sider width={280} className={styles.leftSider}>
-        <AssetPanel projectId={projectId} />
+        <AssetPanel />
       </Sider>
 
       <Layout className={styles.mainLayout}>
@@ -30,7 +30,7 @@ const EditorView: React.FC<EditorViewProps> = ({ projectId }) => {
           <Preview />
         </Content>
 
-        <Timeline />
+        <Timeline currentTime={0} duration={0} tracks={[]} onTimeUpdate={() => {}} />
       </Layout>
 
       <Sider width={320} className={styles.rightSider}>

@@ -1,5 +1,5 @@
 import { PipelineStep, StepInput, StepOutput } from '../../../../core/pipeline/step.interface';
-import { Script } from '../../step1-script-generation/types/script';
+import { Script } from '../step1-script-generation/types/script';
 import { assignVoices, VoiceAssignment } from './services/voice-assigner';
 import { generateDialogueTTS, DialogueSegment } from './services/dialogue-tts-generator';
 import { selectBGM, BGMSelection } from './services/bgm-selector';

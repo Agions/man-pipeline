@@ -5,11 +5,11 @@
 
 import { invoke } from '@tauri-apps/api/core';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import { open, save, message, ask, confirm } from '@tauri-apps/api/dialog';
-import { readTextFile, writeTextFile, writeFile, exists, createDir, removeDir, readDir } from '@tauri-apps/api/fs';
-import { appDir, appConfigDir, appDataDir, documentDir, videoDir, downloadDir } from '@tauri-apps/api/path';
-import { sendNotification, isPermissionGranted, requestPermission } from '@tauri-apps/api/notification';
-import { getCurrent } from '@tauri-apps/api/window';
+import { open, save, message, ask, confirm } from '@tauri-apps/plugin-dialog';
+import { readTextFile, writeTextFile, writeFile, exists, mkdir, remove, readDir } from '@tauri-apps/plugin-fs';
+import { appConfigDir, appDataDir, documentDir, videoDir, downloadDir } from '@tauri-apps/api/path';
+import { sendNotification, isPermissionGranted, requestPermission } from '@tauri-apps/plugin-notification';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 // ========== Type Definitions ==========
 
@@ -184,25 +184,25 @@ class TauriService {
   }
 
   async createDirectory(path: string, recursive: boolean = false): Promise<void> {
-    await createDir(path, { recursive });
+    await mkdir(path, { recursive });
   }
 
   async removeDirectory(path: string, recursive: boolean = false): Promise<void> {
-    await removeDir(path, { recursive });
+    await remove(path, { recursive });
   }
 
   async listDirectory(path: string): Promise<DirInfo[]> {
     const entries = await readDir(path);
     return entries.map(entry => ({
       name: entry.name,
-      path: entry.path,
-      isDirectory: entry.children !== undefined,
+      path: entry.name,  // plugin-fs DirEntry doesn't have path property
+      isDirectory: entry.isDirectory,
     }));
   }
 
   // ========== Path APIs ==========
   async getAppDir(): Promise<string> {
-    return appDir();
+    return appConfigDir();
   }
 
   async getConfigDir(): Promise<string> {
@@ -242,7 +242,7 @@ class TauriService {
 
   // ========== Window APIs ==========
   async getCurrentWindowState(): Promise<WindowState> {
-    const win = getCurrent();
+    const win = getCurrentWindow();
     const size = await win.innerSize();
     const position = await win.innerPosition();
     const maximized = await win.isMaximized();
@@ -256,12 +256,12 @@ class TauriService {
   }
 
   async minimizeWindow(): Promise<void> {
-    const win = getCurrent();
+    const win = getCurrentWindow();
     await win.minimize();
   }
 
   async maximizeWindow(): Promise<void> {
-    const win = getCurrent();
+    const win = getCurrentWindow();
     const maximized = await win.isMaximized();
     if (maximized) {
       await win.unmaximize();
@@ -271,7 +271,7 @@ class TauriService {
   }
 
   async closeWindow(): Promise<void> {
-    const win = getCurrent();
+    const win = getCurrentWindow();
     await win.close();
   }
 

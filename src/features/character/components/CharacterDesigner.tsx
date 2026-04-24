@@ -45,6 +45,7 @@ import type {
   CharacterExpression,
   TTSProvider 
 } from '@/core/types';
+import type { CharacterConsistency } from '@/shared/types';
 import { logger } from '@/core/utils/logger';
 import {
   CHARACTER_TEMPLATES,
@@ -311,7 +312,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
     const char = characters.find(c => c.id === characterId);
     if (!char) return;
 
-    const newExprs = [...(char.expressions || []), expression] as string[];
+    const newExprs = [...(char.expressions || []), expression] as unknown as string[];
     const newChars = characters.map(c =>
       c.id === characterId ? { ...c, expressions: newExprs } : c
     ) as Character[];

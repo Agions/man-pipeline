@@ -35,16 +35,16 @@ const ScriptGeneratorView: React.FC = () => {
 
       <Space direction="vertical" size="large" className={styles.content}>
         <Card title="导入小说">
-          <NovelImporter onImport={handleNovelImport} />
+          <NovelImporter onContentLoad={(content, metadata) => handleNovelImport(metadata)} />
         </Card>
 
         {novelMetadata && (
           <Card title="生成脚本">
             {isGenerating && <Spin tip="正在生成脚本..." />}
             <ScriptGenerator
-              novelMetadata={novelMetadata}
-              onGenerateStart={handleGenerationStart}
-              onGenerateComplete={handleGenerationComplete}
+              projectId={undefined}
+              onGenerate={undefined}
+              onSave={undefined}
             />
           </Card>
         )}

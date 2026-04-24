@@ -15,7 +15,7 @@ import {
   StepBackwardOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
-import { open } from '@tauri-apps/api/dialog';
+import { open } from '@tauri-apps/plugin-dialog';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import styles from './AudioEditor.module.less';
 import { logger } from '@/core/utils/logger';
@@ -75,6 +75,8 @@ export interface AudioTrackConfig {
 
 // 组件属性
 interface AudioEditorProps {
+  projectId?: string;
+  onSave?: (config: AudioTrackConfig) => void;
   initialConfig?: Partial<AudioTrackConfig>;
   onConfigChange?: (config: AudioTrackConfig) => void;
   videoDuration?: number;

@@ -5,8 +5,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Variants, Easing } from 'framer-motion';
-import * as fs from '@tauri-apps/api/fs';
-import { open } from '@tauri-apps/api/dialog';
+import * as fs from '@tauri-apps/plugin-fs';
+import { open } from '@tauri-apps/plugin-dialog';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { logger } from '@/core/utils/logger';

@@ -3,46 +3,7 @@
  * Consolidated type definitions from src/types and src/core/types
  */
 
-// CSS Module type declarations - consolidated into single module augmentations per file type
-declare module '*.less' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.css' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.scss' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.sass' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.module.less' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.module.css' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.module.scss' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
-
-declare module '*.module.sass' {
-  const classes: { [key: string]: string };
-  export = classes;
-}
+// CSS Module type declarations are in src/types/cssmodule.d.ts
 
 // ========== AI Model Types ==========
 
@@ -346,6 +307,9 @@ export interface ProjectData {
   characters?: Character[];
   composition?: CompositionProject;
   settings?: ProjectSettings;
+  novelMetadata?: any;
+  storyboardComments?: any;
+  storyboardVersions?: any;
   createdAt: string;
   updatedAt: string;
 }

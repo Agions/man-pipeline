@@ -3,8 +3,8 @@
  * 统一封装桌面应用相关的功能：窗口管理、系统托盘、快捷键、通知等
  */
 
-import { appWindow as getCurrent } from '@tauri-apps/api/window';
-import { sendNotification, isPermissionGranted, requestPermission } from '@tauri-apps/api/notification';
+import { getCurrentWindow, LogicalSize, LogicalPosition } from '@tauri-apps/api/window';
+import { sendNotification, isPermissionGranted, requestPermission } from '@tauri-apps/plugin-notification';
 import { logger } from '@/core/utils/logger';
 
 // 快捷键定义
@@ -56,15 +56,15 @@ class DesktopAppService {
    * 获取当前窗口
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async getCurrentWindow(): Promise<any> {
-    return getCurrent;
+  async getWindowHandle(): Promise<any> {
+    return getCurrentWindow();
   }
 
   /**
    * 获取窗口状态
    */
   async getWindowState(): Promise<WindowState> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
 
     const [isMaximized, isMinimized, isFullscreen, isFocused, title, size, position] = await Promise.all([
       window.isMaximized(),
@@ -100,7 +100,7 @@ class DesktopAppService {
    * 最小化窗口
    */
   async minimize(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.minimize();
   }
 
@@ -108,7 +108,7 @@ class DesktopAppService {
    * 最大化/还原窗口
    */
   async toggleMaximize(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     const isMaximized = await window.isMaximized();
 
     if (isMaximized) {
@@ -122,7 +122,7 @@ class DesktopAppService {
    * 设置全屏
    */
   async setFullscreen(fullscreen: boolean): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.setFullscreen(fullscreen);
   }
 
@@ -130,7 +130,7 @@ class DesktopAppService {
    * 切换全屏
    */
   async toggleFullscreen(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     const isFullscreen = await window.isFullscreen();
     await window.setFullscreen(!isFullscreen);
   }
@@ -139,7 +139,7 @@ class DesktopAppService {
    * 设置置顶
    */
   async setAlwaysOnTop(alwaysOnTop: boolean): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.setAlwaysOnTop(alwaysOnTop);
   }
 
@@ -147,7 +147,7 @@ class DesktopAppService {
    * 切换置顶
    */
   async toggleAlwaysOnTop(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     // isAlwaysOnTop may not be available in all Tauri versions
     let isOnTop = false;
     try {
@@ -162,7 +162,7 @@ class DesktopAppService {
    * 设置窗口标题
    */
   async setTitle(title: string): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.setTitle(title);
   }
 
@@ -170,23 +170,23 @@ class DesktopAppService {
    * 设置窗口大小
    */
   async setSize(width: number, height: number): Promise<void> {
-    const window = getCurrent;
-    await window.setSize({ width, height, type: 'Logical' });
+    const window = getCurrentWindow();
+    await window.setSize(new LogicalSize(width, height));
   }
 
   /**
    * 设置窗口位置
    */
   async setPosition(x: number, y: number): Promise<void> {
-    const window = getCurrent;
-    await window.setPosition({ x, y, type: 'Logical' });
+    const window = getCurrentWindow();
+    await window.setPosition(new LogicalPosition(x, y));
   }
 
   /**
    * 居中窗口
    */
   async center(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.center();
   }
 
@@ -194,7 +194,7 @@ class DesktopAppService {
    * 显示窗口
    */
   async show(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.show();
     await window.setFocus();
   }
@@ -203,7 +203,7 @@ class DesktopAppService {
    * 隐藏窗口
    */
   async hide(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.hide();
   }
 
@@ -211,7 +211,7 @@ class DesktopAppService {
    * 关闭窗口
    */
   async close(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.close();
   }
 
@@ -219,7 +219,7 @@ class DesktopAppService {
    * 退出应用
    */
   async quit(): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     await window.close();
   }
 
@@ -227,7 +227,7 @@ class DesktopAppService {
    * 请求用户关注
    */
   async requestAttention(bounce: boolean = true): Promise<void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
     // Use number type for UserAttentionType in Tauri 1.x: 1 = critical, 0 = informational
     await (window as any).requestUserAttention(bounce ? 1 : 0);
   }
@@ -404,9 +404,9 @@ class DesktopAppService {
    * 监听文件拖放事件
    */
   async onFileDrop(callback: (paths: string[]) => void): Promise<() => void> {
-    const window = getCurrent;
+    const window = getCurrentWindow();
 
-    const unlisten = await window.onFileDropEvent((event) => {
+    const unlisten = await window.onDragDropEvent((event) => {
       if (event.payload.type === 'drop') {
         callback(event.payload.paths);
       }

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Upload, Button, Progress, message } from 'antd';
 import { UploadOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import type { UploadProps, UploadFile } from 'antd/es/upload/interface';
-import { invoke } from '@tauri-apps/api/core';
-import { open } from '@tauri-apps/api/dialog';
+import { invoke, isTauri } from '@tauri-apps/api/core';
+import { open } from '@tauri-apps/plugin-dialog';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import styles from './VideoUploader.module.less';
 import { logger } from '@/core/utils/logger';
@@ -26,7 +26,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | undefined>(initialValue);
 
-  const isTauri = typeof window !== 'undefined' && window.__TAURI__ !== undefined;
+  const isTauriApp = isTauri();
 
   const openFileDialog = async () => {
     try {

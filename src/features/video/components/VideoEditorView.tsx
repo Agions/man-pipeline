@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Space, Typography, Row, Col } from 'antd';
+import { convertFileSrc } from '@tauri-apps/api/core';
 import VideoSelector from './VideoSelector';
 import VideoUploader from './VideoUploader';
 import VideoAnalyzer from './VideoAnalyzer';
@@ -30,6 +31,8 @@ const VideoEditorView: React.FC = () => {
     setVideoInfo(info);
   };
 
+  const videoSrc = selectedVideo ? convertFileSrc(selectedVideo) : '';
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -41,21 +44,25 @@ const VideoEditorView: React.FC = () => {
         <Col span={16}>
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <Card title="选择视频">
-              <VideoSelector onSelect={handleVideoSelect} />
+              <VideoSelector onVideoSelect={handleVideoSelect} />
             </Card>
 
             <Card title="上传视频">
-              <VideoUploader onUpload={handleVideoUpload} />
+              <VideoUploader onUploadSuccess={handleVideoUpload} />
             </Card>
 
             {selectedVideo && (
               <>
                 <Card title="视频预览">
-                  <VideoPlayer videoPath={selectedVideo} />
+                  <VideoPlayer src={videoSrc} />
                 </Card>
 
                 <Card title="视频分析">
-                  <VideoAnalyzer videoPath={selectedVideo} onAnalysisComplete={handleAnalysisComplete} />
+                  <VideoAnalyzer
+                    projectId="current"
+                    videoUrl={selectedVideo}
+                    onAnalysisComplete={handleAnalysisComplete}
+                  />
                 </Card>
               </>
             )}
@@ -66,13 +73,18 @@ const VideoEditorView: React.FC = () => {
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
             {videoInfo && (
               <Card title="视频信息">
-                <VideoInfo videoPath={selectedVideo!} metadata={videoInfo} />
+                <VideoInfo
+                  name={selectedVideo?.split('/').pop() || 'video'}
+                  duration={videoInfo?.duration || 0}
+                  path={selectedVideo || ''}
+                  metadata={videoInfo}
+                />
               </Card>
             )}
 
             {selectedVideo && (
               <Card title="导出视频">
-                <VideoExporter videoPath={selectedVideo} />
+                <VideoExporter projectName={selectedVideo?.split('/').pop() || 'video'} />
               </Card>
             )}
           </Space>

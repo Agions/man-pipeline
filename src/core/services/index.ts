@@ -16,7 +16,7 @@ export type { Scene, SubtitleTrack as VideoSubtitleTrack, Subtitle as VideoSubti
 
 // 视频脚本流水线服务
 export { mangaPipelineService, default as MangaPipelineService } from './manga-pipeline.service';
-export type { PipelineConfig, PipelineScene, PipelineResult, PipelineProgress } from './manga-pipeline.service';
+export type { PipelineConfig as MangaPipelineConfig, PipelineScene, PipelineResult as MangaPipelineResult, PipelineProgress } from './manga-pipeline.service';
 
 // 核心服务
 export { aiService, type AIResponse, type RequestConfig } from './ai.service';

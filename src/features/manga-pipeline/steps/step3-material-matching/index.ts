@@ -1,7 +1,11 @@
 // Services
-export { searchMaterial, batchSearch, MaterialMatch, MaterialItem, SearchQuery } from './services/material-searcher';
-export { groupMaterials, MaterialGroup, GroupingOptions } from './services/smart-grouper';
-export { createAIGenerationPlan, AIGenerationPlan, BatchGenerationPlan } from './services/ai-material-generator';
+export { searchMaterial, batchSearch } from './services/material-searcher';
+export type { MaterialMatch, MaterialItem, SearchQuery } from './services/material-searcher';
+export { groupMaterials } from './services/smart-grouper';
+export type { MaterialGroup, GroupingOptions } from './services/smart-grouper';
+export { createAIGenerationPlan } from './services/ai-material-generator';
+export type { AIGenerationPlan, BatchGenerationPlan } from './services/ai-material-generator';
 
 // Pipeline
-export { MaterialMatchingPipeline, MaterialMatchingResult } from './pipeline-controller';
+export { MaterialMatchingPipeline } from './pipeline-controller';
+export type { MaterialMatchingResult } from './pipeline-controller';
