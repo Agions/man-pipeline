@@ -749,7 +749,7 @@ fn main() {
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_global_shortcut::init())
+        .plugin(tauri_plugin_global_shortcut::Builder::default().build())
         .plugin(tauri_plugin_os::init())
         .setup(|_app| {
             println!("应用设置初始化");
