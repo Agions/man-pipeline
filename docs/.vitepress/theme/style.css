@@ -1,0 +1,427 @@
+/**
+ * PlotCraft VitePress Theme
+ * Professional dark theme with brand accent colors
+ */
+
+/* ── Brand Colors ─────────────────────────────────────────── */
+:root {
+  /* Brand colors */
+  --vp-c-brand-1: #FF6B35;
+  --vp-c-brand-2: #FF8C5A;
+  --vp-c-brand-3: #FFA87D;
+  --vp-c-brand-soft: rgba(255, 107, 53, 0.12);
+
+  /* Accent teal */
+  --vp-c-accent-1: #45B8AC;
+  --vp-c-accent-2: #5FC9BF;
+  --vp-c-accent-3: #7DD9D1;
+  --vp-c-accent-soft: rgba(69, 184, 172, 0.12);
+
+  /* Purple accent */
+  --vp-c-purple-1: #7B68EE;
+  --vp-c-purple-2: #9B8BFF;
+  --vp-c-purple-soft: rgba(123, 104, 238, 0.12);
+
+  /* Background overrides - dark theme optimized */
+  --vp-c-bg: #0a0a0f;
+  --vp-c-bg-alt: #0f0f18;
+  --vp-c-bg-soft: #13131d;
+  --vp-c-bg-elv: #16161f;
+
+  /* Text colors */
+  --vp-c-text-1: #E8E8EE;
+  --vp-c-text-2: #A8A8B8;
+  --vp-c-text-3: #686878;
+
+  /* Border */
+  --vp-c-border: rgba(255, 255, 255, 0.08);
+  --vp-c-divider: rgba(255, 255, 255, 0.06);
+  --vp-c-gutter: rgba(255, 255, 255, 0.04);
+
+  /* Typography */
+  --vp-font-family-base: 'Inter', 'PingFang SC', 'Microsoft YaHei', ui-sans-serif, system-ui, sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Navbar */
+  --vp-nav-bg-color: rgba(10, 10, 15, 0.92);
+  --vp-nav-height: 64px;
+
+  /* Sidebar */
+  --vp-sidebar-bg-color: #0a0a0f;
+  --vp-sidebar-width: 272px;
+
+  /* Code blocks */
+  --vp-code-block-bg: #0d0d16;
+  --vp-code-bg: rgba(255, 107, 53, 0.08);
+
+  /* Buttons */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: #ffffff;
+  --vp-button-brand-active-bg: #E55A25;
+
+  /* Alt button */
+  --vp-button-alt-border: rgba(255, 255, 255, 0.1);
+  --vp-button-alt-text: #E8E8EE;
+  --vp-button-alt-bg: rgba(255, 255, 255, 0.05);
+  --vp-button-alt-hover-border: rgba(255, 255, 255, 0.15);
+  --vp-button-alt-hover-text: #ffffff;
+  --vp-button-alt-hover-bg: rgba(255, 255, 255, 0.08);
+
+  /* Home hero */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, var(--vp-c-accent-1) 50%, var(--vp-c-purple-1) 100%);
+
+  /* Shadows */
+  --vp-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+  --vp-shadow-2: 0 4px 16px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25);
+  --vp-shadow-3: 0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --vp-shadow-4: 0 16px 48px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --vp-shadow-5: 0 24px 64px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Dark Theme Only ─────────────────────────────────────── */
+.dark {
+  --vp-c-bg: #0a0a0f;
+  --vp-c-bg-alt: #0f0f18;
+  --vp-c-bg-soft: #13131d;
+  --vp-c-bg-elv: #16161f;
+}
+
+/* ── Navigation Bar ──────────────────────────────────────── */
+.VPNav {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--vp-c-border) !important;
+}
+
+.VPNavBar {
+  background: transparent !important;
+}
+
+.VPNavBarTitle .title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-accent-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNavBarMenu .VPNavBarMenuLink.active {
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.VPSidebar {
+  background-color: var(--vp-sidebar-bg-color) !important;
+  border-right: 1px solid var(--vp-c-border) !important;
+}
+
+.VPSidebarItem .text {
+  font-size: 0.9rem;
+}
+
+.VPSidebarItem.is-active > .item .text {
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600;
+}
+
+.VPSidebarItem > .item:hover .text {
+  color: var(--vp-c-brand-2);
+}
+
+/* ── Content Area ─────────────────────────────────────────── */
+.VPDoc {
+  padding-top: 32px !important;
+}
+
+.VPDoc h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--vp-c-border);
+  background: linear-gradient(135deg, var(--vp-c-text-1) 0%, var(--vp-c-text-2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.VPDoc h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+}
+
+.VPDoc h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+.VPDoc h2 .header-anchor,
+.VPDoc h3 .header-anchor {
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.VPDoc h2:hover .header-anchor,
+.VPDoc h3:hover .header-anchor {
+  opacity: 1;
+}
+
+/* ── Code Blocks ──────────────────────────────────────────── */
+.vp-code-group .tabs button {
+  font-size: 0.85rem;
+}
+
+.vp-code-group .tabs button.active {
+  border-bottom-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+div[class*='language-'] {
+  border-radius: 10px !important;
+  border: 1px solid var(--vp-c-border);
+  margin: 16px 0 !important;
+}
+
+div[class*='language-'] code {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+div[class*='language-'] .lang {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-3);
+}
+
+div[class*='language-'] .copy {
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid var(--vp-c-border) !important;
+}
+
+div[class*='language-'] .copy:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+.VPDoc table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-border);
+}
+
+.VPDoc table tr {
+  background: transparent !important;
+}
+
+.VPDoc table tr:hover {
+  background: rgba(255, 107, 53, 0.04) !important;
+}
+
+.VPDoc table th {
+  background: rgba(255, 107, 53, 0.08) !important;
+  color: var(--vp-c-text-1) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.VPDoc table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+}
+
+.VPDoc table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Custom Containers ────────────────────────────────────── */
+.custom-block {
+  border-radius: 8px;
+  border: 1px solid;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.custom-block.tip {
+  border-color: var(--vp-c-accent-1);
+  background: rgba(69, 184, 172, 0.06);
+}
+
+.custom-block.tip .custom-block-title {
+  color: var(--vp-c-accent-1);
+}
+
+.custom-block.warning {
+  border-color: #F6C90E;
+  background: rgba(246, 201, 14, 0.06);
+}
+
+.custom-block.warning .custom-block-title {
+  color: #F6C90E;
+}
+
+.custom-block.danger {
+  border-color: #E53E3E;
+  background: rgba(229, 62, 62, 0.06);
+}
+
+.custom-block.danger .custom-block-title {
+  color: #E53E3E;
+}
+
+/* ── Inline Code ──────────────────────────────────────────── */
+.VPDoc :not(pre) > code {
+  background: rgba(255, 107, 53, 0.1) !important;
+  color: var(--vp-c-brand-2) !important;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875em;
+  border: 1px solid rgba(255, 107, 53, 0.15);
+}
+
+/* ── Links ────────────────────────────────────────────────── */
+.VPDoc a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.VPDoc a:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-border) !important;
+  background: var(--vp-c-bg-alt);
+  padding: 24px 0;
+}
+
+.VPFooter .message,
+.VPFooter .copyright {
+  color: var(--vp-c-text-3);
+  font-size: 0.85rem;
+}
+
+/* ── Local Nav (mobile sidebar toggle) ────────────────────── */
+.VPLocalNav {
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+/* ── Aside (right-side table of contents) ─────────────────── */
+.VPDocAside {
+  border-left: 1px solid var(--vp-c-border);
+}
+
+.VPDocAsideOutline .outline-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vp-c-text-3);
+}
+
+.VPDocAsideOutlineItem a {
+  color: var(--vp-c-text-2);
+  font-size: 0.85rem;
+}
+
+.VPDocAsideOutlineItem a:hover,
+.VPDocAsideOutlineItem.is-active a {
+  color: var(--vp-c-brand-1);
+}
+
+/* ── Search ───────────────────────────────────────────────── */
+.VPNavBarSearch #local-search {
+  margin-top: 0;
+}
+
+.VPNavBarSearch input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  color: var(--vp-c-text-1);
+}
+
+.VPNavBarSearch input:focus {
+  border-color: var(--vp-c-brand-1);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.VPDoc > .container > .content .VPDocMain > main {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vp-c-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Home Page Overrides ─────────────────────────────────── */
+.VPHome {
+  padding-bottom: 0;
+}
+
+/* ── Focus States ─────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
