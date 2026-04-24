@@ -1,6 +1,10 @@
-# PlotCraft — AI驱动的专业视频脚本创作平台
+# PlotCraft
 
-**7+ AI Models  ·  7-Step Workflow  ·  MIT License**
+**AI驱动的专业视频脚本创作平台 · 将小说、剧本或提示词转化为专业级视频内容**
+
+---
+
+<div align="center">
 
 [![Version](https://img.shields.io/badge/Version-3.0.0-FF6B35?style=flat-square&logo=package&logoColor=white)](https://github.com/Agions/PlotCraft/releases)
 [![License](https://img.shields.io/badge/License-MIT-45B8AC?style=flat-square&logo=license&logoColor=white)](https://opensource.org/licenses/MIT)
@@ -9,19 +13,19 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![CI](https://img.shields.io/badge/CI-GitHub Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Agions/PlotCraft/actions)
 [![Docs](https://img.shields.io/badge/Docs-在线访问-7B68EE?style=flat-square&logo=book&logoColor=white)](https://agions.github.io/PlotCraft)
+[![Stars](https://img.shields.io/badge/Stars-⭐-f6c90e?style=flat-square&logo=star&logoColor=white)](https://github.com/Agions/PlotCraft/stargazers)
+[![Issues](https://img.shields.io/badge/Issues-问题反馈-d5362b?style=flat-square&logo=github&logoColor=white)](https://github.com/Agions/PlotCraft/issues)
 
-将小说、剧本或提示词转化为专业级视频内容。从创意到成品的完整 AI 工作流。
+</div>
 
 ---
 
-## 核心特性
-
-### 八大核心功能
+## 八大核心功能
 
 | 功能 | 描述 |
 |:---:|------|
 | 📥 **智能导入** | 小说/剧本/提示词，自动编码检测，智能章节切分 |
-| 🤖 **多模型AI** | 7+ 模型支持，文字/图像/语音，按需切换模型 |
+| 🤖 **多模型AI** | 7+ 模型支持，文字/图像、语音，按需切换模型 |
 | 🎬 **智能分镜** | AI自动生成，多比例支持，可视化编辑 |
 | 🎭 **角色一致性** | 种子机制，参考图锁定，批量零走样 |
 | 👄 **唇形同步** | TTS语音对齐，多语言支持，情感语气调节 |
@@ -36,18 +40,16 @@
 ```
 📥 导入 ──▶ 🧠 AI分析 ──▶ 📝 脚本生成 ──▶ 🎬 分镜设计
                                                │
-                                               ▼
-                    ┌───────────────────────────────┐
-                    │                               │
-                    ▼                               │
-              🖼️ 批量渲染  ◀──  🎭 角色设计         │
-                    │                               │
-                    ▼                               │
-              🎞️ 合成视频                            │
-                    │                               │
-                    └───────────┬───────────────────┘
-                                ▼
-                           📤 导出
+                    ┌──────────────────────────┤
+                    │                          │
+                    ▼                          ▼
+              🖼️ 批量渲染  ◀──  🎭 角色设计
+                    │                          │
+                    ▼                          │
+              🎞️ 合成视频 ◀──────────────────────┘
+                    │
+                    ▼
+               📤 导出
 ```
 
 | 步骤 | 功能 | 关键配置 |
@@ -80,25 +82,17 @@
 ## 快速开始
 
 ```bash
-# 克隆仓库
 git clone https://github.com/Agions/PlotCraft.git
 cd PlotCraft
-
-# 安装依赖
 npm install
-
-# 开发模式
 npm run dev
-
-# 构建桌面应用
-npm run tauri build
 ```
 
-> 💡 **提示**：需要配置 `.env` 文件中的 API Key 才能使用 AI 功能，详见[配置指南](https://agions.github.io/PlotCraft/getting-started/configuration)
+> 💡 需要配置 `.env` 文件中的 API Key 才能使用 AI 功能，详见[配置指南](https://agions.github.io/PlotCraft/getting-started/configuration)
 
 ---
 
-## 支持的AI模型（2026年更新）
+## 支持的AI模型
 
 ### 文字生成
 
@@ -115,7 +109,7 @@ npm run tauri build
 
 | 提供商 | 模型 | 特性 | 发布日期 |
 |-------|------|------|----------|
-| 字节跳动 | Seedream 5.0 | 2K直出、AI 4K增强、控制笔刷 | 2026年2月10日 |
+| 字节跳动 | Seedream 5.0 | 2K直出、AI 4K增强 | 2026年2月10日 |
 | 快手 | Kling 1.6 | 图像+视频生成 | 2026年 |
 | 生数科技 | Vidu 2.0 | 图像+视频生成 | 2026年 |
 
@@ -132,7 +126,7 @@ npm run tauri build
 | 提供商 | 模型/服务 | 特性 |
 |-------|----------|------|
 | 阿里云 | CosyVoice 2.0 | 开源、3秒克隆、方言/情感支持 |
-| 阿里云 | KAN-TTS | 神经网络+领域知识、多语言 |
+| 阿里云 | KAN-TTS | 神经网络、多语言 |
 | 百度 | TTS | 中文优化 |
 | 科大讯飞 | TTS | 多语言支持 |
 
@@ -142,36 +136,15 @@ npm run tauri build
 
 ```
 PlotCraft/
-├── src/
-│   ├── app/                      # 应用入口
-│   ├── features/                  # 功能模块
-│   │   ├── ai/                    # AI功能
-│   │   ├── audio/                 # 音频
-│   │   ├── character/             # 角色
-│   │   ├── editor/                # 编辑器
-│   │   ├── home/                  # 首页
-│   │   ├── notification/          # 通知
-│   │   ├── project/              # 项目
-│   │   ├── script/                # 脚本
-│   │   ├── storyboard/            # 分镜
-│   │   └── video-export/          # 视频导出
-│   ├── components/
-│   │   ├── ui/                    # 基础UI组件
-│   │   ├── layout/                # 布局组件
-│   │   └── business/              # 业务组件
-│   ├── core/
-│   │   ├── services/              # API服务
-│   │   ├── stores/                # 状态管理
-│   │   ├── config/                # 配置
-│   │   ├── hooks/                 # 自定义钩子
-│   │   ├── data/                  # 静态数据
-│   │   └── types/                 # 类型定义
-│   ├── shared/                    # 共享模块
-│   └── pages/                     # 页面
-├── src-tauri/                     # Tauri桌面后端(Rust)
-├── public/                        # 静态资源
-├── docs/                          # VitePress文档
-└── scripts/                       # 构建脚本
+├── src/                      # React 前端源码
+│   ├── features/             # 功能模块（ai/audio/character/editor...）
+│   ├── components/          # 组件（ui/layout/business）
+│   ├── core/                # 核心（services/stores/config/hooks/types）
+│   └── pages/               # 页面
+├── src-tauri/               # Tauri 桌面端（Rust）
+├── public/                  # 静态资源
+├── docs/                    # VitePress 文档
+└── scripts/                 # 构建脚本
 ```
 
 ---
@@ -188,20 +161,10 @@ PlotCraft/
 
 ---
 
-## 支持这个项目
+如果你觉得 PlotCraft 有帮助，请给我们一个 ⭐
 
-如果你觉得 PlotCraft 有帮助，请给我们一个 ⭐！
-
-[![Star](https://img.shields.io/badge/点击Star⭐-f6c90e?style=flat-square&logo=star&logoColor=white)](https://github.com/Agions/PlotCraft/stargazers)
+[![Star](https://img.shields.io/badge/点击Star⭐-f6c90e?style=for-the-badge&logo=star&logoColor=white)](https://github.com/Agions/PlotCraft/stargazers)
 
 ---
-
-## 许可证
 
 MIT License · © 2026 Agions
-
-[![License](https://img.shields.io/badge/License-MIT-45B8AC?style=flat-square&logo=license&logoColor=white)](https://opensource.org/licenses/MIT)
-
----
-
-_💫 PlotCraft — 将你的故事转化为专业级视频内容_
