@@ -203,7 +203,7 @@ fn generate_thumbnail(path: String) -> Result<String, String> {
 #[command]
 fn check_app_data_directory(app_handle: tauri::AppHandle) -> Result<String, String> {
     let app_data_dir = app_handle.path().app_data_dir()
-        .ok_or("无法获取应用数据目录".into())?;
+        .map_err(|e| format!("无法获取应用数据目录: {}", e))?;
 
     let app_dir = app_data_dir.join("blazecut");
     
@@ -220,7 +220,7 @@ fn check_app_data_directory(app_handle: tauri::AppHandle) -> Result<String, Stri
 #[command]
 fn save_project_file(project_id: String, content: String, app_handle: tauri::AppHandle) -> Result<(), String> {
     let app_data_dir = app_handle.path().app_data_dir()
-        .ok_or("无法获取应用数据目录".into())?;
+        .map_err(|e| format!("无法获取应用数据目录: {}", e))?;
 
     let app_dir = app_data_dir.join("blazecut");
     
@@ -367,7 +367,6 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
             segment_path
         );
         
-        let _ = window.app_handle().emit("cut_progress", i as f64 / params.segments.len() as f64 * 0.6);
         
         println!("执行FFmpeg命令: {}", ffmpeg_command);
         let output = Command::new("sh")
@@ -387,7 +386,6 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
     
     if transition_type != "none" && segment_files.len() > 1 {
         let mut transition_files = Vec::new();
-        let _ = window.app_handle().emit("cut_progress", 0.7);
         
         for i in 0..segment_files.len() - 1 {
             let file1 = &segment_files[i];
@@ -469,7 +467,6 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
         params.output_path
     );
     
-    let _ = window.app_handle().emit("cut_progress", 0.9);
     
     println!("执行连接命令: {}", concat_command);
     let output = Command::new("sh")
@@ -484,7 +481,6 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
         return Err(format!("连接片段失败: {}", error));
     }
     
-    let _ = window.app_handle().emit("cut_progress", 1.0);
     
     for segment_path in segment_files {
         fs::remove_file(segment_path).unwrap_or_default();
@@ -593,7 +589,7 @@ fn clean_temp_file(params: CleanFileParams) -> Result<(), String> {
 #[command]
 fn list_app_data_files(directory: String, app_handle: tauri::AppHandle) -> Result<Vec<String>, String> {
     let app_data_dir = app_handle.path().app_data_dir()
-        .ok_or("无法获取应用数据目录".into())?;
+        .map_err(|e| format!("无法获取应用数据目录: {}", e))?;
 
     let target_dir = app_data_dir.join(directory);
     
@@ -627,7 +623,7 @@ fn list_app_data_files(directory: String, app_handle: tauri::AppHandle) -> Resul
 #[command]
 fn delete_project_file(project_id: String, app_handle: tauri::AppHandle) -> Result<(), String> {
     let app_data_dir = app_handle.path().app_data_dir()
-        .ok_or("无法获取应用数据目录".into())?;
+        .map_err(|e| format!("无法获取应用数据目录: {}", e))?;
 
     let file_path = app_data_dir.join("blazecut").join(format!("{}.json", project_id));
     
