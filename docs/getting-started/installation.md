@@ -19,50 +19,122 @@ PlotCraft 的详细安装说明。
 
 ### 方法一：Web 开发（推荐）
 
+**macOS/Linux：**
+
 ```bash
-# 克隆仓库
+# 1. 克隆仓库
 git clone https://github.com/Agions/PlotCraft.git
 cd PlotCraft
 
-# 安装依赖
+# 2. 安装 Node.js（推荐使用 nvm）
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 20
+nvm use 20
+
+# 3. 安装依赖
 npm install
 
-# 启动开发服务器
+# 4. 启动开发服务器
+npm run dev
+```
+
+**Windows：**
+
+```powershell
+# 1. 安装 Node.js（使用 winget）
+winget install OpenJS.NodeJS
+
+# 2. 克隆仓库
+git clone https://github.com/Agions/PlotCraft.git
+cd PlotCraft
+
+# 3. 安装依赖
+npm install
+
+# 4. 启动开发服务器
 npm run dev
 ```
 
 应用运行在 `http://localhost:5173`。
 
+---
+
 ### 方法二：桌面应用（Tauri 2.0）
 
 #### 前置条件
 
-**macOS/Linux：**
+**macOS：**
 
 ```bash
-# 安装 Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# 1. 安装 Homebrew（如果没有）
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# macOS 额外依赖
-brew installwebkit2gtk python3 gtkmm3 libsoup3
+# 2. 使用 Homebrew 安装 Rust 编译依赖
+brew install rust cmake protobuf llvm
+
+# 3. 安装 GTK 和 WebKit 依赖
+brew installwebkit2gtk python3 gtkmm3 libsoup3 adwaita-icon-theme at-spi2-core
+
+# 4. 安装 Rust
+brew install rustup-init && rustup-init
+source ~/.zshrc  # 或 source ~/.bashrc
+```
+
+**Linux（Ubuntu/Debian）：**
+
+```bash
+# 1. 安装系统依赖
+sudo apt update && sudo apt install -y \
+  rustc \
+  cargo \
+  cmake \
+  ninja-build \
+  libgtk-3-dev \
+  libwebkitgtk-6.0-dev \
+  libayatana-appindicator3-dev \
+  librsvg2-dev \
+  patchelf \
+  python3
+
+# 2. 验证安装
+rustc --version
+cargo --version
 ```
 
 **Windows：**
 
-- 安装 [Rust](https://rustup.rs/)
-- 安装 [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+```powershell
+# 1. 安装 Rust
+# 下载 rustup-init.exe 并运行
+# https://rustup.rs/
+
+# 2. 安装 Visual Studio Build Tools
+# 下载并安装 Visual Studio Build Tools 2022
+# 勾选 "C++ 桌面开发" 工作负载
+
+# 3. 验证安装
+rustc --version
+cargo --version
+```
 
 #### 构建桌面应用
 
 ```bash
-# 安装依赖
+# 1. 克隆仓库（如果还没有）
+git clone https://github.com/Agions/PlotCraft.git
+cd PlotCraft
+
+# 2. 安装前端依赖
 npm install
 
-# 构建 Tauri 应用
+# 3. 构建 Tauri 应用
 npm run tauri build
 ```
 
-构建输出位于 `src-tauri/target/release/bundle/`
+构建输出位于：
+- **macOS**：`src-tauri/target/release/bundle/dmg/`
+- **Linux**：`src-tauri/target/release/bundle/appimage/`
+- **Windows**：`src-tauri/target/release/bundle/msi/`
 
 ## 依赖
 
@@ -92,15 +164,20 @@ npm run tauri build
 
 ```bash
 # 查找并终止占用 5173 端口的进程
+# macOS/Linux
 lsof -i :5173
 kill -9 <PID>
+
+# Windows
+netstat -ano | findstr :5173
+taskkill /PID <PID> /F
 ```
 
 ### TypeScript 错误
 
 ```bash
 # 清除缓存并重新安装
-rm -rf node_modules
+rm -rf node_modules package-lock.json
 npm install
 ```
 
@@ -113,6 +190,27 @@ rustup update
 # 验证 Rust 安装
 rustc --version
 cargo --version
+
+# 重新安装 Tauri CLI
+cargo install tauri-cli
+
+# 清理构建缓存
+cargo clean
+npm run tauri build
+```
+
+### macOS 构建提示 "Safari 无法打开"
+
+这是因为未正确安装 WebKit 依赖。运行：
+
+```bash
+brew installwebkit2gtk python3 gtkmm3 libsoup3
+```
+
+### Linux 构建提示缺少 libgtk
+
+```bash
+sudo apt install libgtk-3-dev
 ```
 
 ## 下一步
