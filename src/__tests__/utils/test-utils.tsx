@@ -3,11 +3,13 @@
  * 提供常用的测试辅助函数
  */
 
-import type { ReactElement, ReactNode } from 'react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@/context/ThemeContext';
+import type { ReactElement, ReactNode } from 'react';
 import { act } from 'react-dom/test-utils';
+import { BrowserRouter } from 'react-router-dom';
+
+import { ThemeProvider } from '@/context/ThemeContext';
+
 
 /**
  * 包装测试组件的 HOC
@@ -171,7 +173,7 @@ export const createIdGenerator = () => {
  * 模拟 Tauri API
  */
 export const mockTauriApi = (): void => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   (window as any).__TAURI__ = {
     invoke: jest.fn(),
     event: {

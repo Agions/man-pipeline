@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import { Card, Space, Typography, Spin } from 'antd';
+import React, { useState } from 'react';
+
 import NovelImporter from './NovelImporter';
 import ScriptGenerator from './ScriptGenerator';
 import styles from './ScriptGeneratorView.module.less';

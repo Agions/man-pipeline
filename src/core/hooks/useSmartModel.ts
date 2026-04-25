@@ -4,9 +4,10 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
-import { costService } from '@/core/services/cost.service';
+
 import { OPTIMIZATION_CONFIG } from '@/core/config/optimization.config';
 import { aiService, AIResponse } from '@/core/services/ai.service';
+import { costService } from '@/core/services/cost.service';
 
 // 任务类型
 export type TaskType = 'simple' | 'standard' | 'complex' | 'creative';

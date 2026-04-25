@@ -3,7 +3,19 @@
  * 提供字幕文本编辑、样式配置、预览等功能
  */
 
-import React, { useState, useEffect } from 'react';
+import {
+  FontSizeOutlined,
+  BgColorsOutlined,
+  AlignLeftOutlined,
+  AlignCenterOutlined,
+  AlignRightOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  CopyOutlined,
+  DownOutlined,
+  UpOutlined,
+} from '@ant-design/icons';
 import {
   Card,
   Input,
@@ -19,20 +31,10 @@ import {
   Divider,
   message,
 } from 'antd';
-import {
-  FontSizeOutlined,
-  BgColorsOutlined,
-  AlignLeftOutlined,
-  AlignCenterOutlined,
-  AlignRightOutlined,
-  PlusOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  CopyOutlined,
-  DownOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from '@/context/ThemeContext';
+
 import styles from './SubtitleEditor.module.less';
 
 const { Title, Text, Paragraph } = Typography;

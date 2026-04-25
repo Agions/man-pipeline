@@ -1,5 +1,5 @@
-import { CompositionStep, createCompositionStep, type CompositionOutput } from '../../core/pipeline/step-composition';
 import { PipelineStepId, StepStatus } from '../../core/pipeline/pipeline.types';
+import { CompositionStep, createCompositionStep, type CompositionOutput } from '../../core/pipeline/step-composition';
 
 // Mock the video compositor service at module level
 jest.mock('../../core/services/video-compositor.service', () => ({

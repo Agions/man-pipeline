@@ -1,6 +1,6 @@
-import { generateCharacterCards } from '../../../features/manga-pipeline/steps/step1-script-generation/script-writer/character-card-generator';
 import { CharacterGraph } from '../../../features/manga-pipeline/steps/step1-script-generation/analyzer/character-graph';
 import { StoryEvent } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/event-extractor';
+import { generateCharacterCards } from '../../../features/manga-pipeline/steps/step1-script-generation/script-writer/character-card-generator';
 
 describe('CharacterCardGenerator', () => {
   it('should generate cards for all characters in graph', () => {

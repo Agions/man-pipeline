@@ -1,6 +1,6 @@
+import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
 import { generateDialogueTTS, DialogueSegment, TTSGenerationResult } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/dialogue-tts-generator';
 import { VoiceAssignment } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/voice-assigner';
-import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
 
 describe('dialogue-tts-generator', () => {
   const createMockVoiceAssignments = (): VoiceAssignment[] => [

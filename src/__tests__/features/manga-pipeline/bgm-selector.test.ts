@@ -1,5 +1,5 @@
-import { selectBGM, BGM_STYLES, BGMSelection, BGMTrack } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/bgm-selector';
 import { ScriptScene } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
+import { selectBGM, BGM_STYLES, BGMSelection, BGMTrack } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/bgm-selector';
 
 describe('bgm-selector', () => {
   const createMockScenes = (): ScriptScene[] => [

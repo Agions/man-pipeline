@@ -1,5 +1,5 @@
-import { composeStoryboard, Storyboard, StoryboardScene, StoryboardOptions } from '../../../features/manga-pipeline/steps/step2-storyboard/storyboard-composer';
 import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
+import { composeStoryboard, Storyboard, StoryboardScene, StoryboardOptions } from '../../../features/manga-pipeline/steps/step2-storyboard/storyboard-composer';
 
 const mockScript: Script = {
   id: 'script-001',

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Card, Radio, Button, Input, Space, message, Tooltip } from 'antd';
 import { ExportOutlined, FileTextOutlined, FilePdfOutlined, GlobalOutlined } from '@ant-design/icons';
+import { Card, Radio, Button, Input, Space, message, Tooltip } from 'antd';
+import React, { useState } from 'react';
+
 import { tauriService } from '@/core/services';
 import type { ScriptData } from '@/core/types';
-import styles from './ExportPanel.module.less';
 import { logger } from '@/core/utils/logger';
+
+import styles from './ExportPanel.module.less';
 
 // 导出脚本到文件
 const exportScript = async (script: ScriptData, format: 'txt' | 'srt', path: string) => {

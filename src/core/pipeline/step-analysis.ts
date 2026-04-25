@@ -4,8 +4,9 @@
  * 识别章节结构、角色、场景
  */
 
-import { logger } from '@/core/utils/logger';
 import { novelAnalyzer } from '@/core/services/novel-analyze.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -13,8 +14,7 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 import type { ImportOutput } from './step-import';
 
 export class AnalysisStep implements PipelineStep {

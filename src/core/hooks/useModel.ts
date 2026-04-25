@@ -4,9 +4,10 @@
  */
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useAppStore } from '@/shared/stores';
+
 import { AI_MODELS, MODEL_PROVIDERS, getModelById, getModelsByProvider, getRecommendedModels } from '@/core/config/models.config';
 import type { AIModel, ModelProvider, ModelCategory, AIModelSettings } from '@/core/types';
+import { useAppStore } from '@/shared/stores';
 
 export interface UseModelReturn {
   // 模型列表

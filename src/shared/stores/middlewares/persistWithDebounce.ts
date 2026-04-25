@@ -4,6 +4,7 @@
  */
 
 import { StateStorage } from 'zustand/middleware';
+
 import { logger } from '@/core/utils/logger';
 
 /**
@@ -17,7 +18,7 @@ export const createDebouncedStorage = (
   delay: number = 1000
 ): StateStorage => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  let pendingWrites: Map<string, string> = new Map();
+  const pendingWrites: Map<string, string> = new Map();
 
   const flushWrites = () => {
     if (timeoutId) {
@@ -80,7 +81,7 @@ export const createIncrementalStorage = (
   delay: number = 500
 ): StateStorage => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  let pendingUpdates: Map<string, Record<string, unknown>> = new Map();
+  const pendingUpdates: Map<string, Record<string, unknown>> = new Map();
 
   const flushUpdates = () => {
     if (timeoutId) {

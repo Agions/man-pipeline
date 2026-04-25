@@ -5,6 +5,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
 import type { VideoInfo, VideoAnalysis, TaskStatus } from '@/core/types';
 
 export interface UseVideoReturn {
@@ -46,8 +47,8 @@ const getVideoInfo = (file: File): Promise<VideoInfo> => {
     const url = URL.createObjectURL(file);
     
     video.onloadedmetadata = () => {
-      URL.revokeObjectURL(url);
-      
+      // Don't revoke the URL here — it is returned as VideoInfo.path and must remain valid
+      // for the caller to use. Revoke only on error or when the caller is done.
       const info: VideoInfo = {
         id: uuidv4(),
         path: url,

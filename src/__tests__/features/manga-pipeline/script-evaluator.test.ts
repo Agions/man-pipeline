@@ -1,6 +1,6 @@
 import { evaluateScript } from '../../../features/manga-pipeline/steps/step1-script-generation/evaluator/script-evaluator';
-import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
 import { CharacterCard } from '../../../features/manga-pipeline/steps/step1-script-generation/types/character';
+import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
 
 describe('ScriptEvaluator', () => {
   it('should evaluate script and return results', () => {

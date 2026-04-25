@@ -5,6 +5,7 @@
 
 import { getCurrentWindow, LogicalSize, LogicalPosition } from '@tauri-apps/api/window';
 import { sendNotification, isPermissionGranted, requestPermission } from '@tauri-apps/plugin-notification';
+
 import { logger } from '@/core/utils/logger';
 
 // 快捷键定义

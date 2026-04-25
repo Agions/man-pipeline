@@ -1,6 +1,6 @@
 import { detectConflicts } from '../../../features/manga-pipeline/steps/step1-script-generation/analyzer/conflict-detector';
-import { StoryEvent } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/event-extractor';
 import { NarrativeStructure } from '../../../features/manga-pipeline/steps/step1-script-generation/analyzer/narrative-structure';
+import { StoryEvent } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/event-extractor';
 
 describe('ConflictDetector', () => {
   it('should detect interpersonal conflict', () => {

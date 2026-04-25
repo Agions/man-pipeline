@@ -1,5 +1,5 @@
-import { assignVoices, VOICE_PRESETS, VoiceAssignment } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/voice-assigner';
 import { CharacterCard } from '../../../features/manga-pipeline/steps/step1-script-generation/types/character';
+import { assignVoices, VOICE_PRESETS, VoiceAssignment } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/services/voice-assigner';
 
 describe('voice-assigner', () => {
   describe('assignVoices', () => {

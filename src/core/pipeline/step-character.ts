@@ -4,8 +4,9 @@
  * 角色一致固化、参考图生成
  */
 
-import { logger } from '@/core/utils/logger';
 import { getCharacterService } from '@/core/services/character.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -13,9 +14,8 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 import type { ImportOutput } from './step-import';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
 
 export interface CharacterOutput {
   characters: Array<{

@@ -1,5 +1,3 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Card, Tabs, Button, Upload, Slider, Switch, Select, Space, Table, Tag, message, Popconfirm, Input, Row, Col, Tooltip, Progress, Empty } from 'antd';
 import {
   UploadOutlined,
   DeleteOutlined,
@@ -15,10 +13,15 @@ import {
   StepBackwardOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
-import { open } from '@tauri-apps/plugin-dialog';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import styles from './AudioEditor.module.less';
+import { open } from '@tauri-apps/plugin-dialog';
+import { Card, Tabs, Button, Upload, Slider, Switch, Select, Space, Table, Tag, message, Popconfirm, Input, Row, Col, Tooltip, Progress, Empty } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+
+
 import { logger } from '@/core/utils/logger';
+
+import styles from './AudioEditor.module.less';
 
 // ========== 类型定义 ==========
 
@@ -182,6 +185,12 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         audio.pause();
         audio.src = '';
       });
+      // Revoke blob URLs for all voice tracks on unmount to prevent memory leaks
+      voiceTracks.forEach(track => {
+        if (track.fileUrl?.startsWith('blob:')) {
+          URL.revokeObjectURL(track.fileUrl);
+        }
+      });
     };
   }, []);
 
@@ -239,6 +248,11 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
   };
 
   const handleVoiceRemove = (id: string) => {
+    const track = voiceTracks.find(t => t.id === id);
+    // Revoke blob URL to prevent memory leak
+    if (track?.fileUrl?.startsWith('blob:')) {
+      URL.revokeObjectURL(track.fileUrl);
+    }
     setVoiceTracks(voiceTracks.filter(track => track.id !== id));
     message.success('配音已移除');
   };

@@ -4,8 +4,10 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { ProjectData, ScriptData, VideoInfo, ExportRecord } from '@/core/types';
+
 import { storageService } from '@/core/services';
+import type { ProjectData, ScriptData, VideoInfo, ExportRecord } from '@/core/types';
+
 import { createDebouncedStorage } from './middlewares/persistWithDebounce';
 
 export interface ProjectState {

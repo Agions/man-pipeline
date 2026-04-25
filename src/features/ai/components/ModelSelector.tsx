@@ -3,8 +3,15 @@
  * 专业的 AI 模型选择界面
  */
 
-import React, { useState, useMemo } from 'react';
-import { MODEL_PROVIDERS } from '@/core/config/models.config';
+import {
+  CheckCircleFilled,
+  RobotOutlined,
+  LoadingOutlined,
+  ThunderboltOutlined,
+  StarOutlined,
+  DollarOutlined,
+  SettingOutlined
+} from '@ant-design/icons';
 import {
   Card,
   Space,
@@ -23,19 +30,14 @@ import {
   Col,
   Avatar
 } from 'antd';
-import {
-  CheckCircleFilled,
-  RobotOutlined,
-  LoadingOutlined,
-  ThunderboltOutlined,
-  StarOutlined,
-  DollarOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useModel, useModelCost, useRecommendedModel } from '@/core/hooks/useModel';
+import React, { useState, useMemo } from 'react';
+
+import { MODEL_PROVIDERS } from '@/core/config/models.config';
 import { LLM_MODELS } from '@/core/constants';
+import { useModel, useModelCost, useRecommendedModel } from '@/core/hooks/useModel';
 import type { ModelCategory, ModelProvider } from '@/core/types';
+
 import styles from './ModelSelector.module.less';
 
 const { Title, Text, Paragraph } = Typography;
@@ -98,7 +100,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [testing, setTesting] = useState(false);
 
   // 转换 LLM_MODELS 为组件格式 - 使用类型断言绕过复杂类型推断
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const allModels = useMemo(() => {
     const models = Object.values(LLM_MODELS) as any[];
     return models.map((m: any) => ({

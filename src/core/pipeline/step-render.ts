@@ -4,8 +4,9 @@
  * 批量生成分镜图，支持断点续跑
  */
 
-import { logger } from '@/core/utils/logger';
 import { imageGenerationService } from '@/core/services/image-generation.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -14,8 +15,7 @@ import type {
   RetryPolicy,
   StepCheckpoint,
 } from './pipeline.types';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 import type { StoryboardOutput } from './step-storyboard';
 
 export interface RenderOutput {

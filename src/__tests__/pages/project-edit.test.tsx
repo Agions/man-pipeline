@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import React, { useEffect } from 'react';
+
 import ProjectEdit from '@/pages/ProjectEdit';
 
 const mockNavigate = jest.fn();

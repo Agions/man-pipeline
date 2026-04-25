@@ -3,11 +3,12 @@
  * Consolidated utilities from src/utils and src/core/utils
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { Variants, Easing } from 'framer-motion';
-import * as fs from '@tauri-apps/plugin-fs';
 import { open } from '@tauri-apps/plugin-dialog';
+import * as fs from '@tauri-apps/plugin-fs';
+import { Variants, Easing } from 'framer-motion';
 import { jsPDF } from 'jspdf';
+import { useState, useEffect, useCallback } from 'react';
+
 import 'jspdf-autotable';
 import { logger } from '@/core/utils/logger';
 

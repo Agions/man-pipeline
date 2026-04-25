@@ -1,6 +1,3 @@
-import React from 'react';
-import { useState, useRef, useEffect } from 'react';
-import { Slider, Button, Tooltip } from 'antd';
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -8,6 +5,9 @@ import {
   FullscreenOutlined,
   FullscreenExitOutlined,
 } from '@ant-design/icons';
+import { Slider, Button, Tooltip } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+
 import styles from './VideoPlayer.module.less';
 
 interface VideoPlayerProps {

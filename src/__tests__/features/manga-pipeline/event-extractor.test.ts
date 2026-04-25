@@ -1,5 +1,5 @@
-import { extractEvents } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/event-extractor';
 import { Chapter } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/chapter-splitter';
+import { extractEvents } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/event-extractor';
 import { ClassifiedParagraph } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/paragraph-classifier';
 
 describe('EventExtractor', () => {

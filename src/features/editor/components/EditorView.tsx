@@ -1,5 +1,6 @@
-import React from 'react';
 import { Layout, Space } from 'antd';
+import React from 'react';
+
 import AIAssistant from './editor/AIAssistant';
 import AIFeaturePanel from './editor/AIFeaturePanel';
 import AssetPanel from './editor/AssetPanel';

@@ -3,8 +3,6 @@
  * 提供播放控制、时间显示、音量调节、全屏等功能
  */
 
-import React from 'react';
-import { Slider, Button, Tooltip, Dropdown, Space } from 'antd';
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -18,6 +16,9 @@ import {
   CompressOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
+import { Slider, Button, Tooltip, Dropdown, Space } from 'antd';
+import React from 'react';
+
 import styles from './EnhancedVideoControls.module.less';
 
 const { ControlBar } = { ControlBar: 'div' };

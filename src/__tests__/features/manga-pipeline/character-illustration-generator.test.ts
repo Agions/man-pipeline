@@ -1,5 +1,5 @@
-import { generateCharacterIllustration, CharacterIllustration } from '../../../features/manga-pipeline/steps/step2-storyboard/description/character-illustration-generator';
 import { CharacterCard } from '../../../features/manga-pipeline/steps/step1-script-generation/types/character';
+import { generateCharacterIllustration, CharacterIllustration } from '../../../features/manga-pipeline/steps/step2-storyboard/description/character-illustration-generator';
 
 const mockCharacter: CharacterCard = {
   id: 'char-001',

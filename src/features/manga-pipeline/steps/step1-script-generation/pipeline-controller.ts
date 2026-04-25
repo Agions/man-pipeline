@@ -1,9 +1,9 @@
 import { PipelineStep, StepInput, StepOutput } from '../../../../core/pipeline/step.interface';
-import { splitChapters, classifyParagraphs, extractEvents } from './parser';
+
 import { analyzeNarrativeStructure, buildCharacterGraph, detectConflicts } from './analyzer';
-import { generateCharacterCards } from './script-writer';
-import { generateScenes, integrateScript } from './script-writer';
 import { evaluateScript } from './evaluator';
+import { splitChapters, classifyParagraphs, extractEvents } from './parser';
+import { generateCharacterCards , generateScenes, integrateScript } from './script-writer';
 import { Script } from './types/script';
 
 export interface ScriptGenerationInput {

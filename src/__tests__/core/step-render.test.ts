@@ -1,5 +1,5 @@
-import { RenderStep, createRenderStep, type RenderOutput } from '../../core/pipeline/step-render';
 import { PipelineStepId, StepStatus } from '../../core/pipeline/pipeline.types';
+import { RenderStep, createRenderStep, type RenderOutput } from '../../core/pipeline/step-render';
 
 describe('RenderStep', () => {
   // Mock context

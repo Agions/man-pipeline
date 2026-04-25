@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { ScriptGenerationPipeline } from '../steps/step1-script-generation/pipeline-controller';
+
 import type { ScriptGenerationResult, Script } from '../steps/step1-script-generation';
+import { ScriptGenerationPipeline } from '../steps/step1-script-generation/pipeline-controller';
 
 interface Props {
   onScriptGenerated?: (script: Script) => void;

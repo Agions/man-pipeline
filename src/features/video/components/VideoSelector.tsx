@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Button, Upload, message, Space, Card, Spin } from 'antd';
 import { UploadOutlined, DeleteOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { invoke , convertFileSrc } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
-import { invoke } from '@tauri-apps/api/core';
-import { convertFileSrc } from '@tauri-apps/api/core';
+import { Button, Upload, message, Space, Card, Spin } from 'antd';
+import React, { useState } from 'react';
+
 import { tauriService } from '@/core/services';
-import { VideoMetadata } from '@/shared/types';
-import styles from './VideoSelector.module.less';
 import { logger } from '@/core/utils/logger';
+import { VideoMetadata } from '@/shared/types';
+
+import styles from './VideoSelector.module.less';
 
 // 格式化时长 mm:ss
 const formatDuration = (seconds: number): string => {

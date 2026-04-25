@@ -1,5 +1,5 @@
-import RenderQueueService from '@/core/services/render-queue.service';
 import { imageGenerationService } from '@/core/services/image-generation.service';
+import RenderQueueService from '@/core/services/render-queue.service';
 
 jest.mock('@/core/services/image-generation.service', () => ({
   imageGenerationService: {

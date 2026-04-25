@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Card, Button, Progress, message, Alert, Typography, Spin } from 'antd';
 import { VideoCameraOutlined } from '@ant-design/icons';
 import { invoke } from '@tauri-apps/api/core';
+import { Card, Button, Progress, message, Alert, Typography, Spin } from 'antd';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import VideoUploader from './VideoUploader';
-import type { VideoAnalysis, KeyMoment, EmotionAnalysis } from '@/types';
-import styles from './VideoAnalyzer.module.less';
+
 import { logger } from '@/core/utils/logger';
+import type { VideoAnalysis, KeyMoment, EmotionAnalysis } from '@/types';
+
+import styles from './VideoAnalyzer.module.less';
+import VideoUploader from './VideoUploader';
 
 const { Title, Paragraph } = Typography;
 

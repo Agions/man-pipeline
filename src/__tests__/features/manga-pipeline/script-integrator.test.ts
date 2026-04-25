@@ -1,6 +1,6 @@
 import { integrateScript } from '../../../features/manga-pipeline/steps/step1-script-generation/script-writer/script-integrator';
-import { Scene } from '../../../features/manga-pipeline/steps/step1-script-generation/types/scene';
 import { CharacterCard } from '../../../features/manga-pipeline/steps/step1-script-generation/types/character';
+import { Scene } from '../../../features/manga-pipeline/steps/step1-script-generation/types/scene';
 
 describe('ScriptIntegrator', () => {
   it('should integrate scenes into script', () => {

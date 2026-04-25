@@ -3,8 +3,8 @@
  * 提供基础的视频编辑状态管理
  */
 
-import { useState, useCallback, useRef } from 'react';
 import { message } from 'antd';
+import { useState, useCallback, useRef } from 'react';
 
 export interface TimelineClip {
   id: string;

@@ -1,5 +1,6 @@
-import React from 'react';
 import { Typography, Space } from 'antd';
+import React from 'react';
+
 import AudioEditor from './AudioEditor';
 import styles from './AudioEditorView.module.less';
 

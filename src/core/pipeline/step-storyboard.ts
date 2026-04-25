@@ -4,8 +4,9 @@
  * AI自动生成分镜图描述、镜头语言设计
  */
 
-import { logger } from '@/core/utils/logger';
 import { getStoryboardService } from '@/core/services/storyboard.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -13,8 +14,7 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 
 export interface StoryboardOutput {
   frames: Array<{

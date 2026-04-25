@@ -1,5 +1,5 @@
-import { generateSceneDescription, SceneDescription, STYLE_PRESETS, StylePreset } from '../../../features/manga-pipeline/steps/step2-storyboard/description/scene-description-generator';
 import { ScriptScene } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
+import { generateSceneDescription, SceneDescription, STYLE_PRESETS, StylePreset } from '../../../features/manga-pipeline/steps/step2-storyboard/description/scene-description-generator';
 
 const mockScene: ScriptScene = {
   id: 'scene-001',

@@ -6,6 +6,7 @@
 
 import { logger } from '@/core/utils/logger';
 import { videoCompositorService } from '@/features/video-export/services/video-compositor.service';
+
 import type {
   PipelineStep,
   StepInput,
@@ -13,8 +14,7 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 
 export interface CompositionOutput {
   videoUrl: string;

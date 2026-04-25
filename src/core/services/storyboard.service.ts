@@ -4,10 +4,12 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
+
+import { logger } from '@/core/utils/logger';
 import type { StoryboardFrame } from '@/shared/types';
+
 import { aiService } from './ai.service';
 import { imageGenerationService, type ImageGenerationOptions } from './image-generation.service';
-import { logger } from '@/core/utils/logger';
 
 // 存储键
 const STORYBOARD_STORAGE_KEY = 'plotcraft-storyboards';

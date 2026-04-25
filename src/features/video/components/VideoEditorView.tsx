@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Card, Space, Typography, Row, Col } from 'antd';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import VideoSelector from './VideoSelector';
-import VideoUploader from './VideoUploader';
+import { Card, Space, Typography, Row, Col } from 'antd';
+import React, { useState } from 'react';
+
 import VideoAnalyzer from './VideoAnalyzer';
+import styles from './VideoEditorView.module.less';
+import VideoExporter from './VideoExporter';
 import VideoInfo from './VideoInfo';
 import VideoPlayer from './VideoPlayer';
-import VideoExporter from './VideoExporter';
-import styles from './VideoEditorView.module.less';
+import VideoSelector from './VideoSelector';
+import VideoUploader from './VideoUploader';
 
 const { Title, Text } = Typography;
 

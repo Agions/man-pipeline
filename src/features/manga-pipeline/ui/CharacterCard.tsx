@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { CharacterCard } from '../steps/step1-script-generation';
 
 interface Props {

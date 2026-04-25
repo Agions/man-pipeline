@@ -1,5 +1,5 @@
-import { VoiceSynthesisPipeline, VoiceSynthesisResult } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/pipeline-controller';
 import { Script } from '../../../features/manga-pipeline/steps/step1-script-generation/types/script';
+import { VoiceSynthesisPipeline, VoiceSynthesisResult } from '../../../features/manga-pipeline/steps/step4-voice-synthesis/pipeline-controller';
 
 describe('voice-synthesis-pipeline', () => {
   const createMockScript = (): Script => ({

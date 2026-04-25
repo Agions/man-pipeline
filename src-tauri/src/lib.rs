@@ -6,6 +6,27 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::collections::HashMap;
 use std::sync::Mutex;
+use std::path::{Path, PathBuf};
+
+/// Execute ffmpeg directly without shell to prevent command injection.
+/// Each arg is passed as a separate argument — no shell interpretation.
+fn run_ffmpeg(args: &[&str]) -> Result<(), String> {
+    let output = Command::new("ffmpeg")
+        .args(args)
+        .output()
+        .map_err(|e| format!("执行FFmpeg命令失败: {}", e))?;
+    if !output.status.success() {
+        let err = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("FFmpeg错误: {}", err));
+    }
+    Ok(())
+}
+
+/// Split a space-separated flag+value string into individual args for ffmpeg.
+/// Only handles simple whitespace splitting — no shell variable/quote interpretation.
+fn split_ffmpeg_args(s: &str) -> Vec<&str> {
+    s.split_whitespace().collect()
+}
 
 // 视频元数据
 #[derive(Serialize, Deserialize, Debug)]
@@ -304,36 +325,22 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
             video_filters.push_str(&format!("subtitles='{}'", subtitle_path));
         }
 
-        let filter_param = if !video_filters.is_empty() {
-            format!("-vf \"{}\"", video_filters)
-        } else {
-            String::new()
-        };
-
-        let ffmpeg_command = format!(
-            "ffmpeg -y -ss {} -i \"{}\" -t {} {} -c:v {} {} -c:a aac -strict experimental \"{}\"",
-            segment.start,
-            params.input_path,
-            duration,
-            video_params,
-            filter_param,
-            video_codec,
-            segment_path
-        );
-
-
-        info!("执行FFmpeg命令: {}", ffmpeg_command);
-        let output = Command::new("sh")
-            .arg("-c")
-            .arg(&ffmpeg_command)
-            .output()
-            .map_err(|e| format!("执行FFmpeg命令失败: {}", e))?;
-
-        if !output.status.success() {
-            let err = String::from_utf8_lossy(&output.stderr);
-            error!("FFmpeg错误: {}", err);
-            return Err(format!("剪辑片段失败: {}", err));
+        let mut ffmpeg_args = vec![
+            "-y",
+            "-ss", &segment.start.to_string(),
+            "-i", &params.input_path,
+            "-t", &duration.to_string(),
+        ];
+        // video_params is server-controlled (format/quality match arms) — split safely
+        ffmpeg_args.extend(split_ffmpeg_args(&video_params));
+        ffmpeg_args.extend(["-c:v", &video_codec]);
+        if !video_filters.is_empty() {
+            ffmpeg_args.extend(["-vf", &video_filters]);
         }
+        ffmpeg_args.extend(["-c:a", "aac", "-strict", "experimental", &segment_path]);
+
+        info!("执行FFmpeg命令: {:?}", ffmpeg_args);
+        run_ffmpeg(&ffmpeg_args)?;
 
         segment_files.push(segment_path);
     }
@@ -348,50 +355,35 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
             let transition_file = temp_dir.join(format!("transition_{}_{}.{}", i, i+1, format));
             let transition_path = transition_file.to_string_lossy().to_string();
 
-            let transition_command = match transition_type.as_str() {
+            let filter_complex = match transition_type.as_str() {
                 "fade" => format!(
-                    "ffmpeg -y -i \"{}\" -i \"{}\" -filter_complex \"[0:v]format=pix_fmts=yuva420p,fade=t=out:st={}:d={}:alpha=1[fv1];[1:v]format=pix_fmts=yuva420p,fade=t=in:st=0:d={}:alpha=1[fv2];[fv1][fv2]overlay=format=yuv420[outv]\" -map \"[outv]\" \"{}\"",
-                    file1, file2,
-                    transition_duration, transition_duration, transition_duration,
-                    transition_path
+                    "[0:v]format=pix_fmts=yuva420p,fade=t=out:st={}:d={}:alpha=1[fv1];[1:v]format=pix_fmts=yuva420p,fade=t=in:st=0:d={}:alpha=1[fv2];[fv1][fv2]overlay=format=yuv420[outv]",
+                    transition_duration, transition_duration, transition_duration
                 ),
                 "dissolve" => format!(
-                    "ffmpeg -y -i \"{}\" -i \"{}\" -filter_complex \"[0:v][1:v]xfade=transition=fade:duration={}:offset={}[outv]\" -map \"[outv]\" \"{}\"",
-                    file1, file2,
-                    transition_duration, 5.0,
-                    transition_path
+                    "[0:v][1:v]xfade=transition=fade:duration={}:offset={}[outv]",
+                    transition_duration, 5.0
                 ),
                 "wipe" => format!(
-                    "ffmpeg -y -i \"{}\" -i \"{}\" -filter_complex \"[0:v][1:v]xfade=transition=wiperight:duration={}:offset={}[outv]\" -map \"[outv]\" \"{}\"",
-                    file1, file2,
-                    transition_duration, 5.0,
-                    transition_path
+                    "[0:v][1:v]xfade=transition=wiperight:duration={}:offset={}[outv]",
+                    transition_duration, 5.0
                 ),
                 "slide" => format!(
-                    "ffmpeg -y -i \"{}\" -i \"{}\" -filter_complex \"[0:v][1:v]xfade=transition=slideleft:duration={}:offset={}[outv]\" -map \"[outv]\" \"{}\"",
-                    file1, file2,
-                    transition_duration, 5.0,
-                    transition_path
+                    "[0:v][1:v]xfade=transition=slideleft:duration={}:offset={}[outv]",
+                    transition_duration, 5.0
                 ),
                 _ => format!(
-                    "ffmpeg -y -i \"{}\" -i \"{}\" -filter_complex \"[0:v][1:v]concat=n=2:v=1:a=0[outv]\" -map \"[outv]\" \"{}\"",
-                    file1, file2,
-                    transition_path
+                    "[0:v][1:v]concat=n=2:v=1:a=0[outv]"
                 ),
             };
 
-            info!("执行转场命令: {}", transition_command);
-            let output = Command::new("sh")
-                .arg("-c")
-                .arg(&transition_command)
-                .output()
-                .map_err(|e| format!("执行FFmpeg转场命令失败: {}", e))?;
-
-            if !output.status.success() {
-                let err = String::from_utf8_lossy(&output.stderr);
-                error!("FFmpeg错误: {}", err);
-                return Err(format!("创建转场失败: {}", err));
-            }
+            info!("执行转场命令: {:?}", (file1, file2, &filter_complex, &transition_path));
+            run_ffmpeg(&[
+                "-y", "-i", file1, "-i", file2,
+                "-filter_complex", &filter_complex,
+                "-map", "[outv]",
+                &transition_path,
+            ])?;
 
             transition_files.push(transition_path);
         }
@@ -413,28 +405,20 @@ async fn cut_video(params: CutVideoParams, window: tauri::Window) -> Result<Stri
     } else {
         ("libx264", "aac")
     };
+    let list_file_str = list_file.to_string_lossy().to_string();
+    let output_path_str = params.output_path.to_string();
 
-    let concat_command = format!(
-        "ffmpeg -y -f concat -safe 0 -i \"{}\" -c:v {} -c:a {} -strict -2 \"{}\"",
-        list_file.to_string_lossy(),
-        output_video_codec,
-        output_audio_codec,
-        params.output_path
-    );
-
-
-    info!("执行连接命令: {}", concat_command);
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg(&concat_command)
-        .output()
-        .map_err(|e| format!("执行FFmpeg连接命令失败: {}", e))?;
-
-    if !output.status.success() {
-        let err = String::from_utf8_lossy(&output.stderr);
-        error!("FFmpeg错误: {}", err);
-        return Err(format!("连接片段失败: {}", err));
-    }
+    info!("执行连接命令: list_file={}, output={}", list_file_str, output_path_str);
+    run_ffmpeg(&[
+        "-y",
+        "-f", "concat",
+        "-safe", "0",
+        "-i", &list_file_str,
+        "-c:v", output_video_codec,
+        "-c:a", output_audio_codec,
+        "-strict", "-2",
+        &output_path_str,
+    ])?;
 
 
     for segment_path in segment_files {
@@ -501,28 +485,21 @@ async fn generate_preview(params: PreviewParams) -> Result<String, String> {
     };
 
     let video_filters = format!("scale=1280:720{}{}", volume_filter, subtitle_filter);
+    let preview_path_str = preview_path.to_string();
 
-    let ffmpeg_command = format!(
-        "ffmpeg -y -ss {} -i \"{}\" -t {} -vf \"{}\" -c:v libx264 -c:a aac -strict experimental \"{}\"",
-        params.segment.start,
-        params.input_path,
-        duration,
-        video_filters,
-        preview_path
-    );
-
-    info!("执行预览命令: {}", ffmpeg_command);
-    let output = Command::new("sh")
-        .arg("-c")
-        .arg(&ffmpeg_command)
-        .output()
-        .map_err(|e| format!("执行FFmpeg命令失败: {}", e))?;
-
-    if !output.status.success() {
-        let err = String::from_utf8_lossy(&output.stderr);
-        error!("FFmpeg错误: {}", err);
-        return Err(format!("生成预览失败: {}", err));
-    }
+    info!("执行预览命令: start={}, input={}, duration={}, filters={}",
+          params.segment.start, params.input_path, duration, video_filters);
+    run_ffmpeg(&[
+        "-y",
+        "-ss", &params.segment.start.to_string(),
+        "-i", &params.input_path,
+        "-t", &duration.to_string(),
+        "-vf", &video_filters,
+        "-c:v", "libx264",
+        "-c:a", "aac",
+        "-strict", "experimental",
+        &preview_path_str,
+    ])?;
 
     Ok(preview_path)
 }
@@ -532,13 +509,39 @@ async fn generate_preview(params: PreviewParams) -> Result<String, String> {
 fn clean_temp_file(params: CleanFileParams) -> Result<(), String> {
     info!("清理临时文件: {}", params.path);
 
-    if !params.path.contains("temp") && !params.path.contains("mangaai") {
+    // Validate path is within an allowed temp directory using canonical paths
+    let allowed_dirs = [
+        std::env::temp_dir().join("mangaai"),
+        std::env::temp_dir().join("mangaai_keyframes"),
+        std::env::temp_dir().join("mangaai_thumbnails"),
+        std::env::temp_dir().join("mangaai_temp"),
+        std::env::temp_dir().join("mangaai_preview"),
+    ];
+
+    let file_path = PathBuf::from(&params.path);
+
+    // Canonicalize the target path to resolve any symlinks/.. components
+    let canonical_path = file_path.canonicalize().map_err(|e| {
+        error!("路径规范化失败: {}", e);
+        format!("路径无效: {}", e)
+    })?;
+
+    // Ensure the canonical path is under one of the allowed directories
+    let is_allowed = allowed_dirs.iter().any(|allowed| {
+        let canonical_allowed = allowed.canonicalize().unwrap_or_else(|_| allowed.clone());
+        canonical_path.starts_with(&canonical_allowed)
+    });
+
+    if !is_allowed {
+        error!("拒绝清理非临时目录文件: {}", canonical_path.display());
         return Err("无效的临时文件路径".into());
     }
 
-    if let Err(e) = fs::remove_file(&params.path) {
-        error!("删除文件失败: {}", e);
-        return Err(format!("清理临时文件失败: {}", e));
+    if canonical_path.is_file() {
+        if let Err(e) = fs::remove_file(&canonical_path) {
+            error!("删除文件失败: {}", e);
+            return Err(format!("清理临时文件失败: {}", e));
+        }
     }
 
     Ok(())

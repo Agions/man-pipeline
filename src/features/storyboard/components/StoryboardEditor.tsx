@@ -1,4 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  LeftOutlined,
+  RightOutlined,
+  PictureOutlined,
+  VideoCameraOutlined,
+  ScissorOutlined,
+  AimOutlined,
+  SwapOutlined,
+} from '@ant-design/icons';
 import {
   Card,
   Button,
@@ -13,17 +23,8 @@ import {
   Tag,
   Tooltip,
 } from 'antd';
-import {
-  PlusOutlined,
-  DeleteOutlined,
-  LeftOutlined,
-  RightOutlined,
-  PictureOutlined,
-  VideoCameraOutlined,
-  ScissorOutlined,
-  AimOutlined,
-  SwapOutlined,
-} from '@ant-design/icons';
+import React, { useState, useCallback, useEffect } from 'react';
+
 import styles from './StoryboardEditor.module.less';
 
 const { Title, Text } = Typography;

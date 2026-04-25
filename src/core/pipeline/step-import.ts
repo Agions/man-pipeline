@@ -5,8 +5,9 @@
  * 自动识别编码、智能章节切分
  */
 
-import { logger } from '@/core/utils/logger';
 import { novelService } from '@/core/services/novel.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,

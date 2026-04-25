@@ -1,5 +1,5 @@
-import { PipelineStep, StepInput, StepOutput, PipelineOptions } from './step.interface';
 import { PipelineStatus, PipelineStepId, StepStatus, type PipelineExecutionState, PipelineContext } from './pipeline.types';
+import { PipelineStep, StepInput, StepOutput, PipelineOptions } from './step.interface';
 
 export type { PipelineStep };
 

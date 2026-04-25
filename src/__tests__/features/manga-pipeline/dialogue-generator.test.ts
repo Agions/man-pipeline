@@ -1,6 +1,6 @@
+import { ClassifiedParagraph } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/paragraph-classifier';
 import { generateDialogue } from '../../../features/manga-pipeline/steps/step1-script-generation/script-writer/dialogue-generator';
 import { Scene } from '../../../features/manga-pipeline/steps/step1-script-generation/types/scene';
-import { ClassifiedParagraph } from '../../../features/manga-pipeline/steps/step1-script-generation/parser/paragraph-classifier';
 
 describe('DialogueGenerator', () => {
   it('should extract dialogue from paragraphs', () => {

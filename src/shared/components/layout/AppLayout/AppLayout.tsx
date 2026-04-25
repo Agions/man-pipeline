@@ -1,6 +1,7 @@
 import React from 'react';
-import { AppLayoutProps } from './types';
+
 import styles from './AppLayout.module.less';
+import { AppLayoutProps } from './types';
 
 const AppLayout: React.FC<AppLayoutProps> = ({
   children,

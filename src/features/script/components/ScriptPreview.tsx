@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { Card, Typography, Divider, Button, Tag, message, Tooltip, Space } from 'antd';
 import { 
   FilePdfOutlined, 
   CopyOutlined, 
@@ -8,9 +6,13 @@ import {
   OrderedListOutlined,
   CalendarOutlined
 } from '@ant-design/icons';
-import type { Script } from '@/types';
-import styles from './ScriptPreview.module.less';
+import { Card, Typography, Divider, Button, Tag, message, Tooltip, Space } from 'antd';
+import React, { useState } from 'react';
+
 import { logger } from '@/core/utils/logger';
+import type { Script } from '@/types';
+
+import styles from './ScriptPreview.module.less';
 
 const { Title, Paragraph, Text } = Typography;
 

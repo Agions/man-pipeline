@@ -4,6 +4,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
 import type { AIModel } from '@/core/types';
 
 export interface AppState {
@@ -39,6 +40,9 @@ export interface AppState {
   removeNotification: (id: string) => void;
   clearAllNotifications: () => void;
 }
+
+// Track notification auto-dismiss timers outside the store to avoid serialization issues
+const notificationTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -84,18 +88,36 @@ export const useAppStore = create<AppState>()(
           ]
         }));
 
-        // 自动移除
+        // 自动移除 — track timer so it can be cleared if notification is manually removed
         const duration = notification.duration ?? 3000;
-        setTimeout(() => {
-          get().removeNotification(id);
+        const timer = setTimeout(() => {
+          notificationTimers.delete(id);
+          // Check the notification still exists before removing (may have been manually removed)
+          if (get().notifications.some(n => n.id === id)) {
+            get().removeNotification(id);
+          }
         }, duration);
+        notificationTimers.set(id, timer);
       },
 
-      removeNotification: (id) => set(state => ({
-        notifications: state.notifications.filter(n => n.id !== id)
-      })),
+      removeNotification: (id) => {
+        // Clear any pending auto-dismiss timer for this notification
+        const timer = notificationTimers.get(id);
+        if (timer !== undefined) {
+          clearTimeout(timer);
+          notificationTimers.delete(id);
+        }
+        set(state => ({
+          notifications: state.notifications.filter(n => n.id !== id)
+        }));
+      },
 
-      clearAllNotifications: () => set({ notifications: [] })
+      clearAllNotifications: () => {
+        // Clear all pending timers
+        notificationTimers.forEach(timer => clearTimeout(timer));
+        notificationTimers.clear();
+        set({ notifications: [] });
+      }
     }),
     {
       name: 'mangaai-app-storage',

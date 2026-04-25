@@ -5,6 +5,7 @@
  */
 
 import { logger } from '@/core/utils/logger';
+
 import { PipelineEngine, createPipelineEngine } from './pipeline-engine';
 import {
   PipelineStepId,
@@ -14,16 +15,15 @@ import {
   type PipelineEngineEvent,
   type PipelineExecutionState,
 } from './pipeline.types';
-
-import { createImportStep, type ImportInput, type ImportOutput } from './step-import';
 import { createAnalysisStep } from './step-analysis';
-import { createScriptStep, type ScriptOutput } from './step-script';
-import { createCharacterStep, type CharacterOutput } from './step-character';
-import { createStoryboardStep, type StoryboardOutput } from './step-storyboard';
-import { createRenderStep, type RenderOutput } from './step-render';
 import { createAudioSynthesisStep, type AudioSynthesisOutput } from './step-audio-synthesis';
-import { createVideoEditingStep, type VideoEditingOutput } from './step-video-editing';
+import { createCharacterStep, type CharacterOutput } from './step-character';
 import { createCompositionStep, type CompositionOutput } from './step-composition';
+import { createImportStep, type ImportInput, type ImportOutput } from './step-import';
+import { createRenderStep, type RenderOutput } from './step-render';
+import { createScriptStep, type ScriptOutput } from './step-script';
+import { createStoryboardStep, type StoryboardOutput } from './step-storyboard';
+import { createVideoEditingStep, type VideoEditingOutput } from './step-video-editing';
 
 // ========== PipelineService 主类 ==========
 

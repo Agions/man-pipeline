@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Button, message, Space, Card, Spin, Input, Alert } from 'antd';
 import { UploadOutlined, FileTextOutlined, DeleteOutlined } from '@ant-design/icons';
-import type { ScriptChapter, ScriptSource, ScriptValidationResult } from '@/core/types';
+import { Button, message, Space, Card, Spin, Input, Alert } from 'antd';
+import React, { useState } from 'react';
+
 import { scriptImportService, tauriService } from '@/core/services';
-import styles from './NovelImporter.module.less';
+import type { ScriptChapter, ScriptSource, ScriptValidationResult } from '@/core/types';
 import { logger } from '@/core/utils/logger';
+
+import styles from './NovelImporter.module.less';
+
 
 interface NovelImporterProps {
   initialContent?: string;

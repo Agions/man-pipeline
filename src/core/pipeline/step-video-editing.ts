@@ -5,6 +5,7 @@
  */
 
 import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -12,8 +13,7 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 
 // ========== 类型定义 ==========
 
@@ -224,7 +224,7 @@ export class VideoEditor {
     }
 
     let opacity = 1.0;
-    let effectiveClip: VideoClip | null = activeClip;
+    const effectiveClip: VideoClip | null = activeClip;
 
     // 处理转场效果
     const transitions = this.getTransitionPoints();

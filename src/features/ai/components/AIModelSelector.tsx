@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Typography, Tag, Avatar, Radio, Space, Tooltip, Button, Input, Tabs, Badge } from 'antd';
 import { CheckCircleFilled, RobotOutlined, QuestionCircleOutlined, CodeOutlined, VideoCameraOutlined, EditOutlined, StarOutlined, ThunderboltOutlined, PictureOutlined, SettingOutlined, FireOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Typography, Tag, Avatar, Radio, Space, Tooltip, Button, Input, Tabs, Badge } from 'antd';
 import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+
 import styles from './AIModelSelector.module.less';
 
 const { Title, Text, Paragraph } = Typography;

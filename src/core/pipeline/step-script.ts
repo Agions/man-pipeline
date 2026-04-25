@@ -4,8 +4,9 @@
  * 基于分析结果生成结构化视频剧本
  */
 
-import { logger } from '@/core/utils/logger';
 import { aiService } from '@/core/services/ai.service';
+import { logger } from '@/core/utils/logger';
+
 import type {
   PipelineStep,
   StepInput,
@@ -13,9 +14,8 @@ import type {
   StepProgressEvent,
   RetryPolicy,
 } from './pipeline.types';
+import { PipelineStepId, StepStatus, QualityGateDecision , PipelineExecutionMode } from './pipeline.types';
 import type { ImportOutput } from './step-import';
-import { PipelineStepId, StepStatus, QualityGateDecision } from './pipeline.types';
-import { PipelineExecutionMode } from './pipeline.types';
 
 export interface ScriptStepConfig extends Partial<PipelineStep> {
   model?: string;

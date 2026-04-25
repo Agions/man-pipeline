@@ -3,8 +3,8 @@
  * 统一的 HTTP 请求管理
  */
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { message } from 'antd';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
 // 请求配置
 interface RequestConfig extends AxiosRequestConfig {

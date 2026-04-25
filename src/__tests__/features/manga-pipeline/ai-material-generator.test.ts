@@ -1,6 +1,6 @@
-import { createAIGenerationPlan, AIGenerationPlan, BatchGenerationPlan } from '../../../features/manga-pipeline/steps/step3-material-matching/services/ai-material-generator';
-import { StoryboardScene } from '../../../features/manga-pipeline/steps/step2-storyboard/storyboard-composer';
 import { SceneDescription } from '../../../features/manga-pipeline/steps/step2-storyboard/description/scene-description-generator';
+import { StoryboardScene } from '../../../features/manga-pipeline/steps/step2-storyboard/storyboard-composer';
+import { createAIGenerationPlan, AIGenerationPlan, BatchGenerationPlan } from '../../../features/manga-pipeline/steps/step3-material-matching/services/ai-material-generator';
 
 const createMockScene = (overrides: Partial<StoryboardScene> = {}): StoryboardScene => ({
   sceneId: 'scene-001',

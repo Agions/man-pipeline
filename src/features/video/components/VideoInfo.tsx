@@ -1,6 +1,7 @@
-import React from 'react';
-import { Card, Statistic, Row, Col } from 'antd';
 import { VideoCameraOutlined, ClockCircleOutlined, FileOutlined } from '@ant-design/icons';
+import { Card, Statistic, Row, Col } from 'antd';
+import React from 'react';
+
 import styles from './VideoInfo.module.less';
 
 interface VideoInfoProps {
