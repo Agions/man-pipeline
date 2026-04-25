@@ -1,5 +1,5 @@
-import { CheckCircleFilled, RobotOutlined, QuestionCircleOutlined, CodeOutlined, VideoCameraOutlined, EditOutlined, StarOutlined, ThunderboltOutlined, PictureOutlined, SettingOutlined, FireOutlined } from '@ant-design/icons';
-import { Card, Row, Col, Typography, Tag, Avatar, Radio, Space, Tooltip, Button, Input, Tabs, Badge } from 'antd';
+import { CheckCircleFilled, QuestionCircleOutlined, VideoCameraOutlined, EditOutlined, StarOutlined, ThunderboltOutlined, PictureOutlined, SettingOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Typography, Tag, Avatar, Radio, Space, Tooltip, Button, Input, Tabs } from 'antd';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
@@ -234,7 +234,7 @@ const AIModelSelector: React.FC<AIModelSelectorProps> = ({
   showImageVideo = true
 }) => {
   const [selectedModelId, setSelectedModelId] = useState<string>(selectedModel);
-  const [activeCategory, setActiveCategory] = useState<ModelCategory>(category);
+  const [activeCategory] = useState<ModelCategory>(category);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [viewMode, setViewMode] = useState<'card' | 'list'>(compact ? 'list' : 'card');
   const [activeTab, setActiveTab] = useState<string>('text');

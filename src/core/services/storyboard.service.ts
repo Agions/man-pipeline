@@ -57,7 +57,7 @@ export class StoryboardService {
    * 创建新的分镜帧
    */
   create(frameData: Partial<StoryboardFrame> & { title: string; sceneDescription: string }): StoryboardFrame {
-    const now = new Date().toISOString();
+    // const now = new Date().toISOString();
     const frame: StoryboardFrame = {
       id: frameData.id || uuidv4(),
       title: frameData.title,
