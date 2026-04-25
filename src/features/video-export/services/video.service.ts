@@ -159,7 +159,7 @@ class VideoService {
   async detectScenes(
     videoPath: string,
     duration: number,
-    threshold: number = 0.3
+    _threshold: number = 0.3
   ): Promise<Scene[]> {
     const scenes: Scene[] = [];
     const sceneDuration = 30;
@@ -213,8 +213,8 @@ class VideoService {
    */
   async generatePreview(
     videoPath: string,
-    startTime: number,
-    endTime: number
+    _startTime: number,
+    _endTime: number
   ): Promise<string> {
     return videoPath;
   }
@@ -280,8 +280,8 @@ class VideoService {
   async clipVideo(
     inputPath: string,
     outputPath: string,
-    startTime: number,
-    endTime: number
+    _startTime: number,
+    _endTime: number
   ): Promise<string> {
     const builder = new FFmpegCommandBuilder();
     builder

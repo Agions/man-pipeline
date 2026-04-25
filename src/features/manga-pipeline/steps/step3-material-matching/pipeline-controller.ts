@@ -3,7 +3,7 @@ import type { Storyboard } from '@/features/manga-pipeline/steps/step2-storyboar
 import { PipelineStep, StepInput, StepOutput } from '../../../../core/pipeline/step.interface';
 
 import { BatchGenerationPlan, createAIGenerationPlan } from './services/ai-material-generator';
-import { MaterialMatch, MaterialItem, searchMaterial, batchSearch } from './services/material-searcher';
+import { MaterialMatch, batchSearch } from './services/material-searcher';
 import { MaterialGroup, groupMaterials } from './services/smart-grouper';
 
 export interface MaterialMatchingResult {

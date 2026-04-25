@@ -65,8 +65,9 @@ export const ScriptGenerationView: React.FC<Props> = ({ onScriptGenerated }) => 
       {/* Input Section */}
       <div className="space-y-4 mb-6">
         <div>
-          <label className="block text-sm font-medium mb-2">剧本标题（可选）</label>
+          <label htmlFor="script-title" className="block text-sm font-medium mb-2">剧本标题（可选）</label>
           <input
+            id="script-title"
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
@@ -77,8 +78,9 @@ export const ScriptGenerationView: React.FC<Props> = ({ onScriptGenerated }) => 
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">小说原文</label>
+          <label htmlFor="script-text" className="block text-sm font-medium mb-2">小说原文</label>
           <textarea
+            id="script-text"
             value={text}
             onChange={e => setText(e.target.value)}
             placeholder="粘贴小说文本，支持第X章、Chapter X 等章节标记..."
