@@ -95,14 +95,14 @@ const storage = {
   }
 };
 
-export function useProject(projectId?: string): UseProjectReturn {
+export function useProject(_projectId?: string): UseProjectReturn {
   const [project, setProject] = useState<ProjectData | null>(null);
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
+  const [_taskStatus, setTaskStatus] = useState<TaskStatus | null>(null);
   
   // 最近项目
   const recentProjects = useMemo(() => {
@@ -149,7 +149,7 @@ export function useProject(projectId?: string): UseProjectReturn {
         setError('项目不存在');
         return false;
       }
-    } catch (err) {
+    } catch (_err) {
       setError('加载项目失败');
       return false;
     } finally {
@@ -177,7 +177,7 @@ export function useProject(projectId?: string): UseProjectReturn {
       setHasUnsavedChanges(false);
       
       return true;
-    } catch (err) {
+    } catch (_err) {
       setError('保存项目失败');
       return false;
     } finally {
@@ -204,7 +204,7 @@ export function useProject(projectId?: string): UseProjectReturn {
       }
       
       return true;
-    } catch (err) {
+    } catch (_err) {
       setError('删除项目失败');
       return false;
     }

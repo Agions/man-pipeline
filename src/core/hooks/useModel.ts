@@ -3,7 +3,7 @@
  * 统一的模型选择、配置和管理
  */
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import { AI_MODELS, MODEL_PROVIDERS, getModelById, getModelsByProvider, getRecommendedModels } from '@/core/config/models.config';
 import type { AIModel, ModelProvider, ModelCategory, AIModelSettings } from '@/core/types';
@@ -39,7 +39,7 @@ export interface UseModelReturn {
 }
 
 export function useModel(): UseModelReturn {
-  const store = useAppStore();
+  // const store = useAppStore(); // eslint-disable-line
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedModelId, setSelectedModelId] = useState<string>('glm-5');
