@@ -4,7 +4,7 @@
  */
 import { useState, useCallback } from 'react';
 
-import type { ScriptTemplate, AIModel, DramaWorkflowStep } from '@/core/types';
+import type { ScriptTemplate, AIModel } from '@/core/types';
 
 export type WorkflowStep =
   | 'upload'
@@ -93,6 +93,11 @@ export function useWorkflow(callbacks?: WorkflowCallbacks): UseWorkflowReturn {
   const isCompleted = state.status === 'completed';
   const hasError = state.status === 'error';
 
+  const analyze = useCallback(async () => {
+    updateStep('analyze');
+    setState(prev => ({ ...prev, progress: 20 }));
+  }, [updateStep]);
+
   const updateStep = useCallback((step: WorkflowStep) => {
     setState(prev => ({ ...prev, step }));
     callbacks?.onStepChange?.(step);
@@ -125,7 +130,7 @@ export function useWorkflow(callbacks?: WorkflowCallbacks): UseWorkflowReturn {
     setState(prev => ({ ...prev, progress: 20 }));
   }, [updateStep]);
 
-  const selectTemplate = useCallback((template: ScriptTemplate) => {
+  const selectTemplate = useCallback((_template: ScriptTemplate) => {
     setState(prev => ({
       ...prev,
       data: { ...prev.data, script: prev.data.script }
@@ -133,7 +138,7 @@ export function useWorkflow(callbacks?: WorkflowCallbacks): UseWorkflowReturn {
     updateStep('template-select');
   }, [updateStep]);
 
-  const generateScript = useCallback(async (model: AIModel, params: unknown) => {
+  const generateScript = useCallback(async (_model: AIModel, _params: unknown) => {
     updateStep('script-generate');
     setState(prev => ({ ...prev, progress: 40 }));
   }, [updateStep]);
@@ -143,7 +148,7 @@ export function useWorkflow(callbacks?: WorkflowCallbacks): UseWorkflowReturn {
     setState(prev => ({ ...prev, progress: 50 }));
   }, [updateStep]);
 
-  const ensureUniqueness = useCallback(async (content: string) => {
+  const ensureUniqueness = useCallback(async (_content: string) => {
     // 模拟去重检测
     return {
       isUnique: true,

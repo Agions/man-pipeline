@@ -15,8 +15,6 @@ import {
   Input,
   Select,
   Typography,
-  Space,
-  Empty,
   message,
   Popconfirm,
   Slider,
@@ -89,8 +87,12 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
     if (!focusFrameId) return;
     const focusFrame = frames.find((frame) => frame.id === focusFrameId);
     if (!focusFrame) return;
-    setSelectedFrameId(focusFrameId);
-    onFrameSelect?.(focusFrame);
+    // Defer setState to avoid synchronous call in effect
+    const id = setTimeout(() => {
+      setSelectedFrameId(focusFrameId);
+      onFrameSelect?.(focusFrame);
+    }, 0);
+    return () => clearTimeout(id);
   }, [focusFrameId, frames, onFrameSelect]);
 
   // 生成唯一ID
@@ -308,8 +310,9 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
         <div className={styles.formSection}>
           <span className={styles.sectionLabel}>基本信息</span>
           <div className={styles.formRow}>
-            <label className={styles.formLabel}>分镜标题</label>
+            <label className={styles.formLabel} htmlFor="frame-title">分镜标题</label>
             <Input
+              id="frame-title"
               value={selectedFrame.title}
               onChange={(e) =>
                 updateFrame(selectedFrame.id, 'title', e.target.value)
@@ -318,8 +321,9 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
             />
           </div>
           <div className={styles.formRow}>
-            <label className={styles.formLabel}>时长（秒）</label>
+            <label className={styles.formLabel} htmlFor="frame-duration">时长（秒）</label>
             <Slider
+              id="frame-duration"
               min={1}
               max={30}
               value={selectedFrame.duration}
@@ -341,8 +345,9 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
         <div className={styles.formSection}>
           <span className={styles.sectionLabel}>画面设置</span>
           <div className={styles.formRow}>
-            <label className={styles.formLabel}>场景描述</label>
+            <label className={styles.formLabel} htmlFor="frame-scene">场景描述</label>
             <TextArea
+              id="frame-scene"
               value={selectedFrame.sceneDescription}
               onChange={(e) =>
                 updateFrame(selectedFrame.id, 'sceneDescription', e.target.value)
@@ -352,8 +357,9 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
             />
           </div>
           <div className={styles.formRow}>
-            <label className={styles.formLabel}>构图方式</label>
+            <label className={styles.formLabel} htmlFor="frame-composition">构图方式</label>
             <Select
+              id="frame-composition"
               value={selectedFrame.composition}
               onChange={(value) =>
                 updateFrame(selectedFrame.id, 'composition', value)
@@ -368,8 +374,8 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
             </Select>
           </div>
           <div className={styles.formRow}>
-            <label className={styles.formLabel}>镜头类型</label>
-            <div style={{ marginTop: 8 }}>
+            <span className={styles.formLabel} aria-label="镜头类型">镜头类型</span>
+            <div style={{ marginTop: 8 }} role="group" aria-label="镜头类型">
               {CAMERA_TYPES.map((type) => (
                 <Tooltip key={type.value} title={type.label}>
                   <Tag
