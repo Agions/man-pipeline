@@ -9,13 +9,10 @@ import {
   SettingOutlined,
   AudioMutedOutlined,
   FolderOutlined,
-  StepForwardOutlined,
-  StepBackwardOutlined,
-  SyncOutlined,
 } from '@ant-design/icons';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
-import { Card, Tabs, Button, Upload, Slider, Switch, Select, Space, Table, Tag, message, Popconfirm, Input, Row, Col, Tooltip, Progress, Empty } from 'antd';
+import { Card, Tabs, Button, Upload, Slider, Switch, Table, Tag, message, Popconfirm, Row, Col, Tooltip, Progress, Empty } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 
 
@@ -147,7 +144,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const _audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 音频元素引用
   const voiceAudioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
@@ -277,7 +274,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         musicAudioRef.current.pause();
         setPlayingMusic(false);
       }
-      sfxAudioRefs.current.forEach((audio, id) => {
+      sfxAudioRefs.current.forEach((audio, _id) => {
         audio.pause();
         audio.currentTime = 0;
       });
@@ -492,7 +489,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         musicAudioRef.current.pause();
         setPlayingMusic(false);
       }
-      sfxAudioRefs.current.forEach((audio, id) => {
+      sfxAudioRefs.current.forEach((audio, _id) => {
         if (id !== effect.id) {
           audio.pause();
           audio.currentTime = 0;

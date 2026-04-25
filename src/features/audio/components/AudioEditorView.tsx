@@ -1,4 +1,4 @@
-import { Typography, Space } from 'antd';
+import { Typography } from 'antd';
 import React from 'react';
 
 import AudioEditor from './AudioEditor';

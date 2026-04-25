@@ -1,4 +1,4 @@
-import { Layout, Space } from 'antd';
+import { Layout } from 'antd';
 import React from 'react';
 
 import AIAssistant from './editor/AIAssistant';

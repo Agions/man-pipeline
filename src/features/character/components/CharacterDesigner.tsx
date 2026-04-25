@@ -4,8 +4,6 @@ import {
   DeleteOutlined,
   UserOutlined,
   UploadOutlined,
-  SaveOutlined,
-  CloseOutlined,
   PictureOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
@@ -26,11 +24,8 @@ import {
   Tag,
   Row,
   Col,
-  Tooltip,
   Typography,
-  Tabs,
   Collapse,
-  Empty,
 } from 'antd';
 import type { Color } from 'antd/es/color-picker';
 import type { RcFile } from 'antd/es/upload/interface';
@@ -44,12 +39,10 @@ import {
   templateToCharacter,
   type CharacterTemplate
 } from '@/core/data/character-templates';
-import type { 
-  Character, 
-  CharacterAppearance, 
-  ClothingItem, 
-  CharacterExpression,
-  TTSProvider 
+import type {
+  Character,
+  CharacterAppearance,
+  ClothingItem,
 } from '@/core/types';
 import { logger } from '@/core/utils/logger';
 import type { CharacterConsistency } from '@/shared/types';
@@ -93,7 +86,7 @@ const generateId = () => `char_${Date.now()}_${Math.random().toString(36).substr
 const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
   characters = [],
   onChange,
-  projectId,
+  projectId: _projectId,
 }) => {
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -310,7 +303,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
   };
 
   // 添加表情到角色
-  const addExpressionToCharacter = (characterId: string, expression: CharacterExpression) => {
+  const _addExpressionToCharacter = (characterId: string, expression: CharacterExpression) => {
     const char = characters.find(c => c.id === characterId);
     if (!char) return;
 
@@ -928,7 +921,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   <Input 
                     placeholder={selectedTemplate.name}
                     style={{ width: 200 }}
-                    onChange={(e) => {
+                    onChange={() => {
                       // 可以在这里处理自定义名称
                     }}
                   />
