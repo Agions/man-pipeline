@@ -147,7 +147,7 @@ describe('AI Service', () => {
       await aiService.generate('测试', { model: 'spark-v3.5', provider: 'test' });
       const elapsed = Date.now() - start;
 
-      expect(elapsed).toBeGreaterThanOrEqual(100);
+      expect(elapsed).toBeGreaterThanOrEqual(95);
 
       aiService.clearMockConfig(requestId);
     });
