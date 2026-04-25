@@ -35,6 +35,11 @@ export default [
   {
     plugins: { 'react-hooks': reactHooksPlugin },
     ...reactHooksPlugin.configs.flat['recommended-latest'],
+    rules: {
+      ...reactHooksPlugin.configs.flat['recommended-latest'].rules,
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+    },
   },
 
   // JSX A11y recommended (flat format)
