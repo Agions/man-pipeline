@@ -144,7 +144,6 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const _audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 音频元素引用
   const voiceAudioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());

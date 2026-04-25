@@ -27,7 +27,6 @@ import {
   Typography,
   Collapse,
 } from 'antd';
-import type { Color } from 'antd/es/color-picker';
 import type { RcFile } from 'antd/es/upload/interface';
 import React, { useState, useCallback } from 'react';
 

@@ -162,7 +162,7 @@ export function useVideo(): UseVideoReturn {
       setVideo(info);
       
       return info;
-    } catch (_err) {
+    } catch {
       setError(err instanceof Error ? err.message : '上传失败');
       return null;
     } finally {
@@ -234,7 +234,7 @@ export function useVideo(): UseVideoReturn {
       } : null);
       
       return analysisResult;
-    } catch (_err) {
+    } catch {
       setError(err instanceof Error ? err.message : '分析失败');
       setTaskStatus(prev => prev ? {
         ...prev,
@@ -266,7 +266,7 @@ export function useVideo(): UseVideoReturn {
     
     try {
       return await generateThumbnail(video.path, timestamp);
-    } catch (_err) {
+    } catch {
       setError('提取缩略图失败');
       return null;
     }

@@ -40,7 +40,7 @@ export class ScriptGenerationPipeline implements PipelineStep {
     // Step 2: Analyze narrative
     const narrative = analyzeNarrativeStructure(events, chapters.length);
     const characterGraph = buildCharacterGraph(events, paragraphs);
-    const _conflicts = detectConflicts(events, narrative);
+    detectConflicts(events, narrative);
 
     // Step 3: Generate character cards
     const characters = generateCharacterCards(text, characterGraph, events);
