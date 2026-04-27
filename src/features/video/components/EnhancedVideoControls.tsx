@@ -4,20 +4,21 @@
  */
 
 import {
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  StepBackwardOutlined,
-  StepForwardOutlined,
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-  SoundOutlined,
-  MutedOutlined,
-  ExpandOutlined,
-  CompressOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Slider, Button, Tooltip, Dropdown, Space } from 'antd';
+  PlayCircle,
+  PauseCircle,
+  SkipBack,
+  SkipForward,
+  Maximize,
+  Minimize2,
+  Volume2,
+  VolumeX,
+} from 'lucide-react';
 import React from 'react';
+
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Slider } from '@/components/ui/slider';
+import { Tooltip } from '@/components/ui/tooltip';
 
 import styles from './EnhancedVideoControls.module.less';
 
@@ -156,8 +157,7 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
           max={duration || 100}
           step={0.1}
           value={currentTime}
-          onChange={handleProgressChange}
-          tooltip={{ formatter: (value) => formatTime(value || 0) }}
+          onValueChange={handleProgressChange}
           className={styles.progressSlider}
         />
       </div>
@@ -166,28 +166,28 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
       <div className={styles.controlBar}>
         <div className={styles.leftControls}>
           {/* 播放/暂停 */}
-          <Tooltip title={isPlaying ? '暂停' : '播放'}>
+          <Tooltip content={isPlaying ? '暂停' : '播放'}>
             <Button
-              type="text"
-              size="large"
-              icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+              variant="ghost"
+              size="lg"
+              icon={isPlaying ? <PauseCircle size={22} /> : <PlayCircle size={22} />}
               onClick={handlePlayPause}
               className={styles.playButton}
             />
           </Tooltip>
 
           {/* 上一帧/下一帧 */}
-          <Tooltip title="上一帧">
+          <Tooltip content="上一帧">
             <Button
-              type="text"
-              icon={<StepBackwardOutlined />}
+              variant="ghost"
+              icon={<SkipBack size={18} />}
               onClick={() => onSeek(Math.max(0, currentTime - 1 / 30))}
             />
           </Tooltip>
-          <Tooltip title="下一帧">
+          <Tooltip content="下一帧">
             <Button
-              type="text"
-              icon={<StepForwardOutlined />}
+              variant="ghost"
+              icon={<SkipForward size={18} />}
               onClick={() => onSeek(Math.min(duration, currentTime + 1 / 30))}
             />
           </Tooltip>
@@ -202,18 +202,31 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
 
         <div className={styles.rightControls}>
           {/* 播放速率 */}
-          <Dropdown menu={playbackRateMenu} trigger={['click']}>
-            <Button type="text" className={styles.rateButton}>
-              {playbackRate}x
-            </Button>
-          </Dropdown>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className={styles.rateButton}>
+                {playbackRate}x
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {playbackRates.map((rate) => (
+                <DropdownMenuItem
+                  key={rate}
+                  onClick={() => onPlaybackRateChange(rate)}
+                  style={{ fontWeight: rate === playbackRate ? 600 : 400 }}
+                >
+                  {rate}x
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* 音量控制 */}
           <div className={styles.volumeControl}>
-            <Tooltip title={muted ? '取消静音' : '静音'}>
+            <Tooltip content={muted ? '取消静音' : '静音'}>
               <Button
-                type="text"
-                icon={muted || volume === 0 ? <MutedOutlined /> : <SoundOutlined />}
+                variant="ghost"
+                icon={muted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
                 onClick={onMuteToggle}
               />
             </Tooltip>
@@ -221,16 +234,16 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
               min={0}
               max={100}
               value={muted ? 0 : volume * 100}
-              onChange={handleVolumeChange}
+              onValueChange={handleVolumeChange}
               className={styles.volumeSlider}
             />
           </div>
 
           {/* 全屏切换 */}
-          <Tooltip title={isFullscreen ? '退出全屏' : '全屏'}>
+          <Tooltip content={isFullscreen ? '退出全屏' : '全屏'}>
             <Button
-              type="text"
-              icon={isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+              variant="ghost"
+              icon={isFullscreen ? <Minimize2 size={18} /> : <Maximize size={18} />}
               onClick={onFullscreenToggle}
             />
           </Tooltip>

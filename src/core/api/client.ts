@@ -3,7 +3,7 @@
  * 统一的 HTTP 请求管理
  */
 
-import { message } from 'antd';
+import { toast } from '@/shared/components/ui';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
 // 请求配置
@@ -111,7 +111,7 @@ class ApiClient {
       errorMessage = error.message;
     }
 
-    message.error(errorMessage);
+    toast.error(errorMessage);
   }
 
   /**

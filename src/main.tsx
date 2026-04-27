@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import { ThemeProvider } from '@/context/ThemeContext';
-import 'antd/dist/reset.css';
 import './index.css';
 import './assets/theme.less';
 import { logger } from '@/core/utils/logger';

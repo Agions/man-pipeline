@@ -1,19 +1,27 @@
 import {
-  UploadOutlined,
-  DeleteOutlined,
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  SoundOutlined,
-  CustomerServiceOutlined,
-  AudioOutlined,
-  SettingOutlined,
-  AudioMutedOutlined,
-  FolderOutlined,
-} from '@ant-design/icons';
+  Upload,
+  Trash2,
+  PlayCircle,
+  PauseCircle,
+  Volume2,
+  Headphones,
+  Music,
+  Settings,
+  MicOff,
+  Folder,
+} from 'lucide-react';
 import { convertFileSrc } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
-import { Card, Tabs, Button, Slider, Switch, Table, Tag, message, Popconfirm, Row, Col, Tooltip, Progress, Empty, Space } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Switch } from '@/components/ui/switch';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 import { logger } from '@/core/utils/logger';
@@ -599,7 +607,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         <Button
           type="text"
           size="small"
-          icon={playingVoiceId === record.id ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+          icon={playingVoiceId === record.id ? <PauseCircle /> : <PlayCircle />}
           onClick={() => handleVoicePlay(record)}
         />
       ),
@@ -660,7 +668,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
           okText="确认"
           cancelText="取消"
         >
-          <Button type="text" danger icon={<DeleteOutlined />} />
+          <Button type="text" danger icon={<Trash2 />} />
         </Popconfirm>
       ),
     },
@@ -677,7 +685,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         <Button
           type="text"
           size="small"
-          icon={playingSfxId === record.id ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+          icon={playingSfxId === record.id ? <PauseCircle /> : <PlayCircle />}
           onClick={() => handleSfxPlay(record)}
         />
       ),
@@ -745,7 +753,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
           okText="确认"
           cancelText="取消"
         >
-          <Button type="text" danger icon={<DeleteOutlined />} />
+          <Button type="text" danger icon={<Trash2 />} />
         </Popconfirm>
       ),
     },
@@ -755,7 +763,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
     <Card
       title={
         <Space>
-          <SoundOutlined />
+          <Volume2 />
           <span>配音配乐编辑</span>
         </Space>
       }
@@ -764,7 +772,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
         <Space>
           <Tooltip title="总音量">
             <div className={styles.masterVolumeControl}>
-              <SoundOutlined />
+              <Volume2 />
               <Slider
                 min={0}
                 max={100}
@@ -787,7 +795,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
             key: 'voice',
             label: (
               <Space>
-                <CustomerServiceOutlined />
+                <Headphones />
                 <span>配音轨道</span>
                 <Tag color="blue">{voiceTracks.length}</Tag>
               </Space>
@@ -798,7 +806,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                   <Space>
                     <Button
                       type="primary"
-                      icon={<AudioMutedOutlined />}
+                      icon={<MicOff />}
                       onClick={isRecording ? handleStopRecording : handleStartRecording}
                       danger={isRecording}
                       disabled={disabled}
@@ -806,7 +814,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                       {isRecording ? `停止录音 (${formatTime(recordingTime)})` : '开始录音'}
                     </Button>
                     <Button
-                      icon={<UploadOutlined />}
+                      icon={<Upload />}
                       onClick={handleVoiceImport}
                       disabled={disabled}
                     >
@@ -837,7 +845,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
             key: 'music',
             label: (
               <Space>
-                <AudioOutlined />
+                <Music />
                 <span>背景音乐</span>
                 {backgroundMusic && <Tag color="green">已添加</Tag>}
               </Space>
@@ -863,7 +871,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                       <div className={styles.musicControls}>
                         <Button
                           type="primary"
-                          icon={playingMusic ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+                          icon={playingMusic ? <PauseCircle /> : <PlayCircle />}
                           onClick={handleMusicPlay}
                           disabled={disabled}
                         >
@@ -875,7 +883,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                           okText="确认"
                           cancelText="取消"
                         >
-                          <Button danger icon={<DeleteOutlined />} disabled={disabled}>
+                          <Button danger icon={<Trash2 />} disabled={disabled}>
                             移除
                           </Button>
                         </Popconfirm>
@@ -925,7 +933,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                       <div className={styles.selectButtons}>
                         <Button
                           type="primary"
-                          icon={<FolderOutlined />}
+                          icon={<Folder />}
                           onClick={handleMusicSelect}
                           disabled={disabled}
                           size="large"
@@ -959,7 +967,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
             key: 'effects',
             label: (
               <Space>
-                <SoundOutlined />
+                <Volume2 />
                 <span>音效</span>
                 <Tag color="purple">{soundEffects.length}</Tag>
               </Space>
@@ -969,7 +977,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                 <div className={styles.toolbar}>
                   <Space>
                     <Button
-                      icon={<UploadOutlined />}
+                      icon={<Upload />}
                       onClick={handleSfxImport}
                       disabled={disabled}
                     >
@@ -1016,7 +1024,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
             key: 'mix',
             label: (
               <Space>
-                <SettingOutlined />
+                <Settings />
                 <span>混音设置</span>
               </Space>
             ),
@@ -1026,7 +1034,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                   <Col xs={24} sm={12} md={6}>
                     <Card className={styles.mixCard} size="small">
                       <div className={styles.mixTitle}>
-                        <CustomerServiceOutlined /> 配音音量
+                        <Headphones /> 配音音量
                       </div>
                       <Progress percent={voiceVolume} status="active" />
                       <Slider
@@ -1041,7 +1049,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                   <Col xs={24} sm={12} md={6}>
                     <Card className={styles.mixCard} size="small">
                       <div className={styles.mixTitle}>
-                        <AudioOutlined /> 音乐音量
+                        <Music /> 音乐音量
                       </div>
                       <Progress percent={musicVolume} status="active" />
                       <Slider
@@ -1056,7 +1064,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                   <Col xs={24} sm={12} md={6}>
                     <Card className={styles.mixCard} size="small">
                       <div className={styles.mixTitle}>
-                        <SoundOutlined /> 音效音量
+                        <Volume2 /> 音效音量
                       </div>
                       <Progress percent={effectVolume} status="active" />
                       <Slider
@@ -1089,17 +1097,17 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
                   <Row gutter={[16, 12]}>
                     <Col xs={24} sm={8}>
                       <div className={styles.summaryItem}>
-                        <CustomerServiceOutlined /> 配音轨道: <strong>{voiceTracks.length}</strong>
+                        <Headphones /> 配音轨道: <strong>{voiceTracks.length}</strong>
                       </div>
                     </Col>
                     <Col xs={24} sm={8}>
                       <div className={styles.summaryItem}>
-                        <AudioOutlined /> 背景音乐: <strong>{backgroundMusic ? '1' : '0'}</strong>
+                        <Music /> 背景音乐: <strong>{backgroundMusic ? '1' : '0'}</strong>
                       </div>
                     </Col>
                     <Col xs={24} sm={8}>
                       <div className={styles.summaryItem}>
-                        <SoundOutlined /> 音效: <strong>{soundEffects.length}</strong>
+                        <Volume2 /> 音效: <strong>{soundEffects.length}</strong>
                       </div>
                     </Col>
                   </Row>

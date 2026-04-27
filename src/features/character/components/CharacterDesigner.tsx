@@ -1,12 +1,12 @@
 import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  UserOutlined,
-  UploadOutlined,
-  PictureOutlined,
-  AppstoreOutlined,
-} from '@ant-design/icons';
+  Plus,
+  Edit,
+  Trash2,
+  User,
+  Upload,
+  Image,
+  LayoutGrid,
+} from 'lucide-react';
 import {
   Card,
   List,
@@ -24,10 +24,13 @@ import {
   Tag,
   Row,
   Col,
-  Typography,
   Collapse,
-} from 'antd';
-import type { RcFile } from 'antd/es/upload/interface';
+  Text,
+  Title,
+  Paragraph,
+  Option,
+  TextArea,
+} from '@/components/ui/antd-compat';
 import React, { useState, useCallback } from 'react';
 
 
@@ -58,9 +61,6 @@ const CLOTHING_TYPE_LABELS: Record<ClothingItem['type'], string> = {
   accessory: '配饰',
 };
 
-const { TextArea } = Input;
-const { Option } = Select;
-const { Text, Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
 interface CharacterDesignerProps {
@@ -342,11 +342,11 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+        <Button type="primary" icon={<Plus />} onClick={handleAdd}>
           新建角色
         </Button>
         <Button 
-          icon={<AppstoreOutlined />} 
+          icon={<LayoutGrid />} 
           onClick={() => {
             setActiveTab('template');
             setModalVisible(true);
@@ -360,7 +360,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
       {characters.length === 0 ? (
         <Card className={styles.emptyCard}>
           <div className={styles.emptyState}>
-            <UserOutlined style={{ fontSize: 48, color: '#ccc' }} />
+            <User style={{ fontSize: 48, color: '#ccc' }} />
             <Title level={5}>还没有角色</Title>
             <Paragraph type="secondary">
               您可以手动创建角色，或从预设模板快速开始
@@ -368,7 +368,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
             <Space>
               <Button type="primary" onClick={handleAdd}>手动创建</Button>
               <Button 
-                icon={<AppstoreOutlined />}
+                icon={<LayoutGrid />}
                 onClick={() => {
                   setActiveTab('template');
                   setModalVisible(true);
@@ -389,12 +389,12 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                 className={styles.characterCard}
                 hoverable
                 actions={[
-                  <EditOutlined key="edit" onClick={() => handleEdit(character)} />,
-                  <DeleteOutlined key="delete" onClick={() => handleDelete(character.id)} />,
+                  <Edit key="edit" onClick={() => handleEdit(character)} />,
+                  <Trash2 key="delete" onClick={() => handleDelete(character.id)} />,
                 ]}
               >
                 <Card.Meta
-                  avatar={<Avatar size={64} src={undefined} icon={<UserOutlined />} />}
+                  avatar={<Avatar size={64} src={undefined} icon={<User />} />}
                   title={character.name}
                   description={
                     <Space direction="vertical" size={2}>
@@ -712,7 +712,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   <img src={avatarUrl} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <div>
-                    <UploadOutlined />
+                    <Upload />
                     <div style={{ marginTop: 8 }}>上传头像</div>
                   </div>
                 )}
@@ -731,7 +731,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   id="expr-upload"
                 />
                 <label htmlFor="expr-upload">
-                  <Button icon={<PictureOutlined />}>添加表情</Button>
+                  <Button icon={<Image />}>添加表情</Button>
                 </label>
                 <div className={styles.exprList}>
                   {(expressionImages[editingId || 'new'] || []).map((img, idx) => (
@@ -815,7 +815,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
       <Modal
         title={
           <Space>
-            <AppstoreOutlined />
+            <LayoutGrid />
             <span>角色模板库</span>
           </Space>
         }
@@ -871,7 +871,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
             <Col span={8}>
               <Card>
                 <div className={styles.templatePreview}>
-                  <Avatar size={80} src={undefined} icon={<UserOutlined />} />
+                  <Avatar size={80} src={undefined} icon={<User />} />
                   <Title level={5} style={{ marginTop: 8 }}>{selectedTemplate.name}</Title>
                   <Tag color="blue">{selectedTemplate.category}</Tag>
                 </div>

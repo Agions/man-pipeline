@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import viteCompression from 'vite-plugin-compression'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [
@@ -64,6 +66,9 @@ export default defineConfig({
   css: {
     devSourcemap: true,
     minify: true,
+    postcss: {
+      plugins: [tailwindcss(), autoprefixer()],
+    },
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,

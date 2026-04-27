@@ -4,37 +4,46 @@
  */
 
 import {
-  EditOutlined,
-  ThunderboltOutlined,
-  ClockCircleOutlined,
-  FileTextOutlined,
-  UserOutlined,
-  GlobalOutlined,
-  CheckCircleOutlined,
-  LoadingOutlined,
-  SettingOutlined,
-  DollarOutlined
-} from '@ant-design/icons';
+  Edit,
+  Zap,
+  Clock,
+  FileText,
+  User,
+  Globe,
+  CheckCircle,
+  Loader,
+  Settings,
+  DollarSign
+} from 'lucide-react';
 import {
-  Card,
-  Form,
-  Input,
-  Select,
-  Button,
-  Space,
-  Typography,
-  Slider,
-  Radio,
-  Tag,
-  Progress,
-  Alert,
-  Divider,
-  Tooltip,
-  Badge,
-  Empty,
-  Spin,
-  message
-} from 'antd';
+  Edit,
+  Zap,
+  Clock,
+  FileText,
+  User,
+  Globe,
+  CheckCircle,
+  Loader,
+  Settings,
+  DollarSign
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormItem } from '@/components/ui/antd-compat';
+import { Input, Textarea } from '@/components/ui/input';
+import { Select } from '@/components/ui/antd-compat';
+import { Button } from '@/components/ui/button';
+import { Space } from '@/components/ui/antd-compat';
+import { Text, Title, Paragraph } from '@/components/ui/typography';
+import { Slider } from '@/components/ui/slider';
+import { RadioGroup, Radio, RadioButton } from '@/components/ui/antd-compat';
+import { Tag } from '@/components/ui/tag';
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip as TooltipRoot, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { Empty } from '@/components/ui/empty';
+import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState, useCallback } from 'react';
 
@@ -131,13 +140,13 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
   // 生成脚本
   const handleGenerate = useCallback(async (values: FormValues) => {
     if (!selectedModel) {
-      message.warning('请先选择 AI 模型');
+      toast.warning('请先选择 AI 模型');
       setShowModelSelector(true);
       return;
     }
 
     if (!isConfigured) {
-      message.warning('请先配置 API 密钥');
+      toast.warning('请先配置 API 密钥');
       return;
     }
 
@@ -183,9 +192,9 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
       setProgress(100);
       setGeneratedScript(script);
       onGenerate?.(script);
-      message.success('脚本生成成功');
+      toast.success('脚本生成成功');
     } catch (error) {
-      message.error('脚本生成失败');
+      toast.error('脚本生成失败');
     } finally {
       setIsGenerating(false);
     }
@@ -196,7 +205,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
     if (generatedScript) {
       updateScript(generatedScript);
       onSave?.(generatedScript);
-      message.success('脚本已保存');
+      toast.success('脚本已保存');
     }
   }, [generatedScript, updateScript, onSave]);
 
@@ -208,7 +217,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
   return (
     <div className={styles.container}>
       <Title level={4} className={styles.title}>
-        <EditOutlined /> AI 脚本生成器
+        <Edit /> AI 脚本生成器
       </Title>
 
       {/* 模型选择 */}
@@ -234,7 +243,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
           </Space>
           <Button
             type="link"
-            icon={<SettingOutlined />}
+            icon={<Settings />}
             onClick={() => setShowModelSelector(!showModelSelector)}
           >
             {showModelSelector ? '收起' : '更改'}
@@ -281,7 +290,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
           >
             <Input
               placeholder="例如：如何制作一杯完美的拿铁咖啡"
-              prefix={<FileTextOutlined />}
+              prefix={<FileText />}
             />
           </Form.Item>
 
@@ -377,7 +386,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
             <Button
               type="primary"
               size="large"
-              icon={isGenerating ? <LoadingOutlined /> : <ThunderboltOutlined />}
+              icon={isGenerating ? <Loader /> : <Zap />}
               onClick={() => form.submit()}
               loading={isGenerating}
               disabled={!selectedModel || !isConfigured}
@@ -393,7 +402,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
             <Alert
               message={
                 <Space>
-                  <DollarOutlined />
+                  <DollarSign />
                   <Text>预估成本: {estimatedCost()}</Text>
                 </Space>
               }
@@ -415,17 +424,17 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
             <Card
               title={
                 <Space>
-                  <CheckCircleOutlined style={{ color: '#52c41a' }} />
+                  <CheckCircle style={{ color: '#52c41a' }} />
                   <span>生成结果</span>
                 </Space>
               }
               className={styles.resultCard}
               extra={
                 <Space>
-                  <Button onClick={handleRegenerate} icon={<ThunderboltOutlined />}>
+                  <Button onClick={handleRegenerate} icon={<Zap />}>
                     重新生成
                   </Button>
-                  <Button type="primary" onClick={handleSave} icon={<CheckCircleOutlined />}>
+                  <Button type="primary" onClick={handleSave} icon={<CheckCircle />}>
                     保存脚本
                   </Button>
                 </Space>
@@ -440,16 +449,16 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
 
               <div className={styles.scriptMeta}>
                 <Space wrap>
-                  <Tag icon={<FileTextOutlined />}>
+                  <Tag icon={<FileText />}>
                     {generatedScript.metadata?.wordCount ?? 0} 字
                   </Tag>
-                  <Tag icon={<ClockCircleOutlined />}>
+                  <Tag icon={<Clock />}>
                     约 {generatedScript.metadata?.estimatedDuration ?? 0} 分钟
                   </Tag>
-                  <Tag icon={<UserOutlined />}>
+                  <Tag icon={<User />}>
                     {AUDIENCE_OPTIONS.find(a => a.value === generatedScript.metadata?.targetAudience)?.label}
                   </Tag>
-                  <Tag icon={<GlobalOutlined />}>
+                  <Tag icon={<Globe />}>
                     {generatedScript.metadata?.language === 'zh' ? '中文' : 'English'}
                   </Tag>
                 </Space>

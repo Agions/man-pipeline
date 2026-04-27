@@ -1,11 +1,8 @@
-import { Card, Space, Typography, Spin } from 'antd';
 import React, { useState } from 'react';
 
 import NovelImporter from './NovelImporter';
 import ScriptGenerator from './ScriptGenerator';
 import styles from './ScriptGeneratorView.module.less';
-
-const { Title, Text } = Typography;
 
 /**
  * 脚本生成视图组件
@@ -30,8 +27,8 @@ const ScriptGeneratorView: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Title level={2}>脚本生成</Title>
-        <Text type="secondary">从小说导入并生成视频脚本</Text>
+        <h2>脚本生成</h2>
+        <p>从小说导入并生成视频脚本</p>
       </div>
 
       <Space direction="vertical" size="large" className={styles.content}>

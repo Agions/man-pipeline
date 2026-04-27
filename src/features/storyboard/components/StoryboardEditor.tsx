@@ -1,34 +1,38 @@
 import {
-  PlusOutlined,
-  DeleteOutlined,
-  LeftOutlined,
-  RightOutlined,
-  PictureOutlined,
-  VideoCameraOutlined,
-  ScissorOutlined,
-  AimOutlined,
-  SwapOutlined,
-} from '@ant-design/icons';
-import {
-  Card,
-  Button,
-  Input,
-  Select,
-  Typography,
-  message,
-  Popconfirm,
-  Slider,
-  Tag,
-  Tooltip,
-} from 'antd';
+  Plus,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  Image,
+  Video,
+  Scissors,
+  Crosshair,
+  ArrowLeftRight,
+} from 'lucide-react';
 import React, { useState, useCallback, useEffect } from 'react';
 
+import { toast } from 'sonner';
+
+import { Slider } from '@/components/ui/slider';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+
 import styles from './StoryboardEditor.module.less';
-
-const { Title, Text } = Typography;
-const { TextArea } = Input;
-
-const { Option } = Select;
 
 // 分镜数据接口
 export interface StoryboardFrame {
@@ -44,13 +48,13 @@ export interface StoryboardFrame {
 
 // 镜头类型选项
 const CAMERA_TYPES = [
-  { value: 'wide', label: '全景', icon: <AimOutlined /> },
-  { value: 'medium', label: '中景', icon: <VideoCameraOutlined /> },
-  { value: 'closeup', label: '特写', icon: <ScissorOutlined /> },
-  { value: 'pan', label: '横摇', icon: <SwapOutlined /> },
-  { value: 'tilt', label: '竖摇', icon: <SwapOutlined rotate={90} /> },
-  { value: 'dolly', label: '推拉', icon: <VideoCameraOutlined /> },
-  { value: 'tracking', label: '跟随', icon: <VideoCameraOutlined /> },
+  { value: 'wide', label: '全景', icon: <Crosshair /> },
+  { value: 'medium', label: '中景', icon: <Video /> },
+  { value: 'closeup', label: '特写', icon: <Scissors /> },
+  { value: 'pan', label: '横摇', icon: <ArrowLeftRight /> },
+  { value: 'tilt', label: '竖摇', icon: <ArrowLeftRight rotate={90} /> },
+  { value: 'dolly', label: '推拉', icon: <Video /> },
+  { value: 'tracking', label: '跟随', icon: <Video /> },
 ];
 
 // 构图类型选项
@@ -210,24 +214,16 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
             </div>
           </div>
           <div className={styles.frameActions}>
-            <Popconfirm
-              title="确定要删除这个分镜吗？"
-              onConfirm={(e) => {
-                e?.stopPropagation();
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={(e) => {
+                e.stopPropagation();
                 removeFrame(frame.id);
               }}
-              onCancel={(e) => e?.stopPropagation()}
-              okText="确定"
-              cancelText="取消"
             >
-              <Button
-                type="text"
-                size="small"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={(e) => e.stopPropagation()}
-              />
-            </Popconfirm>
+              <Trash2 />
+            </Button>
           </div>
         </div>
       </Card>
@@ -237,7 +233,7 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
   // 渲染空状态
   const renderEmptyFrames = () => (
     <div className={styles.emptyList}>
-      <PictureOutlined style={{ fontSize: 48 }} />
+      <Image style={{ fontSize: 48 }} />
       <div className={styles.emptyText}>暂无分镜，点击下方按钮添加</div>
     </div>
   );
@@ -247,7 +243,7 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
     if (!selectedFrame) {
       return (
         <div className={styles.canvasEmpty}>
-          <PictureOutlined className={styles.emptyIcon} />
+          <Image className={styles.emptyIcon} />
           <div className={styles.emptyText}>选择或创建分镜以预览</div>
         </div>
       );
@@ -299,7 +295,7 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
     if (!selectedFrame) {
       return (
         <div className={styles.emptyProperty}>
-          <PictureOutlined style={{ fontSize: 48 }} />
+          <Image style={{ fontSize: 48 }} />
           <div className={styles.emptyText}>选择分镜以编辑属性</div>
         </div>
       );
@@ -423,7 +419,7 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
           </Title>
           <Button
             type="primary"
-            icon={<PlusOutlined />}
+            icon={<Plus />}
             onClick={addFrame}
             size="small"
           >
@@ -450,14 +446,14 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
           </div>
           <div className={styles.navButtons}>
             <Button
-              icon={<LeftOutlined />}
+              icon={<ChevronLeft />}
               onClick={() => navigateFrame('prev')}
               disabled={frames.length === 0}
             >
               上一帧
             </Button>
             <Button
-              icon={<RightOutlined />}
+              icon={<ChevronRight />}
               onClick={() => navigateFrame('next')}
               disabled={frames.length === 0}
             >

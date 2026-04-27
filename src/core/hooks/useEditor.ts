@@ -3,7 +3,7 @@
  * 提供基础的视频编辑状态管理
  */
 
-import { message } from 'antd';
+import { toast } from '@/shared/components/ui';
 import { useState, useCallback } from 'react';
 
 export interface TimelineClip {
@@ -269,7 +269,7 @@ export const useEditor = (): { state: EditorState; operations: EditorOperations 
       history: [clips],
       historyIndex: 0,
     });
-    message.success(`已加载项目: ${projectName}`);
+    toast.success(`已加载项目: ${projectName}`);
   }, [updateDuration]);
 
   const exportProject = useCallback(() => {

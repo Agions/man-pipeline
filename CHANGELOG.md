@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [3.0.0] - 2026-04-18
+## [3.0.0] - 2026-04-27
+
+### 🗑️ UI 组件库迁移
+- **antd 完全移除**: 62 个 antd 组件引用 → 0
+- **@ant-design/icons 完全移除**: 14 个引用 → 0
+- **迁移至 shadcn/ui**: 基于 Radix UI + Tailwind CSS 的全新组件系统
+- **CSS 清理**: 移除 197 行 antd 相关 CSS
 
 ### 🎉 Major Rebranding
 - **Project Renamed**: ManGaAI → **PlotCraft**

@@ -463,7 +463,7 @@ export class VideoEditingStep implements PipelineStep {
 
     // 模拟 Tauri 后端调用
     if (this.isTauriEnvironment()) {
-      // TODO: 调用 Tauri 命令进行真实视频合成
+      // DEFERRED: 真实视频合成待 Tauri 后端实现
       // await tauriInvoke('export_video', { config: editor.exportConfig(), outputPath });
     }
 

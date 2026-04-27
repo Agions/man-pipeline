@@ -1,11 +1,31 @@
-import { CheckCircleFilled, QuestionCircleOutlined, VideoCameraOutlined, EditOutlined, StarOutlined, ThunderboltOutlined, PictureOutlined, SettingOutlined } from '@ant-design/icons';
-import { Card, Row, Col, Typography, Tag, Avatar, Radio, Space, Tooltip, Button, Input, Tabs } from 'antd';
+import {
+  Bot,
+  CheckCircle,
+  HelpCircle,
+  Video,
+  Image,
+  Edit3,
+  Star,
+  Zap,
+  Settings,
+  Search,
+  Picture
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
-import styles from './AIModelSelector.module.less';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip } from '@/components/ui/tooltip';
 
-const { Title, Text, Paragraph } = Typography;
+import styles from './AIModelSelector.module.less';
 
 // 模型类型定义
 export type ModelCategory = 'text' | 'code' | 'image' | 'video' | 'audio' | 'all';
@@ -267,78 +287,85 @@ const AIModelSelector: React.FC<AIModelSelectorProps> = ({
 
   const renderPricing = (model: AIModel) => {
     if (!model.pricing) return null;
-    return <Tag color="blue" className={styles.priceTag}>¥{model.pricing.input}/{model.pricing.unit}</Tag>;
+    return <Badge variant="default" className={styles.priceTag}>¥{model.pricing.input}/{model.pricing.unit}</Badge>;
   };
 
   const renderCardView = () => (
-    <Row gutter={[16, 16]} className={styles.modelGrid}>
+    <div className={styles.modelGrid} style={{ display: 'grid', gridTemplateColumns: compact ? '1fr' : 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
       {filteredModels.map((model, index) => {
         const provider = getProviderInfo(model.provider);
         return (
-          <Col xs={24} sm={12} md={8} lg={6} key={model.id}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+          <motion.div
+            key={model.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+          >
+            <Card
+              hoverable
+              className={`${styles.modelCard} ${selectedModelId === model.id ? styles.selectedModel : ''}`}
+              onClick={() => handleModelSelect(model.id)}
+              style={{ padding: '16px', cursor: 'pointer' }}
             >
-              <Card
-                hoverable
-                className={`${styles.modelCard} ${selectedModelId === model.id ? styles.selectedModel : ''}`}
-                onClick={() => handleModelSelect(model.id)}
-                bodyStyle={{ padding: '16px' }}
-              >
-                <div className={styles.modelHeader}>
-                  <Space align="center">
-                    <Avatar
-                      size={40}
-                      className={styles.modelAvatar}
-                      style={{ backgroundColor: provider.color }}
-                    >
-                      {provider.icon}
-                    </Avatar>
-                    <div>
-                      <Text strong className={styles.modelName}>{model.nameCn || model.name}</Text>
-                      {model.isPro && <Tag color="gold" className={styles.proTag}><StarOutlined /> Pro</Tag>}
-                    </div>
-                  </Space>
-                  {selectedModelId === model.id && (
-                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
-                      <CheckCircleFilled className={styles.checkIcon} />
-                    </motion.div>
-                  )}
+              <div className={styles.modelHeader}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Avatar
+                    size={40}
+                    className={styles.modelAvatar}
+                    style={{ backgroundColor: provider.color }}
+                  >
+                    {provider.icon}
+                  </Avatar>
+                  <div>
+                    <span className={styles.modelName} style={{ fontWeight: 600 }}>{model.nameCn || model.name}</span>
+                    {model.isPro && <Badge variant="warning" className={styles.proTag} style={{ marginLeft: 4 }}><Star size={10} /> Pro</Badge>}
+                  </div>
                 </div>
+                {selectedModelId === model.id && (
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
+                    <CheckCircle size={20} color="#1677ff" />
+                  </motion.div>
+                )}
+              </div>
 
-                <div className={styles.providerInfo}>
-                  <Tag color="processing" className={styles.providerTag}>{provider.icon} {provider.nameCn}</Tag>
-                  {renderPricing(model)}
-                </div>
+              <div className={styles.providerInfo}>
+                <Badge variant="secondary" className={styles.providerTag}>{provider.icon} {provider.nameCn}</Badge>
+                {renderPricing(model)}
+              </div>
 
-                <Paragraph className={styles.modelDescription} ellipsis={{ rows: 2 }}>{model.description}</Paragraph>
+              <p className={styles.modelDescription} style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.65)',
+                margin: '8px 0'
+              }}>{model.description}</p>
 
-                <div className={styles.modelFeatures}>
-                  {model.features.slice(0, 3).map((feature, idx) => (
-                    <Tag key={idx} className={styles.featureTag}>{feature}</Tag>
-                  ))}
-                </div>
+              <div className={styles.modelFeatures}>
+                {model.features.slice(0, 3).map((feature, idx) => (
+                  <Badge key={idx} variant="outline" className={styles.featureTag}>{feature}</Badge>
+                ))}
+              </div>
 
-                <div className={styles.tokenLimit}>
-                  <Tooltip title="模型可处理的最大上下文长度">
-                    <Text type="secondary" className={styles.tokenText}>
-                      <ThunderboltOutlined /> {(model.tokenLimit / 1000).toFixed(0)}K tokens
-                    </Text>
-                  </Tooltip>
-                </div>
-              </Card>
-            </motion.div>
-          </Col>
+              <div className={styles.tokenLimit} style={{ marginTop: 8 }}>
+                <Tooltip title="模型可处理的最大上下文长度">
+                  <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>
+                    <Zap size={12} style={{ marginRight: 4 }} /> {(model.tokenLimit / 1000).toFixed(0)}K tokens
+                  </span>
+                </Tooltip>
+              </div>
+            </Card>
+          </motion.div>
         );
       })}
-    </Row>
+    </div>
   );
 
   const renderListView = () => (
     <div className={styles.modelList}>
-      <Radio.Group value={selectedModelId} onChange={(e) => handleModelSelect(e.target.value)} className={styles.modelRadioGroup}>
+      <RadioGroup value={selectedModelId} onValueChange={handleModelSelect}>
         {filteredModels.map((model, index) => {
           const provider = getProviderInfo(model.provider);
           return (
@@ -350,64 +377,90 @@ const AIModelSelector: React.FC<AIModelSelectorProps> = ({
               transition={{ duration: 0.2, delay: index * 0.03 }}
               whileHover={{ x: 4 }}
             >
-              <Radio value={model.id} className={styles.modelRadio}>
-                <Space align="center">
-                  <Avatar size={32} style={{ backgroundColor: provider.color }}>{provider.icon}</Avatar>
-                  <div>
-                    <div className={styles.modelNameRow}>
-                      <Text strong>{model.nameCn || model.name}</Text>
-                      {model.isPro && <Tag color="gold" className={styles.proTagSmall}><StarOutlined /> Pro</Tag>}
-                      {renderPricing(model)}
-                    </div>
-                    <div className={styles.modelProviderRow}>
-                      <Text type="secondary">{provider.nameCn}</Text>
-                      <span className={styles.tokenBadge}><ThunderboltOutlined /> {(model.tokenLimit / 1000).toFixed(0)}K</span>
-                    </div>
+              <div className={styles.modelRadio} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px', borderRadius: 8, border: selectedModelId === model.id ? '1px solid #1677ff' : '1px solid #f0f0f0', cursor: 'pointer', flex: 1 }}
+                onClick={() => handleModelSelect(model.id)}
+              >
+                <Avatar size={32} style={{ backgroundColor: provider.color }}>{provider.icon}</Avatar>
+                <div style={{ flex: 1 }}>
+                  <div className={styles.modelNameRow} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ fontWeight: 600 }}>{model.nameCn || model.name}</span>
+                    {model.isPro && <Badge variant="warning" className={styles.proTagSmall} style={{ fontSize: 10 }}><Star size={8} /> Pro</Badge>}
+                    {renderPricing(model)}
                   </div>
-                </Space>
-              </Radio>
+                  <div className={styles.modelProviderRow} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>
+                    <span>{provider.nameCn}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}><Zap size={10} /> {(model.tokenLimit / 1000).toFixed(0)}K</span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           );
         })}
-      </Radio.Group>
+      </RadioGroup>
     </div>
   );
 
   const renderTabs = () => (
     <Tabs
-      activeKey={activeTab}
-      onChange={setActiveTab}
-      items={[
-        { key: 'text', label: <span><EditOutlined /> 文本模型</span> },
-        { key: 'image', label: <span><PictureOutlined /> 图像生成</span> },
-        { key: 'video', label: <span><VideoCameraOutlined /> 视频生成</span> }
-      ]}
+      value={activeTab}
+      onValueChange={setActiveTab}
       className={styles.modelTabs}
-    />
+    >
+      <TabsList>
+        <TabsTrigger value="text">
+          <Edit3 size={14} style={{ marginRight: 4 }} /> 文本模型
+        </TabsTrigger>
+        <TabsTrigger value="image">
+          <Image size={14} style={{ marginRight: 4 }} /> 图像生成
+        </TabsTrigger>
+        <TabsTrigger value="video">
+          <Video size={14} style={{ marginRight: 4 }} /> 视频生成
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 
   return (
     <motion.div className={`${styles.container} ${className}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <motion.div className={styles.header} initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.3 }}>
-        <Title level={compact ? 5 : 4} className={styles.title}>
+        <h4 className={styles.title} style={{ margin: 0, fontSize: compact ? 14 : 16, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
           选择AI模型
           <Tooltip title="选择不同的AI模型以适应您的任务需求">
-            <QuestionCircleOutlined className={styles.helpIcon} />
+            <HelpCircle size={16} style={{ color: 'rgba(0,0,0,0.45)', cursor: 'help' }} />
           </Tooltip>
-        </Title>
+        </h4>
 
         <div className={styles.controls}>
           {!compact && (
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: 0.1 }}>
-              <Input.Search placeholder="搜索模型..." onChange={(e) => setSearchQuery(e.target.value)} className={styles.searchInput} allowClear />
+              <Input
+                placeholder="搜索模型..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+                allowClear
+                icon={<Search size={16} />}
+              />
             </motion.div>
           )}
           {!compact && (
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: 0.2 }}>
-              <Radio.Group value={viewMode} onChange={(e) => setViewMode(e.target.value)} optionType="button" buttonStyle="solid" className={styles.viewToggle}>
-                <Radio.Button value="card">卡片</Radio.Button>
-                <Radio.Button value="list">列表</Radio.Button>
-              </Radio.Group>
+              <div style={{ display: 'flex', gap: 4 }}>
+                <Button
+                  variant={viewMode === 'card' ? "default" : "outline"}
+                  size="small"
+                  onClick={() => setViewMode('card')}
+                >
+                  卡片
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? "default" : "outline"}
+                  size="small"
+                  onClick={() => setViewMode('list')}
+                >
+                  列表
+                </Button>
+              </div>
             </motion.div>
           )}
         </div>
@@ -421,7 +474,7 @@ const AIModelSelector: React.FC<AIModelSelectorProps> = ({
 
       {onConfigureAPI && (
         <motion.div className={styles.footer} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
-          <Button type="link" onClick={() => onConfigureAPI(models.find(m => m.id === selectedModelId)?.provider || 'bytedance')} icon={<SettingOutlined />}>
+          <Button variant="ghost" onClick={() => onConfigureAPI(models.find(m => m.id === selectedModelId)?.provider || 'bytedance')} icon={<Settings size={16} />}>
             配置API密钥
           </Button>
         </motion.div>

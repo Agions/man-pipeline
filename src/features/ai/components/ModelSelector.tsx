@@ -4,34 +4,28 @@
  */
 
 import {
-  CheckCircleFilled,
-  RobotOutlined,
-  LoadingOutlined,
-  ThunderboltOutlined,
-  StarOutlined,
-  DollarOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
-import {
-  Card,
-  Space,
-  Typography,
-  Tag,
-  Badge,
-  Tooltip,
-  Button,
-  Input,
-  Segmented,
-  Spin,
-  Empty,
-  Divider,
-  Alert,
-  Row,
-  Col,
-  Avatar
-} from 'antd';
+  Bot,
+  CheckCircle,
+  Loader,
+  Zap,
+  Star,
+  DollarSign,
+  Settings,
+  Search,
+  Loader2
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState, useMemo } from 'react';
+
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip } from '@/components/ui/tooltip';
 
 import { MODEL_PROVIDERS } from '@/core/config/models.config';
 import { LLM_MODELS } from '@/core/constants';
@@ -40,11 +34,9 @@ import type { ModelCategory, ModelProvider } from '@/core/types';
 
 import styles from './ModelSelector.module.less';
 
-const { Title, Text, Paragraph } = Typography;
-
 // 分类选项
 const CATEGORY_OPTIONS = [
-  { label: '全部', value: 'all', icon: <RobotOutlined /> },
+  { label: '全部', value: 'all' },
   { label: '文本', value: 'text' },
   { label: '代码', value: 'code' },
   { label: '图像', value: 'image' },
@@ -99,8 +91,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [testing, setTesting] = useState(false);
 
-  // 转换 LLM_MODELS 为组件格式 - 使用类型断言绕过复杂类型推断
-   
+  // 转换 LLM_MODELS 为组件格式
   const allModels = useMemo(() => {
     const models = Object.values(LLM_MODELS) as any[];
     return models.map((m: any) => ({
@@ -122,17 +113,14 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
   const filteredModels = useMemo(() => {
     let models = allModels;
 
-    // 按分类过滤
     if (category !== 'all') {
       models = models.filter(m => m.category.includes(category));
     }
 
-    // 按提供商过滤
     if (provider !== 'all') {
       models = models.filter(m => m.provider === provider);
     }
 
-    // 按搜索过滤
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       models = models.filter(m =>
@@ -193,64 +181,71 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
         >
           <div className={styles.cardHeader}>
             <div className={styles.modelInfo}>
-              <Avatar
-                src={getProviderIcon(model.provider)}
-                size={compact ? 32 : 40}
-                className={styles.providerAvatar}
-              />
+              <Avatar className={styles.providerAvatar}>
+                <AvatarImage src={getProviderIcon(model.provider)} />
+                <AvatarFallback>{model.provider[0]?.toUpperCase()}</AvatarFallback>
+              </Avatar>
               <div className={styles.modelMeta}>
-                <Text strong className={styles.modelName}>
+                <span className={styles.modelName}>
                   {model.name}
-                  {isSelected && <CheckCircleFilled className={styles.checkIcon} />}
-                </Text>
-                <Text type="secondary" className={styles.providerName}>
+                  {isSelected && <CheckCircle size={14} className={styles.checkIcon} />}
+                </span>
+                <span className={styles.providerName} style={{ color: 'var(--muted-foreground)' }}>
                   {getProviderName(model.provider)}
-                </Text>
+                </span>
               </div>
             </div>
-            <Space>
+            <div style={{ display: 'flex', gap: 8 }}>
               {model.recommended && (
                 <Tooltip title="推荐模型">
-                  <StarOutlined className={styles.proIcon} />
+                  <Star size={16} className={styles.proIcon} />
                 </Tooltip>
               )}
               {!isAvailable && (
-                <Tag color="default">未配置</Tag>
+                <Badge variant="secondary">未配置</Badge>
               )}
-            </Space>
+            </div>
           </div>
 
           {!compact && (
             <>
-              <Paragraph className={styles.description} ellipsis={{ rows: 2 }}>
+              <p className={styles.description} style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.65)',
+                margin: '8px 0'
+              }}>
                 {model.description}
-              </Paragraph>
+              </p>
 
               <div className={styles.features}>
                 {model.features.slice(0, 3).map((feature, idx) => (
-                  <Tag key={idx} className={styles.featureTag}>
+                  <Badge key={idx} variant="secondary" className={styles.featureTag}>
                     {feature}
-                  </Tag>
+                  </Badge>
                 ))}
               </div>
 
-              <Divider className={styles.divider} />
+              <Separator className={styles.divider} />
 
               <div className={styles.cardFooter}>
-                <Space>
+                <div style={{ display: 'flex', gap: 8 }}>
                   <Tooltip title={`上下文: ${(model.contextWindow / 1000).toFixed(0)}K tokens`}>
-                    <Tag icon={<RobotOutlined />}>
+                    <Badge variant="outline" icon={<Bot size={12} />}>
                       {(model.contextWindow / 1000).toFixed(0)}K
-                    </Tag>
+                    </Badge>
                   </Tooltip>
                   {showCost && cost && (
                     <Tooltip title="预估成本（500字脚本）">
-                      <Tag icon={<DollarOutlined />} color="green">
+                      <Badge variant="outline" icon={<DollarSign size={12} />} style={{ color: '#52c41a', borderColor: '#b7eb8f' }}>
                         {cost}
-                      </Tag>
+                      </Badge>
                     </Tooltip>
                   )}
-                </Space>
+                </div>
               </div>
             </>
           )}
@@ -263,135 +258,159 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
     <div className={styles.container}>
       {/* 头部 */}
       <div className={styles.header}>
-        <Title level={4} className={styles.title}>
-          <RobotOutlined /> 选择 AI 模型
-        </Title>
+        <h4 className={styles.title} style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>
+          <Bot size={20} style={{ marginRight: 8 }} /> 选择 AI 模型
+        </h4>
         {selectedModel && (
-          <Space>
-            <Text type="secondary">
-              当前: <Text strong>{selectedModel.name}</Text>
-            </Text>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: 14 }}>
+              当前: <strong>{selectedModel.name}</strong>
+            </span>
             {isConfigured ? (
-              <Badge status="success" text="已配置" />
+              <Badge variant="success">已配置</Badge>
             ) : (
-              <Badge status="warning" text="未配置" />
+              <Badge variant="warning">未配置</Badge>
             )}
-          </Space>
+          </div>
         )}
       </div>
 
       {/* 错误提示 */}
       {error && (
-        <Alert
-          message={error}
-          type="error"
-          showIcon
-          closable
-          className={styles.alert}
-        />
+        <Alert variant="destructive" className={styles.alert}>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
       )}
 
       {/* 任务推荐 */}
       {taskType && (
         <div className={styles.recommendations}>
-          <Text type="secondary" className={styles.sectionTitle}>
-            <StarOutlined /> 推荐模型
-          </Text>
-          <Space wrap>
+          <span type="secondary" className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+            <Star size={14} /> 推荐模型
+          </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {recommended.map((model, idx) => (
               <Button
                 key={model.id}
-                type={currentRecommended?.id === model.id ? 'primary' : 'default'}
+                variant={currentRecommended?.id === model.id ? "default" : "outline"}
+                size="small"
                 onClick={() => selectRecommended(idx)}
               >
-                {idx === 0 && <StarOutlined />}
+                {idx === 0 && <Star size={12} />}
                 {model.name}
               </Button>
             ))}
-          </Space>
+          </div>
         </div>
       )}
 
       {/* 过滤器 */}
       <div className={styles.filters}>
-        <Row gutter={[16, 16]}>
-          <Col span={24}>
-            <Input.Search
-              placeholder="搜索模型..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              allowClear
-              className={styles.searchInput}
-            />
-          </Col>
-          <Col span={12}>
-            <Segmented
-              options={CATEGORY_OPTIONS.map(opt => ({
-                label: opt.label,
-                value: opt.value,
-                icon: opt.icon
-              }))}
-              value={category}
-              onChange={val => setCategory(val as ModelCategory)}
-              block
-            />
-          </Col>
-          <Col span={12}>
-            <Segmented
-              options={[
-                { label: '全部', value: 'all' },
-                ...Object.entries(MODEL_PROVIDERS).map(([key, config]) => ({
-                  label: config.name,
-                  value: key
-                }))
-              ]}
-              value={provider}
-              onChange={val => setProvider(val as ModelProvider)}
-              block
-            />
-          </Col>
-        </Row>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <Input
+            placeholder="搜索模型..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            allowClear
+            className={styles.searchInput}
+            icon={<Search size={16} />}
+          />
+          <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                {CATEGORY_OPTIONS.map(opt => (
+                  <Button
+                    key={opt.value}
+                    variant={category === opt.value ? "default" : "ghost"}
+                    size="small"
+                    onClick={() => setCategory(opt.value as ModelCategory)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                <Button
+                  variant={provider === 'all' ? "default" : "ghost"}
+                  size="small"
+                  onClick={() => setProvider('all')}
+                >
+                  全部
+                </Button>
+                {Object.entries(MODEL_PROVIDERS).map(([key, config]) => (
+                  <Button
+                    key={key}
+                    variant={provider === key ? "default" : "ghost"}
+                    size="small"
+                    onClick={() => setProvider(key as ModelProvider)}
+                  >
+                    {config.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 模型列表 */}
-      <Spin spinning={isLoading} tip="加载中...">
+      <div style={{ position: 'relative', minHeight: 200 }}>
+        {isLoading && (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(255,255,255,0.8)',
+            zIndex: 10
+          }}>
+            <Loader className="animate-spin" size={24} />
+            <span style={{ marginLeft: 8 }}>加载中...</span>
+          </div>
+        )}
         <AnimatePresence mode="popLayout">
           {filteredModels.length > 0 ? (
             <div className={compact ? styles.compactGrid : styles.modelGrid}>
               {filteredModels.map(renderModelCard)}
             </div>
           ) : (
-            <Empty
-              description="没有找到匹配的模型"
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-            />
+            <div style={{
+              padding: 32,
+              textAlign: 'center',
+              color: 'rgba(0,0,0,0.25)'
+            }}>
+              没有找到匹配的模型
+            </div>
           )}
         </AnimatePresence>
-      </Spin>
+      </div>
 
       {/* 底部操作 */}
       {selectedModel && !compact && (
         <div className={styles.footer}>
-          <Divider />
-          <Space>
+          <Separator />
+          <div style={{ display: 'flex', gap: 8, paddingTop: 16 }}>
             {!isConfigured ? (
               <Button
-                type="primary"
-                icon={<SettingOutlined />}
+                variant="default"
+                icon={<Settings size={16} />}
                 onClick={() => onConfigure?.(selectedModel.provider)}
               >
                 配置 {getProviderName(selectedModel.provider)} API
               </Button>
             ) : (
               <Button
-                icon={testing ? <LoadingOutlined /> : <ThunderboltOutlined />}
+                variant="outline"
+                icon={testing ? <Loader size={16} className="animate-spin" /> : <Zap size={16} />}
                 onClick={handleTest}
-                loading={testing}
               >
                 测试连接
               </Button>
             )}
-          </Space>
+          </div>
         </div>
       )}
     </div>

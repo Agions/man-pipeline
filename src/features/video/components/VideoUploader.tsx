@@ -1,10 +1,11 @@
-import { UploadOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { invoke, isTauri , convertFileSrc } from '@tauri-apps/api/core';
+import { Upload, Video } from 'lucide-react';
+import { isTauri, convertFileSrc } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
-import { Upload, Button, Progress, message } from 'antd';
-import type { UploadProps, UploadFile } from 'antd/es/upload/interface';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { toast } from '@/components/ui/sonner';
 
 import { logger } from '@/core/utils/logger';
 
@@ -23,10 +24,10 @@ interface CustomRequestOptions {
 }
 
 const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialValue }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoUrl, setVideoUrl] = useState<string | undefined>(initialValue);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isTauriApp = isTauri();
 
@@ -43,11 +44,11 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
         const fileUrl = convertFileSrc(filePath);
         setVideoUrl(fileUrl);
         onUploadSuccess(filePath);
-        message.success('视频选择成功');
+        toast.success('视频选择成功');
       }
     } catch (error) {
       logger.error('选择文件失败:', error);
-      message.error('选择文件失败');
+      toast.error('选择文件失败');
     }
   };
 
@@ -85,31 +86,27 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
       reader.onload = () => {
         setVideoUrl(reader.result as string);
         setProgress(100);
-        onSuccess?.(null);
         onUploadSuccess(reader.result as string);
-        message.success('视频上传成功');
+        toast.success('视频上传成功');
         setUploading(false);
       };
     } catch (error) {
       logger.error('上传失败:', error);
       setUploading(false);
       setProgress(0);
-      onError?.(error as Error);
-      message.error('视频上传失败');
+      toast.error('视频上传失败');
     }
   };
 
-  const uploadProps: UploadProps = {
-    name: 'video',
-    accept: 'video/*',
-    customRequest: customRequest as UploadProps['customRequest'],
-    fileList,
-    showUploadList: false,
-    onChange(info) {
-      if (info.file.status === 'done') {
-        setFileList([info.file]);
-      }
-    },
+  const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await customRequest({
+      file,
+      onProgress: ({ percent }) => setProgress(percent),
+      onSuccess: () => {},
+      onError: () => {},
+    });
   };
 
   return (
@@ -125,10 +122,10 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
           </div>
           <div className={styles.videoActions}>
             <Button
-              icon={<UploadOutlined />}
+              variant="outline"
+              icon={<Upload size={16} />}
               onClick={() => {
                 setVideoUrl(undefined);
-                setFileList([]);
               }}
             >
               重新选择视频
@@ -139,8 +136,9 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
         <div className={styles.uploader}>
           {isTauriApp ? (
             <Button
-              icon={<VideoCameraOutlined />}
-              size="large"
+              variant="outline"
+              icon={<Video size={18} />}
+              size="lg"
               onClick={openFileDialog}
               loading={uploading}
               className={styles.uploadButton}
@@ -148,16 +146,25 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUploadSuccess, initialV
               选择视频文件
             </Button>
           ) : (
-            <Upload {...uploadProps}>
+            <>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*"
+                style={{ display: 'none' }}
+                onChange={handleFileInputChange}
+              />
               <Button
-                icon={<UploadOutlined />}
-                size="large"
+                variant="outline"
+                icon={<Upload size={18} />}
+                size="lg"
                 loading={uploading}
                 className={styles.uploadButton}
+                onClick={() => fileInputRef.current?.click()}
               >
                 上传视频
               </Button>
-            </Upload>
+            </>
           )}
           <p className={styles.uploadTip}>
             支持MP4、MOV、AVI或MKV格式，最大文件大小500MB

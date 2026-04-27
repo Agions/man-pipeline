@@ -1,28 +1,42 @@
 import {
-  EditOutlined,
-  DeleteOutlined,
-  PlayCircleOutlined,
-  PlusOutlined,
-  SaveOutlined,
-  ExportOutlined,
-  DownOutlined
-} from '@ant-design/icons';
+  Edit3,
+  Trash2,
+  Play,
+  Plus,
+  Save,
+  Download,
+  ChevronDown,
+  Sparkles
+} from 'lucide-react';
 import { convertFileSrc } from '@tauri-apps/api/core';
-import {
-  Card,
-  Button,
-  Table,
-  Space,
-  Form,
-  Input,
-  Select,
-  Modal,
-  Tooltip,
-  Dropdown,
-  Menu,
-  message
-} from 'antd';
 import React, { useState, useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { toast } from '@/components/ui/sonner';
 
 import { tauriService } from '@/core/services';
 import type { ScriptData, ScriptMetadata } from '@/core/types';
@@ -76,13 +90,20 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
 }) => {
   const [segments, setSegments] = useState<VideoSegment[]>(initialSegments);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editForm] = Form.useForm();
+  const [editFormValues, setEditFormValues] = useState<{
+    start: number;
+    end: number;
+    type: string;
+    content: string;
+  } | null>(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewSrc, setPreviewSrc] = useState<string>('');
   const [previewLoading, setPreviewLoading] = useState(false);
   const [aiModalVisible, setAiModalVisible] = useState(false);
   const [exportMenuVisible, setExportMenuVisible] = useState(false);
   const [totalDuration, setTotalDuration] = useState(0);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [segmentToDelete, setSegmentToDelete] = useState<number | null>(null);
 
   // 当段落变化时重新计算总时长
   useEffect(() => {
@@ -97,84 +118,81 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
     const startTime = lastSegment ? lastSegment.end : 0;
     const endTime = startTime + 30; // 默认片段长度30秒
 
-    // 初始化表单值
-    editForm.setFieldsValue({
+    setEditFormValues({
       start: startTime,
       end: endTime,
       type: 'narration',
       content: ''
     });
-
-    // 设置编辑索引为新片段
     setEditingIndex(segments.length);
   };
 
   // 编辑片段
   const handleEditSegment = (index: number) => {
     const segment = segments[index];
-
-    // 初始化表单值
-    editForm.setFieldsValue({
+    setEditFormValues({
       start: segment.start,
       end: segment.end,
       type: segment.type || 'narration',
       content: segment.content || ''
     });
-
-    // 设置编辑索引
     setEditingIndex(index);
   };
 
   // 保存编辑片段
   const handleSaveSegment = () => {
-    editForm.validateFields().then(values => {
-      const start = parseFloat(values.start);
-      const end = parseFloat(values.end);
+    if (!editFormValues) return;
 
-      // 创建新的片段数组，更新编辑的片段
-      const newSegments = [...segments];
-      const segment: VideoSegment = {
-        id: newSegments[editingIndex as number]?.id || `seg_${Date.now()}`,
-        start,
-        end,
-        type: values.type,
-        content: values.content
-      };
+    const start = editFormValues.start;
+    const end = editFormValues.end;
 
-      if (editingIndex !== null) {
-        if (editingIndex < segments.length) {
-          // 更新现有片段
-          newSegments[editingIndex] = segment;
-        } else {
-          // 添加新片段
-          newSegments.push(segment);
-        }
+    if (end <= start) {
+      toast.error('结束时间必须大于开始时间');
+      return;
+    }
+
+    const newSegments = [...segments];
+    const segment: VideoSegment = {
+      id: newSegments[editingIndex as number]?.id || `seg_${Date.now()}`,
+      start,
+      end,
+      type: editFormValues.type,
+      content: editFormValues.content
+    };
+
+    if (editingIndex !== null) {
+      if (editingIndex < segments.length) {
+        newSegments[editingIndex] = segment;
+      } else {
+        newSegments.push(segment);
       }
+    }
 
-      // 更新状态并关闭编辑
-      setSegments(newSegments);
-      setEditingIndex(null);
-      editForm.resetFields();
-    });
+    setSegments(newSegments);
+    setEditingIndex(null);
+    setEditFormValues(null);
   };
 
   // 取消编辑
   const handleCancelEdit = () => {
     setEditingIndex(null);
-    editForm.resetFields();
+    setEditFormValues(null);
   };
 
   // 删除片段
   const handleDeleteSegment = (index: number) => {
-    Modal.confirm({
-      title: '确认删除',
-      content: '确定要删除这个片段吗？',
-      onOk: () => {
-        const newSegments = [...segments];
-        newSegments.splice(index, 1);
-        setSegments(newSegments);
-      }
-    });
+    setSegmentToDelete(index);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (segmentToDelete !== null) {
+      const newSegments = [...segments];
+      newSegments.splice(segmentToDelete, 1);
+      setSegments(newSegments);
+    }
+    setDeleteConfirmOpen(false);
+    setSegmentToDelete(null);
   };
 
   // 预览片段
@@ -183,18 +201,16 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
       setPreviewLoading(true);
       const segment = segments[index];
 
-      // 使用服务函数生成预览
       const previewPath = await tauriService.generatePreview({
         inputPath: videoPath || '',
         segment: { start: segment.start, end: segment.end, type: 'preview' },
       });
 
-      // 设置预览源并显示预览
       setPreviewSrc(convertFileSrc(previewPath));
       setPreviewVisible(true);
     } catch (error) {
       logger.error('生成预览失败:', error);
-      message.error('生成预览失败');
+      toast.error('生成预览失败');
     } finally {
       setPreviewLoading(false);
     }
@@ -213,79 +229,15 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
   // AI 优化脚本
   const handleAIImprove = async () => {
     try {
-      message.info('正在使用 AI 优化脚本...');
-
-      // 这里应该实现调用 AI API 优化脚本的功能
-      // 当前是模拟实现
-
-      // 关闭模态框
+      toast.info('正在使用 AI 优化脚本...');
       setAiModalVisible(false);
-
-      // 模拟优化完成
       setTimeout(() => {
-        message.success('脚本优化完成');
+        toast.success('脚本优化完成');
       }, 2000);
     } catch (error) {
       logger.error('AI 优化脚本失败:', error);
-      message.error('AI 优化脚本失败');
+      toast.error('AI 优化脚本失败');
     }
-  };
-
-  // 解析脚本文本为段落
-  const parseScriptText = (text: string): VideoSegment[] => {
-    try {
-      const lines = text.split('\n').filter(line => line.trim().length > 0);
-      const resultSegments: VideoSegment[] = [];
-
-      let currentSegment: VideoSegment | null = null;
-
-      for (const line of lines) {
-        // 尝试匹配时间轴格式 [00:00 - 00:00] 文本内容
-        const timeMatch = line.match(/\[(\d{1,2}:\d{2}(?::\d{2})?) - (\d{1,2}:\d{2}(?::\d{2})?)\]/);
-
-        if (timeMatch) {
-          // 解析时间
-          const startTime = parseTimeString(timeMatch[1]);
-          const endTime = parseTimeString(timeMatch[2]);
-
-          // 提取内容（时间轴后面的文本）
-          const content = line.substring(timeMatch[0].length).trim();
-
-          currentSegment = {
-            id: `seg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            start: startTime,
-            end: endTime,
-            type: 'narration',
-            content
-          };
-
-          resultSegments.push(currentSegment);
-        } else if (currentSegment) {
-          // 如果没有匹配到时间轴，但有当前片段，将这行添加到当前片段的内容中
-          currentSegment.content += '\n' + line.trim();
-        }
-      }
-
-      return resultSegments;
-    } catch (error) {
-      logger.error('解析脚本失败:', error);
-      return [];
-    }
-  };
-
-  // 解析时间字符串为秒数
-  const parseTimeString = (timeString: string): number => {
-    const parts = timeString.split(':').map(Number);
-
-    if (parts.length === 3) {
-      // 格式: HH:MM:SS
-      return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    } else if (parts.length === 2) {
-      // 格式: MM:SS
-      return parts[0] * 60 + parts[1];
-    }
-
-    return 0;
   };
 
   // 表格列定义
@@ -338,30 +290,17 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
       key: 'action',
       width: 180,
       render: (_: unknown, record: VideoSegment, index: number) => (
-        <Space size="small">
-          <Tooltip title="编辑">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
-              onClick={() => handleEditSegment(index)}
-            />
-          </Tooltip>
-          <Tooltip title="预览">
-            <Button
-              type="text"
-              icon={<PlayCircleOutlined />}
-              onClick={() => handlePreviewSegment(index)}
-            />
-          </Tooltip>
-          <Tooltip title="删除">
-            <Button
-              type="text"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={() => handleDeleteSegment(index)}
-            />
-          </Tooltip>
-        </Space>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Button variant="ghost" size="small" onClick={() => handleEditSegment(index)}>
+            <Edit3 size={14} />
+          </Button>
+          <Button variant="ghost" size="small" onClick={() => handlePreviewSegment(index)}>
+            <Play size={14} />
+          </Button>
+          <Button variant="ghost" size="small" onClick={() => handleDeleteSegment(index)}>
+            <Trash2 size={14} color="#ff4d4f" />
+          </Button>
+        </div>
       )
     }
   ];
@@ -371,39 +310,61 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
       <Card
         title="脚本编辑"
         className={styles.editorCard}
-        extra={
-          <Space>
-            <Button
-              icon={<EditOutlined />}
-              onClick={handleOpenAIModal}
-            >
+        footer={
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Button variant="outline" icon={<Sparkles size={16} />} onClick={handleOpenAIModal}>
               AI优化
             </Button>
-            <Button
-              type="primary"
-              icon={<SaveOutlined />}
-              onClick={() => onSave?.(segments)}
-            >
+            <Button variant="default" icon={<Save size={16} />} onClick={() => onSave?.(segments)}>
               保存
             </Button>
             {onExport && (
-              <Dropdown
-                overlay={
-                  <Menu onClick={({ key }) => onExport(key as string)}>
-                    <Menu.Item key="txt">文本文件 (.txt)</Menu.Item>
-                    <Menu.Item key="srt">字幕文件 (.srt)</Menu.Item>
-                    <Menu.Item key="doc">Word文档 (.docx)</Menu.Item>
-                  </Menu>
-                }
-                visible={exportMenuVisible}
-                onVisibleChange={setExportMenuVisible}
-              >
-                <Button icon={<ExportOutlined />} onClick={handleExport}>
-                  导出 <DownOutlined />
+              <div style={{ position: 'relative' }}>
+                <Button variant="outline" icon={<Download size={16} />} onClick={handleExport}>
+                  导出 <ChevronDown size={14} />
                 </Button>
-              </Dropdown>
+                {exportMenuVisible && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    marginTop: 4,
+                    background: 'white',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: 6,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    zIndex: 100,
+                    minWidth: 120
+                  }}>
+                    <div
+                      style={{ padding: '8px 12px', cursor: 'pointer' }}
+                      onClick={() => { onExport('txt'); setExportMenuVisible(false); }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#f5f5f5'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      文本文件 (.txt)
+                    </div>
+                    <div
+                      style={{ padding: '8px 12px', cursor: 'pointer' }}
+                      onClick={() => { onExport('srt'); setExportMenuVisible(false); }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#f5f5f5'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      字幕文件 (.srt)
+                    </div>
+                    <div
+                      style={{ padding: '8px 12px', cursor: 'pointer' }}
+                      onClick={() => { onExport('doc'); setExportMenuVisible(false); }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.background = '#f5f5f5'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.background = 'transparent'}
+                    >
+                      Word文档 (.docx)
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
-          </Space>
+          </div>
         }
       >
         <div className={styles.statsBar}>
@@ -411,125 +372,186 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
           <div>总时长: {formatDuration(totalDuration)}</div>
         </div>
 
-        <Table
-          rowKey={(record, index) => String(index)}
-          dataSource={segments}
-          columns={columns}
-          pagination={false}
-          className={styles.segmentsTable}
-          footer={() => (
-            <Button
-              type="dashed"
-              icon={<PlusOutlined />}
-              block
-              onClick={handleAddSegment}
-            >
-              添加片段
-            </Button>
-          )}
-        />
+        <div className={styles.tableContainer}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <th style={{ padding: '8px', textAlign: 'left', width: 180 }}>时间</th>
+                <th style={{ padding: '8px', textAlign: 'left', width: 80 }}>时长</th>
+                <th style={{ padding: '8px', textAlign: 'left', width: 100 }}>类型</th>
+                <th style={{ padding: '8px', textAlign: 'left' }}>内容</th>
+                <th style={{ padding: '8px', textAlign: 'left', width: 180 }}>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {segments.map((record, index) => (
+                <tr key={record.id || index} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                  <td style={{ padding: '8px' }}>
+                    {formatDuration(record.start)} - {formatDuration(record.end)}
+                  </td>
+                  <td style={{ padding: '8px' }}>
+                    {formatDuration(record.end - record.start)}
+                  </td>
+                  <td style={{ padding: '8px' }}>
+                    {record.type === 'narration' ? '旁白' :
+                     record.type === 'dialogue' ? '对白' :
+                     record.type === 'action' ? '动作' :
+                     record.type === 'transition' ? '转场' : record.type}
+                  </td>
+                  <td style={{ padding: '8px' }}>
+                    <div className={styles.contentCell}>
+                      {record.content || <span className={styles.emptyContent}>（无内容）</span>}
+                    </div>
+                  </td>
+                  <td style={{ padding: '8px' }}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <Button variant="ghost" size="small" onClick={() => handleEditSegment(index)}>
+                        <Edit3 size={14} />
+                      </Button>
+                      <Button variant="ghost" size="small" onClick={() => handlePreviewSegment(index)}>
+                        <Play size={14} />
+                      </Button>
+                      <Button variant="ghost" size="small" onClick={() => handleDeleteSegment(index)}>
+                        <Trash2 size={14} color="#ff4d4f" />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Button
+            variant="outline"
+            icon={<Plus size={16} />}
+            style={{ width: '100%', marginTop: 16, borderStyle: 'dashed' }}
+            onClick={handleAddSegment}
+          >
+            添加片段
+          </Button>
+        </div>
 
-        {editingIndex !== null && (
+        {editingIndex !== null && editFormValues && (
           <div className={styles.editForm}>
             <Card title={`编辑片段 #${editingIndex + 1}`} className={styles.editCard}>
-              <Form
-                form={editForm}
-                layout="vertical"
-              >
-                <div className={styles.timeInputs}>
-                  <Form.Item
-                    name="start"
-                    label="开始时间 (秒)"
-                    rules={[{ required: true, message: '请输入开始时间' }]}
-                  >
-                    <Input type="number" step="0.1" min="0" />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="end"
-                    label="结束时间 (秒)"
-                    rules={[
-                      { required: true, message: '请输入结束时间' },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (value > getFieldValue('start')) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(new Error('结束时间必须大于开始时间'));
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input type="number" step="0.1" min="0" />
-                  </Form.Item>
+              <div className={styles.timeInputs}>
+                <div className={styles.formField}>
+                  <label style={{ display: 'block', marginBottom: 4, fontSize: 14, fontWeight: 500 }}>开始时间 (秒)</label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={editFormValues.start}
+                    onChange={(e) => setEditFormValues({ ...editFormValues, start: parseFloat(e.target.value) || 0 })}
+                  />
                 </div>
-
-                <Form.Item
-                  name="type"
-                  label="类型"
-                  rules={[{ required: true, message: '请选择类型' }]}
-                >
-                  <Select>
-                    <Select.Option value="narration">旁白</Select.Option>
-                    <Select.Option value="dialogue">对白</Select.Option>
-                    <Select.Option value="action">动作</Select.Option>
-                    <Select.Option value="transition">转场</Select.Option>
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  name="content"
-                  label="内容"
-                  rules={[{ required: true, message: '请输入内容' }]}
-                >
-                  <Input.TextArea rows={4} />
-                </Form.Item>
-
-                <div className={styles.formActions}>
-                  <Space>
-                    <Button onClick={handleCancelEdit}>取消</Button>
-                    <Button type="primary" onClick={handleSaveSegment}>保存</Button>
-                  </Space>
+                <div className={styles.formField}>
+                  <label style={{ display: 'block', marginBottom: 4, fontSize: 14, fontWeight: 500 }}>结束时间 (秒)</label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    value={editFormValues.end}
+                    onChange={(e) => setEditFormValues({ ...editFormValues, end: parseFloat(e.target.value) || 0 })}
+                  />
                 </div>
-              </Form>
+              </div>
+
+              <div className={styles.formField}>
+                <label style={{ display: 'block', marginBottom: 4, fontSize: 14, fontWeight: 500 }}>类型</label>
+                <Select
+                  value={editFormValues.type}
+                  onValueChange={(v) => setEditFormValues({ ...editFormValues, type: v })}
+                  style={{ width: '100%' }}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="narration">旁白</SelectItem>
+                    <SelectItem value="dialogue">对白</SelectItem>
+                    <SelectItem value="action">动作</SelectItem>
+                    <SelectItem value="transition">转场</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className={styles.formField}>
+                <label style={{ display: 'block', marginBottom: 4, fontSize: 14, fontWeight: 500 }}>内容</label>
+                <textarea
+                  rows={4}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: 6,
+                    fontSize: 14,
+                    resize: 'vertical'
+                  }}
+                  value={editFormValues.content}
+                  onChange={(e) => setEditFormValues({ ...editFormValues, content: e.target.value })}
+                />
+              </div>
+
+              <div className={styles.formActions}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <Button variant="outline" onClick={handleCancelEdit}>取消</Button>
+                  <Button variant="default" onClick={handleSaveSegment}>保存</Button>
+                </div>
+              </div>
             </Card>
           </div>
         )}
       </Card>
 
-      <Modal
-        title="预览片段"
-        open={previewVisible}
-        onCancel={() => setPreviewVisible(false)}
-        footer={null}
-        width={700}
-        destroyOnClose
-      >
-        <div className={styles.previewContainer}>
-          {previewLoading ? (
-            <div className={styles.previewLoading}>
-              <p>正在生成预览...</p>
-            </div>
-          ) : (
-            <video
-              src={previewSrc}
-              controls
-              autoPlay
-              className={styles.previewVideo}
-            />
-          )}
-        </div>
-      </Modal>
+      <Dialog open={previewVisible} onOpenChange={setPreviewVisible}>
+        <DialogContent width={700}>
+          <DialogHeader>
+            <DialogTitle>预览片段</DialogTitle>
+          </DialogHeader>
+          <div className={styles.previewContainer}>
+            {previewLoading ? (
+              <div className={styles.previewLoading}>
+                <p>正在生成预览...</p>
+              </div>
+            ) : (
+              <video
+                src={previewSrc}
+                controls
+                autoPlay
+                className={styles.previewVideo}
+                style={{ width: '100%' }}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
-        title="AI 优化脚本"
-        open={aiModalVisible}
-        onCancel={() => setAiModalVisible(false)}
-        onOk={handleAIImprove}
-      >
-        <p>使用 AI 优化脚本将会根据视频内容和当前脚本，生成更加专业的表达和结构。</p>
-        <p>点击确定开始优化。</p>
-      </Modal>
+      <Dialog open={aiModalVisible} onOpenChange={setAiModalVisible}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>AI 优化脚本</DialogTitle>
+          </DialogHeader>
+          <p>使用 AI 优化脚本将会根据视频内容和当前脚本，生成更加专业的表达和结构。</p>
+          <p>点击确定开始优化。</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAiModalVisible(false)}>取消</Button>
+            <Button variant="default" onClick={handleAIImprove}>确定</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>确认删除</DialogTitle>
+          </DialogHeader>
+          <p>确定要删除这个片段吗？</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteConfirmOpen(false)}>取消</Button>
+            <Button variant="destructive" onClick={confirmDelete}>删除</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

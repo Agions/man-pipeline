@@ -147,7 +147,7 @@ npm run tauri build
 | vite | ^4.4 | 构建工具 |
 | typescript | ^5.0 | 类型安全 |
 | zustand | ^4.4 | 状态管理 |
-| antd | ^5.11 | UI 组件库 |
+| shadcn/ui | ^0.x | UI 组件库 (Radix UI + Tailwind) |
 | @tauri-apps/api | ^2.0 | 桌面集成 |
 | framer-motion | ^12.10 | 动画 |
 

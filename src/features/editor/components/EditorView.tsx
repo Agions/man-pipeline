@@ -1,4 +1,3 @@
-import { Layout } from 'antd';
 import React from 'react';
 
 import AIAssistant from './editor/AIAssistant';
@@ -8,8 +7,6 @@ import Preview from './editor/Preview';
 import PropertyPanel from './editor/PropertyPanel';
 import Timeline from './editor/Timeline';
 import styles from './EditorView.module.less';
-
-const { Sider, Content } = Layout;
 
 /**
  * 编辑器视图组件
@@ -21,25 +18,30 @@ interface EditorViewProps {
 
 const EditorView: React.FC<EditorViewProps> = ({ projectId: _projectId }) => {
   return (
-    <Layout className={styles.container}>
-      <Sider width={280} className={styles.leftSider}>
+    <div className={`flex h-full ${styles.container}`}>
+      {/* 左侧资源面板 */}
+      <aside className="w-[280px] flex-shrink-0 bg-background border-r border-border overflow-auto">
         <AssetPanel />
-      </Sider>
+      </aside>
 
-      <Layout className={styles.mainLayout}>
-        <Content className={styles.content}>
+      {/* 主内容区域 */}
+      <main className={`flex-1 flex flex-col ${styles.mainLayout}`}>
+        {/* 预览区域 */}
+        <section className={`flex-1 overflow-hidden ${styles.content}`}>
           <Preview />
-        </Content>
+        </section>
 
+        {/* 时间轴 */}
         <Timeline currentTime={0} duration={0} tracks={[]} onTimeUpdate={() => {}} />
-      </Layout>
+      </main>
 
-      <Sider width={320} className={styles.rightSider}>
+      {/* 右侧属性面板 */}
+      <aside className="w-[320px] flex-shrink-0 bg-background border-l border-border overflow-auto flex flex-col">
         <PropertyPanel />
         <AIFeaturePanel />
         <AIAssistant />
-      </Sider>
-    </Layout>
+      </aside>
+    </div>
   );
 };
 

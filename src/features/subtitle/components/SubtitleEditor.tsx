@@ -4,41 +4,74 @@
  */
 
 import {
-  FontSizeOutlined,
-  BgColorsOutlined,
-  AlignLeftOutlined,
-  AlignCenterOutlined,
-  AlignRightOutlined,
-  PlusOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  CopyOutlined,
-  DownOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+  Type,
+  Palette,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  Plus,
+  Trash2,
+  Eye,
+  Copy,
+} from 'lucide-react';
+import {
+  Button,
+} from '@/components/ui/button';
 import {
   Card,
-  Input,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
   Select,
-  ColorPicker,
-  Slider,
-  Button,
-  Space,
-  Typography,
-  List,
-  Tag,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
+import { Text, Title, Paragraph } from '@/components/ui/typography';
+import {
   Tooltip,
-  Divider,
-  message,
-} from 'antd';
-import React, { useState, useEffect } from 'react';
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Separator } from '@/components/ui/separator';
+import React, { useState } from 'react';
 
 import { useTheme } from '@/context/ThemeContext';
 
 import styles from './SubtitleEditor.module.less';
 
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input;
+// Simple ColorPicker using HTML color input
+interface ColorPickerProps {
+  value?: string;
+  onChange?: (color: { toHexString: () => string }) => void;
+  disabled?: boolean;
+}
+
+const ColorPicker: React.FC<ColorPickerProps> = ({ value = '#ffffff', onChange, disabled }) => {
+  return (
+    <input
+      type="color"
+      value={value}
+      disabled={disabled}
+      onChange={(e) => {
+        if (onChange) {
+          onChange({
+            toHexString: () => e.target.value
+          });
+        }
+      }}
+      className="h-9 w-14 rounded border border-input cursor-pointer"
+    />
+  );
+};
 
 // ============================================
 // 类型定义
@@ -112,9 +145,9 @@ const positionOptions = [
 
 // 对齐选项
 const alignmentOptions = [
-  { label: <AlignLeftOutlined />, value: 'left' },
-  { label: <AlignCenterOutlined />, value: 'center' },
-  { label: <AlignRightOutlined />, value: 'right' },
+  { label: <AlignLeft />, value: 'left' },
+  { label: <AlignCenter />, value: 'center' },
+  { label: <AlignRight />, value: 'right' },
 ];
 
 // ============================================
@@ -255,6 +288,7 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
   };
 
   return (
+    <TooltipProvider>
     <div className={`${styles.container} ${className || ''}`}>
       {/* 预览区域 */}
       {showPreview && (
@@ -282,69 +316,88 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
         {/* 字幕列表 */}
         <Card
           className={styles.subtitleList}
-          title={
-            <Space>
-              <Text strong>字幕列表</Text>
-              <Tag color="blue">{subtitles.length}</Tag>
-            </Space>
-          }
-          extra={
-            !readonly && (
-              <Button type="primary" size="small" icon={<PlusOutlined />} onClick={addSubtitle}>
-                添加字幕
-              </Button>
-            )
-          }
         >
-          <List
-            dataSource={subtitles}
-            locale={{ emptyText: '暂无字幕，点击添加' }}
-            renderItem={(subtitle) => (
-              <List.Item
-                className={`${styles.subtitleItem} ${selectedId === subtitle.id ? styles.selected : ''} ${currentTime >= subtitle.startTime && currentTime <= subtitle.endTime ? styles.active : ''}`}
-                onClick={() => handleSelect(subtitle)}
-              >
-                <div className={styles.subtitleInfo}>
-                  <Tag color="default">{formatTime(subtitle.startTime)}</Tag>
-                  <span className={styles.subtitleText}>{subtitle.text}</span>
-                  <Tag color="default">{formatTime(subtitle.endTime)}</Tag>
-                </div>
-                {!readonly && (
-                  <Space size="small">
-                    <Tooltip title="复制">
-                      <Button
-                        type="text"
-                        size="small"
-                        icon={<CopyOutlined />}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          duplicateSubtitle(subtitle);
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="删除">
-                      <Button
-                        type="text"
-                        size="small"
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteSubtitle(subtitle.id);
-                        }}
-                      />
-                    </Tooltip>
-                  </Space>
-                )}
-              </List.Item>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Text strong>字幕列表</Text>
+                <Badge variant="info">{subtitles.length}</Badge>
+              </div>
+              {!readonly && (
+                <Button size="sm" variant="default" onClick={addSubtitle}>
+                  <Plus /> 添加字幕
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {subtitles.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">暂无字幕，点击添加</div>
+            ) : (
+              <div className="flex flex-col gap-1">
+                {subtitles.map((subtitle) => (
+                  <div
+                    key={subtitle.id}
+                    className={`${styles.subtitleItem} flex items-center justify-between px-3 py-2 rounded-md cursor-pointer border transition-colors ${
+                      selectedId === subtitle.id ? 'border-primary bg-primary/5' : 'border-transparent hover:bg-muted/50'
+                    } ${
+                      currentTime >= subtitle.startTime && currentTime <= subtitle.endTime ? 'bg-primary/10' : ''
+                    }`}
+                    onClick={() => handleSelect(subtitle)}
+                  >
+                    <div className={styles.subtitleInfo}>
+                      <Badge variant="outline">{formatTime(subtitle.startTime)}</Badge>
+                      <span className={styles.subtitleText}>{subtitle.text}</span>
+                      <Badge variant="outline">{formatTime(subtitle.endTime)}</Badge>
+                    </div>
+                    {!readonly && (
+                      <div className="flex items-center gap-1">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                duplicateSubtitle(subtitle);
+                              }}
+                            >
+                              <Copy />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>复制</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                deleteSubtitle(subtitle.id);
+                              }}
+                            >
+                              <Trash2 />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>删除</TooltipContent>
+                        </Tooltip>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
-          />
+          </CardContent>
         </Card>
 
         {/* 字幕编辑 */}
         {selectedSubtitle && (
-          <Card className={styles.subtitleEditor} title="字幕编辑">
-            <Space direction="vertical" style={{ width: '100%' }} size="middle">
+          <Card className={styles.subtitleEditor}>
+            <CardHeader>
+              <CardTitle>字幕编辑</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
               {/* 时间设置 */}
               <div className={styles.timeRow}>
                 <Text type="secondary">时间:</Text>
@@ -375,7 +428,7 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
               {/* 文本编辑 */}
               <div>
                 <Text type="secondary">文本内容:</Text>
-                <TextArea
+                <Textarea
                   value={editingText}
                   onChange={(e) => {
                     setEditingText(e.target.value);
@@ -387,26 +440,32 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
                 />
               </div>
 
-              <Divider>样式设置</Divider>
+              <Separator />
 
               {/* 字体设置 */}
               <div className={styles.styleRow}>
                 <Text type="secondary">
-                  <FontSizeOutlined /> 字体:
+                  <Type /> 字体:
                 </Text>
                 <Select
                   value={previewStyle.fontFamily}
-                  onChange={(value) => updateStyle({ fontFamily: value })}
-                  options={fontFamilyOptions}
-                  style={{ width: 150 }}
-                  disabled={readonly}
-                />
+                  onValueChange={(value) => updateStyle({ fontFamily: value })}
+                >
+                  <SelectTrigger style={{ width: 150 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fontFamilyOptions.map(opt => (
+                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Text type="secondary">大小:</Text>
                 <Slider
                   min={12}
                   max={72}
                   value={previewStyle.fontSize}
-                  onChange={(value) => updateStyle({ fontSize: value })}
+                  onValueChange={(value) => updateStyle({ fontSize: value })}
                   style={{ width: 100 }}
                   disabled={readonly}
                 />
@@ -416,7 +475,7 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
               {/* 颜色设置 */}
               <div className={styles.styleRow}>
                 <Text type="secondary">
-                  <BgColorsOutlined /> 颜色:
+                  <Palette /> 颜色:
                 </Text>
                 <ColorPicker
                   value={previewStyle.color}
@@ -436,14 +495,16 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
                 <Text type="secondary">描边:</Text>
                 <Select
                   value={previewStyle.outline ? 'outline' : 'none'}
-                  onChange={(value) => updateStyle({ outline: value === 'outline' })}
-                  options={[
-                    { label: '无', value: 'none' },
-                    { label: '描边', value: 'outline' },
-                  ]}
-                  style={{ width: 80 }}
-                  disabled={readonly}
-                />
+                  onValueChange={(value) => updateStyle({ outline: value === 'outline' })}
+                >
+                  <SelectTrigger style={{ width: 80 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">无</SelectItem>
+                    <SelectItem value="outline">描边</SelectItem>
+                  </SelectContent>
+                </Select>
                 {previewStyle.outline && (
                   <>
                     <Text type="secondary">描边颜色:</Text>
@@ -461,25 +522,38 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
                 <Text type="secondary">位置:</Text>
                 <Select
                   value={previewStyle.position}
-                  onChange={(value) => updateStyle({ position: value })}
-                  options={positionOptions}
-                  style={{ width: 80 }}
-                  disabled={readonly}
-                />
+                  onValueChange={(value) => updateStyle({ position: value as any })}
+                >
+                  <SelectTrigger style={{ width: 80 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {positionOptions.map(opt => (
+                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Text type="secondary" style={{ marginLeft: 16 }}>对齐:</Text>
                 <Select
                   value={previewStyle.alignment}
-                  onChange={(value) => updateStyle({ alignment: value })}
-                  options={alignmentOptions}
-                  style={{ width: 80 }}
-                  disabled={readonly}
-                />
+                  onValueChange={(value) => updateStyle({ alignment: value as any })}
+                >
+                  <SelectTrigger style={{ width: 80 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {alignmentOptions.map(opt => (
+                      <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-            </Space>
+            </CardContent>
           </Card>
         )}
       </div>
     </div>
+    </TooltipProvider>
   );
 };
 

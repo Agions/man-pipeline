@@ -1,33 +1,28 @@
 import {
-  ExportOutlined,
-  VideoCameraOutlined,
-  SettingOutlined,
-  CheckCircleOutlined,
-  PlayCircleOutlined,
-  FileOutlined,
-} from '@ant-design/icons';
-import {
-  Card,
-  Select,
-  Radio,
-  Button,
-  Input,
-  Space,
-  Progress,
-  Divider,
-  message,
-  Tooltip,
-  Alert,
-  Typography,
-} from 'antd';
+  Download,
+  Video,
+  Settings,
+  CheckCircle,
+  Play,
+  File,
+} from 'lucide-react';
 import React, { useState, useCallback } from 'react';
+
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip as TooltipPrimitive } from '@/components/ui/tooltip';
+import { toast } from '@/components/ui/sonner';
 
 import type { ExportSettings } from '@/core/types';
 import { logger } from '@/core/utils/logger';
 
 import styles from './VideoExporter.module.less';
-
-const { Text, Title } = Typography;
 
 // 导出格式选项
 export const EXPORT_FORMATS = ['MP4', 'MOV', 'WebM'] as const;
@@ -121,12 +116,12 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
   // 处理导出
   const handleExport = async () => {
     if (!filename.trim()) {
-      message.error('请输入有效的文件名');
+      toast.error('请输入有效的文件名');
       return;
     }
 
     if (estimatedDuration === 0) {
-      message.error('没有可导出的内容');
+      toast.error('没有可导出的内容');
       return;
     }
 
@@ -157,11 +152,11 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
       setExportStatus('导出完成！');
       setExportComplete(true);
       setExportedFilePath(`/exports/${filename}.${format.toLowerCase()}`);
-      message.success('视频导出成功！');
+      toast.success('视频导出成功！');
     } catch (error) {
       logger.error('导出失败:', error);
       setExportStatus('导出失败，请重试');
-      message.error('导出失败，请稍后重试');
+      toast.error('导出失败，请稍后重试');
     } finally {
       setExporting(false);
     }
@@ -188,7 +183,7 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
   // 取消导出
   const handleCancel = () => {
     if (exporting) {
-      message.warning('导出已取消');
+      toast.warning('导出已取消');
     }
     setExporting(false);
     setExportProgress(0);
@@ -209,176 +204,169 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
     <Card className={styles.exportPanel}>
       <div className={styles.header}>
         <div className={styles.titleSection}>
-          <VideoCameraOutlined className={styles.titleIcon} />
-          <Title level={4} className={styles.title}>漫剧视频导出</Title>
+          <Video className={styles.titleIcon} size={20} />
+          <h4 className={styles.title} style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>漫剧视频导出</h4>
         </div>
         {projectName && (
-          <Text type="secondary" className={styles.projectName}>
+          <span style={{ color: 'rgba(0,0,0,0.45)', fontSize: 14 }} className={styles.projectName}>
             项目：{projectName}
-          </Text>
+          </span>
         )}
       </div>
 
-      <Divider className={styles.divider} />
+      <Separator className={styles.divider} />
 
       {!exportComplete ? (
         <div className={styles.content}>
           {/* 文件名设置 */}
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
-              <SettingOutlined />
-              <Text strong>文件名</Text>
+              <Settings size={16} />
+              <span style={{ fontWeight: 600 }}>文件名</span>
             </div>
-            <Input
-              value={filename}
-              onChange={(e) => setFilename(e.target.value)}
-              placeholder="输入文件名"
-              disabled={exporting}
-              className={styles.filenameInput}
-              addonAfter={`.${format.toLowerCase()}`}
-            />
+            <div style={{ display: 'flex', gap: 0 }}>
+              <Input
+                value={filename}
+                onChange={(e) => setFilename(e.target.value)}
+                placeholder="输入文件名"
+                disabled={exporting}
+                className={styles.filenameInput}
+                style={{ borderRadius: '6px 0 0 6px', borderRight: 'none' }}
+              />
+              <span style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                padding: '0 12px',
+                background: '#f5f5f5',
+                border: '1px solid #d9d9d9',
+                borderLeft: 'none',
+                borderRadius: '0 6px 6px 0',
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.65)'
+              }}>
+                .{format.toLowerCase()}
+              </span>
+            </div>
           </div>
 
           {/* 导出格式 */}
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
-              <FileOutlined />
-              <Text strong>导出格式</Text>
+              <File size={16} />
+              <span style={{ fontWeight: 600 }}>导出格式</span>
             </div>
-            <Radio.Group
-              value={format}
-              onChange={(e) => setFormat(e.target.value)}
-              disabled={exporting}
-              className={styles.formatGroup}
-            >
-              <Space direction="vertical">
+            <RadioGroup value={format} onValueChange={(v) => setFormat(v as ExportFormat)} disabled={exporting}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {EXPORT_FORMATS.map((fmt) => (
-                  <Radio key={fmt} value={fmt} className={styles.formatRadio}>
-                    <Space>
+                  <div key={fmt} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <RadioGroupItem value={fmt} id={`fmt-${fmt}`} />
+                    <label htmlFor={`fmt-${fmt}`} style={{ display: 'flex', flexDirection: 'column', gap: 2, cursor: 'pointer' }}>
                       <span className={styles.formatLabel}>{fmt}</span>
-                      <span className={styles.formatDesc}>
+                      <span className={styles.formatDesc} style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>
                         {fmt === 'MP4' && '通用格式，兼容性最好'}
                         {fmt === 'MOV' && 'Apple QuickTime 格式'}
                         {fmt === 'WebM' && 'Web 在线播放格式'}
                       </span>
-                    </Space>
-                  </Radio>
+                    </label>
+                  </div>
                 ))}
-              </Space>
-            </Radio.Group>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* 分辨率选择 */}
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
-              <SettingOutlined />
-              <Text strong>分辨率</Text>
+              <Settings size={16} />
+              <span style={{ fontWeight: 600 }}>分辨率</span>
             </div>
-            <Select
-              value={resolution}
-              onChange={setResolution}
-              disabled={exporting}
-              className={styles.select}
-              options={RESOLUTIONS.map((res) => ({
-                value: res,
-                label: (
-                  <Space>
-                    <span>{res}</span>
-                    <Text type="secondary" className={styles.optionDesc}>
-                      {RESOLUTION_VALUES[res].width}x{RESOLUTION_VALUES[res].height}
-                    </Text>
-                  </Space>
-                ),
-              }))}
-            />
+            <Select value={resolution} onValueChange={(v) => setResolution(v as Resolution)} disabled={exporting} className={styles.select}>
+              <SelectTrigger className={styles.select}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {RESOLUTIONS.map((res) => (
+                  <SelectItem key={res} value={res}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                      <span>{res}</span>
+                      <span style={{ color: 'rgba(0,0,0,0.45)', fontSize: 12 }}>
+                        {RESOLUTION_VALUES[res].width}x{RESOLUTION_VALUES[res].height}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 帧率选择 */}
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
-              <PlayCircleOutlined />
-              <Text strong>帧率</Text>
+              <Play size={16} />
+              <span style={{ fontWeight: 600 }}>帧率</span>
             </div>
-            <Radio.Group
-              value={frameRate}
-              onChange={(e) => setFrameRate(e.target.value)}
-              disabled={exporting}
-              className={styles.frameRateGroup}
-            >
-              <Space>
+            <RadioGroup value={String(frameRate)} onValueChange={(v) => setFrameRate(Number(v) as FrameRate)} disabled={exporting}>
+              <div style={{ display: 'flex', gap: 16 }}>
                 {FRAME_RATES.map((fps) => (
-                  <Radio key={fps} value={fps} className={styles.frameRateRadio}>
-                    <Space>
+                  <div key={fps} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <RadioGroupItem value={String(fps)} id={`fps-${fps}`} />
+                    <label htmlFor={`fps-${fps}`} style={{ display: 'flex', flexDirection: 'column', gap: 2, cursor: 'pointer' }}>
                       <span className={styles.frameRateLabel}>{fps} FPS</span>
-                      <Text type="secondary" className={styles.frameRateDesc}>
+                      <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>
                         {fps === 24 && '电影标准'}
                         {fps === 30 && '常用帧率'}
                         {fps === 60 && '流畅丝滑'}
-                      </Text>
-                    </Space>
-                  </Radio>
+                      </span>
+                    </label>
+                  </div>
                 ))}
-              </Space>
-            </Radio.Group>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* 质量选择 */}
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
-              <SettingOutlined />
-              <Text strong>质量预设</Text>
+              <Settings size={16} />
+              <span style={{ fontWeight: 600 }}>质量预设</span>
             </div>
-            <Radio.Group
-              value={quality}
-              onChange={(e) => setQuality(e.target.value)}
-              disabled={exporting}
-              className={styles.qualityGroup}
-            >
-              <Space direction="vertical">
+            <RadioGroup value={quality} onValueChange={(v) => setQuality(v as QualityPreset)} disabled={exporting}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {Object.entries(QUALITY_PRESETS).map(([key, preset]) => (
-                  <Radio key={key} value={key} className={styles.qualityRadio}>
-                    <Space>
+                  <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <RadioGroupItem value={key} id={`quality-${key}`} />
+                    <label htmlFor={`quality-${key}`} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                       <span className={styles.qualityLabel}>{preset.label}</span>
                       <span className={styles.qualityDesc}>{preset.description}</span>
-                      <Text type="secondary" className={styles.bitrate}>
+                      <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>
                         {preset.bitrate}
-                      </Text>
-                    </Space>
-                  </Radio>
+                      </span>
+                    </label>
+                  </div>
                 ))}
-              </Space>
-            </Radio.Group>
+              </div>
+            </RadioGroup>
           </div>
 
           {/* 预计文件大小 */}
           {estimatedDuration > 0 && (
-            <Alert
-              message={
-                <Space>
-                  <span>预计导出时长：</span>
-                  <Text strong>{Math.floor(estimatedDuration / 60)}分{estimatedDuration % 60}秒</Text>
-                  <Text type="secondary">|</Text>
-                  <span>预计文件大小：</span>
-                  <Text strong>{estimatedFileSize()}</Text>
-                </Space>
-              }
-              type="info"
-              showIcon
-              className={styles.infoAlert}
-            />
+            <Alert variant="default" className={styles.infoAlert}>
+              <AlertDescription>
+                <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                  <span>预计导出时长：<strong>{Math.floor(estimatedDuration / 60)}分{estimatedDuration % 60}秒</strong></span>
+                  <span>|</span>
+                  <span>预计文件大小：<strong>{estimatedFileSize()}</strong></span>
+                </div>
+              </AlertDescription>
+            </Alert>
           )}
 
           {/* 导出进度 */}
           {exporting && (
             <div className={styles.progressSection}>
-              <Text strong>导出进度：{exportStatus}</Text>
+              <span style={{ fontWeight: 600 }}>导出进度：{exportStatus}</span>
               <Progress
-                percent={exportProgress}
-                status="active"
-                strokeColor={{
-                  '0%': '#108ee9',
-                  '100%': '#87d068',
-                }}
+                value={exportProgress}
                 className={styles.progress}
               />
             </div>
@@ -386,78 +374,65 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
 
           {/* 操作按钮 */}
           <div className={styles.actions}>
-            <Space>
+            <div style={{ display: 'flex', gap: 8 }}>
               {exporting ? (
-                <Button onClick={handleCancel} danger>
+                <Button variant="destructive" onClick={handleCancel}>
                   取消导出
                 </Button>
               ) : (
                 <>
                   {onCancel && (
-                    <Button onClick={onCancel}>
+                    <Button variant="outline" onClick={onCancel}>
                       取消
                     </Button>
                   )}
-                  <Tooltip title={!filename.trim() ? '请输入文件名' : undefined}>
-                    <Button
-                      type="primary"
-                      icon={<ExportOutlined />}
-                      onClick={handleExport}
-                      disabled={!filename.trim() || estimatedDuration === 0}
-                    >
-                      开始导出
-                    </Button>
-                  </Tooltip>
+                  <TooltipPrimitive content={!filename.trim() ? '请输入文件名' : undefined}>
+                    <span>
+                      <Button
+                        variant="default"
+                        icon={<Download size={16} />}
+                        onClick={handleExport}
+                        disabled={!filename.trim() || estimatedDuration === 0}
+                      >
+                        开始导出
+                      </Button>
+                    </span>
+                  </TooltipPrimitive>
                 </>
               )}
-            </Space>
+            </div>
           </div>
         </div>
       ) : (
         /* 导出完成 */
         <div className={styles.completeSection}>
           <div className={styles.successIcon}>
-            <CheckCircleOutlined />
+            <CheckCircle size={48} color="#52c41a" />
           </div>
-          <Title level={4} className={styles.successTitle}>导出成功！</Title>
-          <Text type="secondary" className={styles.filePath}>
+          <h4 className={styles.successTitle} style={{ margin: 0, fontSize: 18, fontWeight: 600 }}>导出成功！</h4>
+          <span style={{ color: 'rgba(0,0,0,0.45)', fontSize: 14 }} className={styles.filePath}>
             文件已保存至：{exportedFilePath}
-          </Text>
+          </span>
 
           <div className={styles.exportSummary}>
-            <Space direction="vertical" size="small">
-              <Text>
-                <Text strong>格式：</Text>
-                {format}
-              </Text>
-              <Text>
-                <Text strong>分辨率：</Text>
-                {resolution} ({RESOLUTION_VALUES[resolution].width}x{RESOLUTION_VALUES[resolution].height})
-              </Text>
-              <Text>
-                <Text strong>帧率：</Text>
-                {frameRate} FPS
-              </Text>
-              <Text>
-                <Text strong>质量：</Text>
-                {QUALITY_PRESETS[quality].label}
-              </Text>
-              <Text>
-                <Text strong>预计大小：</Text>
-                {estimatedFileSize()}
-              </Text>
-            </Space>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div><strong>格式：</strong>{format}</div>
+              <div><strong>分辨率：</strong>{resolution} ({RESOLUTION_VALUES[resolution].width}x{RESOLUTION_VALUES[resolution].height})</div>
+              <div><strong>帧率：</strong>{frameRate} FPS</div>
+              <div><strong>质量：</strong>{QUALITY_PRESETS[quality].label}</div>
+              <div><strong>预计大小：</strong>{estimatedFileSize()}</div>
+            </div>
           </div>
 
           <div className={styles.completeActions}>
-            <Space>
-              <Button onClick={handleReset}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <Button variant="outline" onClick={handleReset}>
                 再次导出
               </Button>
-              <Button type="primary" icon={<ExportOutlined />} onClick={() => message.success('文件已打开')}>
+              <Button variant="default" icon={<Download size={16} />} onClick={() => toast.success('文件已打开')}>
                 打开文件
               </Button>
-            </Space>
+            </div>
           </div>
         </div>
       )}

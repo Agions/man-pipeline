@@ -18,4 +18,4 @@ PlotCraft 技术架构与开发指南。
 
 ## 技术栈
 
-React 18 · TypeScript 5 · Tauri 2.0 · Zustand · Ant Design 5
+React 18 · TypeScript 5 · Tauri 2.0 · Zustand · shadcn/ui

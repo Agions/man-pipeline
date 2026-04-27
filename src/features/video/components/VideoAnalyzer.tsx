@@ -1,16 +1,19 @@
-import { VideoCameraOutlined } from '@ant-design/icons';
 import { invoke } from '@tauri-apps/api/core';
-import { Card, Button, Progress, message, Alert, Typography, Spin } from 'antd';
+import { Video } from 'lucide-react';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import { Alert } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { toast } from '@/components/ui/sonner';
 
 import { logger } from '@/core/utils/logger';
 import type { VideoAnalysis, KeyMoment, EmotionAnalysis } from '@/types';
 
 import styles from './VideoAnalyzer.module.less';
 import VideoUploader from './VideoUploader';
-
-const { Title, Paragraph } = Typography;
 
 interface VideoAnalyzerProps {
   projectId: string;
@@ -30,7 +33,7 @@ const VideoAnalyzer: React.FC<VideoAnalyzerProps> = ({
 
   const handleAnalyze = async () => {
     if (!selectedVideoUrl) {
-      message.error('请先上传视频或输入视频链接');
+      toast.error('请先上传视频或输入视频链接');
       return;
     }
 
@@ -129,12 +132,12 @@ const VideoAnalyzer: React.FC<VideoAnalyzerProps> = ({
       
       setProgress(100);
       
-      message.success('视频分析完成');
+      toast.success('视频分析完成');
       onAnalysisComplete(analysis);
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : '视频分析失败';
       setError(errorMessage);
-      message.error('视频分析失败，请稍后重试');
+      toast.error('视频分析失败，请稍后重试');
     } finally {
       setLoading(false);
     }
@@ -142,17 +145,16 @@ const VideoAnalyzer: React.FC<VideoAnalyzerProps> = ({
 
   return (
     <Card className={styles.container}>
-      <Title level={4}>视频分析</Title>
-      <Paragraph>
+      <h4 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 600 }}>视频分析</h4>
+      <p style={{ color: 'rgba(0,0,0,0.65)', margin: '0 0 16px' }}>
         我们将使用先进的AI技术分析您的视频内容，识别关键时刻、情感变化和重要信息，为生成高质量解说脚本提供基础。
-      </Paragraph>
+      </p>
 
       {error && (
         <Alert
-          message="分析错误"
+          variant="destructive"
+          title="分析错误"
           description={error}
-          type="error"
-          showIcon
           className={styles.alert}
         />
       )}
@@ -160,7 +162,7 @@ const VideoAnalyzer: React.FC<VideoAnalyzerProps> = ({
       <div className={styles.videoSection}>
         {selectedVideoUrl && typeof selectedVideoUrl === 'string' && selectedVideoUrl.startsWith('http') ? (
           <div className={styles.videoInfo}>
-            <VideoCameraOutlined className={styles.icon} />
+            <Video className={styles.icon} size={20} />
             <span className={styles.url}>{selectedVideoUrl}</span>
           </div>
         ) : (
@@ -173,13 +175,13 @@ const VideoAnalyzer: React.FC<VideoAnalyzerProps> = ({
 
       {loading && (
         <div className={styles.progress}>
-          <Progress percent={progress} status="active" />
-          <Spin tip="分析中..." />
+          <Progress value={progress} />
+          <span>分析中...</span>
         </div>
       )}
 
       <Button
-        type="primary"
+        variant="default"
         onClick={handleAnalyze}
         loading={loading}
         disabled={!selectedVideoUrl || loading}

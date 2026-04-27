@@ -1,8 +1,11 @@
-import { UploadOutlined, DeleteOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { Upload, Trash2, PlayCircle } from 'lucide-react';
 import { invoke , convertFileSrc } from '@tauri-apps/api/core';
 import { open } from '@tauri-apps/plugin-dialog';
-import { Button, Upload, message, Space, Card, Spin } from 'antd';
 import React, { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { toast } from '@/components/ui/sonner';
 
 import { tauriService } from '@/core/services';
 import { logger } from '@/core/utils/logger';
@@ -81,7 +84,7 @@ const VideoSelector: React.FC<VideoSelectorProps> = ({
       }
     } catch (error) {
       logger.error('选择视频失败:', error);
-      message.error('选择视频失败，请重试');
+      toast.error('选择视频失败，请重试');
     }
   };
 
@@ -107,16 +110,21 @@ const VideoSelector: React.FC<VideoSelectorProps> = ({
       await invoke('open_file', { path: videoPath });
     } catch (error) {
       logger.error('打开视频失败:', error);
-      message.error('无法打开视频，请确保系统有关联的视频播放器');
+      toast.error('无法打开视频，请确保系统有关联的视频播放器');
     }
   };
 
   return (
     <div className={styles.videoSelector}>
-      <Spin spinning={loading || isAnalyzing} tip={isAnalyzing ? "分析视频中..." : "加载中..."}>
+      <div style={{ position: 'relative' }}>
+        {(loading || isAnalyzing) && (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
+            <span>{isAnalyzing ? '分析视频中...' : '加载中...'}</span>
+          </div>
+        )}
         {!videoPath ? (
           <div className={styles.uploadArea} onClick={handleSelectVideo}>
-            <UploadOutlined className={styles.uploadIcon} />
+            <Upload className={styles.uploadIcon} size={32} />
             <p>点击选择视频文件</p>
             <p className={styles.uploadTip}>支持 MP4, MOV, AVI 等格式</p>
           </div>
@@ -131,7 +139,7 @@ const VideoSelector: React.FC<VideoSelectorProps> = ({
             </div>
             
             {metadata && (
-              <Card className={styles.metadataCard} size="small" title="视频信息">
+              <Card className={styles.metadataCard} title="视频信息">
                 <p><strong>文件名:</strong> {videoPath.split('/').pop()}</p>
                 <p><strong>时长:</strong> {formatDuration(metadata.duration)}</p>
                 <p><strong>分辨率:</strong> {formatResolution(metadata.width, metadata.height)}</p>
@@ -141,26 +149,26 @@ const VideoSelector: React.FC<VideoSelectorProps> = ({
             )}
             
             <div className={styles.videoActions}>
-              <Space>
+              <div style={{ display: 'flex', gap: 8 }}>
                 <Button 
-                  icon={<DeleteOutlined />} 
+                  variant="outline" 
+                  icon={<Trash2 size={16} />} 
                   onClick={handleRemoveVideo}
-                  danger
                 >
                   移除
                 </Button>
                 <Button 
-                  icon={<PlayCircleOutlined />} 
+                  variant="default" 
+                  icon={<PlayCircle size={16} />} 
                   onClick={handlePlayVideo}
-                  type="primary"
                 >
                   在播放器中打开
                 </Button>
-              </Space>
+              </div>
             </div>
           </div>
         )}
-      </Spin>
+      </div>
     </div>
   );
 };

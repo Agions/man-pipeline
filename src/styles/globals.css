@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   Design Tokens - CSS Custom Properties
+   ============================================ */
+
+:root {
+  /* Primary Colors */
+  --color-primary: #1E88E5;
+  --color-primary-hover: #42A5F5;
+  --color-primary-active: #1565C0;
+  --color-primary-light: #E3F2FD;
+
+  /* Functional Colors */
+  --color-success: #26A69A;
+  --color-warning: #FF9800;
+  --color-error: #FF5252;
+  --color-info: #42A5F5;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-base: 6px;
+  --radius-default: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-base: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.03), 0 4px 8px rgba(0, 0, 0, 0.03);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* Layout */
+  --header-height: 64px;
+  --content-max-width: 1200px;
+  --container-padding: 24px;
+
+  /* ============================================
+     shadcn/ui CSS Design Tokens
+     ============================================ */
+  --background: #ffffff;
+  --foreground: rgba(0, 0, 0, 0.85);
+  --card: #ffffff;
+  --card-foreground: rgba(0, 0, 0, 0.85);
+  --popover: #ffffff;
+  --popover-foreground: rgba(0, 0, 0, 0.85);
+  --primary: var(--color-primary, #1E88E5);
+  --primary-foreground: #ffffff;
+  --secondary: #f0f2f5;
+  --secondary-foreground: rgba(0, 0, 0, 0.85);
+  --muted: #f0f2f5;
+  --muted-foreground: rgba(0, 0, 0, 0.45);
+  --accent: #f0f2f5;
+  --accent-foreground: rgba(0, 0, 0, 0.85);
+  --destructive: #FF5252;
+  --destructive-foreground: #ffffff;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: var(--color-primary, #1E88E5);
+  --radius: 8px;
+}
+
+/* Dark theme overrides - supports both dark-theme class and dark class */
+.dark-theme,
+.dark,
+:root.dark {
+  --color-primary: #42A5F5;
+  --color-primary-hover: #1E88E5;
+  --color-primary-active: #64B5F6;
+
+  --color-success: #4DB6AC;
+  --color-warning: #FFB74D;
+  --color-error: #EF5350;
+  --color-info: #64B5F6;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+  /* shadcn/ui dark mode tokens */
+  --background: #141414;
+  --foreground: rgba(255, 255, 255, 0.85);
+  --card: #1f1f1f;
+  --card-foreground: rgba(255, 255, 255, 0.85);
+  --popover: #1f1f1f;
+  --popover-foreground: rgba(255, 255, 255, 0.85);
+  --primary: #42A5F5;
+  --primary-foreground: #141414;
+  --secondary: #2d2d2d;
+  --secondary-foreground: rgba(255, 255, 255, 0.85);
+  --muted: #2d2d2d;
+  --muted-foreground: rgba(255, 255, 255, 0.45);
+  --accent: #2d2d2d;
+  --accent-foreground: rgba(255, 255, 255, 0.85);
+  --destructive: #EF5350;
+  --destructive-foreground: #ffffff;
+  --border: #303030;
+  --input: #303030;
+  --ring: #42A5F5;
+}
+
+/* ============================================
+   Keyframe Animations
+   ============================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRightIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Motion utility classes */
+.m-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.m-slide-up-in {
+  animation: slideUpIn 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.m-slide-down-in {
+  animation: slideDownIn 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.m-slide-left-in {
+  animation: slideLeftIn 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.m-slide-right-in {
+  animation: slideRightIn 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.m-zoom-in {
+  animation: zoomIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.m-bounce-in {
+  animation: bounceIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.m-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.m-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Global Styles
+   ============================================ */
+
+@layer base {
+  * {
+    border-color: var(--border-color, hsl(220 9% 90%));
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible ring */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-active);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(220 9% 70%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(220 9% 60%);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(220 9% 25%);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(220 9% 35%);
+}

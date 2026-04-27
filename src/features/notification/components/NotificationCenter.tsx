@@ -1,6 +1,14 @@
-import { BellOutlined } from '@ant-design/icons';
-import { Drawer, List, Typography, Button, Empty } from 'antd';
 import React from 'react';
+import { Bell } from 'lucide-react';
+
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/shared/components/ui';
 
 import { useAppStore } from '@/shared/stores';
 
@@ -30,45 +38,46 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ open, onClose }
   ];
 
   return (
-    <Drawer
-      title="通知中心"
-      placement="right"
-      onClose={onClose}
-      open={open}
-      width={320}
-      extra={
-        <Button type="link" onClick={clearAllNotifications} disabled={!notifications}>
-          清除全部
-        </Button>
-      }
-    >
-      {mockNotifications.length > 0 ? (
-        <List
-          className={styles.notificationList}
-          itemLayout="vertical"
-          dataSource={mockNotifications}
-          renderItem={(item) => (
-            <List.Item className={styles.notificationItem}>
-              <div className={styles.notificationHeader}>
-                <Typography.Text strong>{item.title}</Typography.Text>
-                <Typography.Text type="secondary" className={styles.notificationTime}>
-                  {item.time}
-                </Typography.Text>
-              </div>
-              <Typography.Text className={styles.notificationContent}>
-                {item.content}
-              </Typography.Text>
-            </List.Item>
+    <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose?.()}>
+      <SheetContent side="right" className="w-[320px]">
+        <SheetHeader>
+          <SheetTitle>通知中心</SheetTitle>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearAllNotifications}
+            disabled={!notifications}
+          >
+            清除全部
+          </Button>
+        </SheetHeader>
+
+        <div className={styles.notificationContent}>
+          {mockNotifications.length > 0 ? (
+            <div className={styles.notificationList}>
+              {mockNotifications.map((item) => (
+                <div key={item.id} className={styles.notificationItem}>
+                  <div className={styles.notificationHeader}>
+                    <span className={styles.notificationTitle}>{item.title}</span>
+                    <span className={styles.notificationTime}>{item.time}</span>
+                  </div>
+                  <p className={styles.notificationContent}>{item.content}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyContainer}>
+              <Bell className="h-12 w-12 text-muted-foreground" />
+              <EmptyState
+                title="暂无通知"
+                description="这里会显示您的系统通知"
+              />
+            </div>
           )}
-        />
-      ) : (
-        <Empty
-          image={<BellOutlined style={{ fontSize: 48 }} />}
-          description="暂无通知"
-        />
-      )}
-    </Drawer>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 
-export default NotificationCenter; 
+export default NotificationCenter;

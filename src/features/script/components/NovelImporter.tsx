@@ -1,6 +1,10 @@
-import { UploadOutlined, FileTextOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Button, message, Space, Card, Spin, Input, Alert } from 'antd';
 import React, { useState } from 'react';
+import { Upload, FileText, Trash2 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
+import { Loading } from '@/shared/components/ui';
 
 import { scriptImportService, tauriService } from '@/core/services';
 import type { ScriptChapter, ScriptSource, ScriptValidationResult } from '@/core/types';
@@ -27,8 +31,6 @@ export interface NovelMetadata {
   chapters: ScriptChapter[];
   validation: ScriptValidationResult;
 }
-
-const { TextArea } = Input;
 
 /**
  * 小说/剧本导入组件
@@ -109,7 +111,7 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
         const errors = novelMetadata.validation.issues.filter(issue => issue.level === 'error');
 
         if (errors.length > 0) {
-          message.error(errors[0].message);
+          toast.error(errors[0].message);
           return;
         }
 
@@ -118,18 +120,18 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
         onContentLoad(fileContent, novelMetadata);
 
         if (warnings.length > 0) {
-          message.warning(warnings[0].message);
+          toast.warning(warnings[0].message);
         }
-        message.success('小说文件导入成功');
+        toast.success('小说文件导入成功');
       } catch (error) {
         logger.error('读取文件失败:', error);
-        message.error('读取文件失败，请重试（建议使用 TXT/MD 编码格式）');
+        toast.error('读取文件失败，请重试（建议使用 TXT/MD 编码格式）');
       } finally {
         setIsLoading(false);
       }
     } catch (error) {
       logger.error('选择文件失败:', error);
-      message.error('选择文件失败，请重试');
+      toast.error('选择文件失败，请重试');
     }
   };
 
@@ -138,7 +140,7 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
    */
   const handleManualInput = () => {
     if (!manualInput.trim()) {
-      message.warning('请输入内容');
+      toast.warning('请输入内容');
       return;
     }
 
@@ -149,14 +151,14 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
 
     const errors = novelMetadata.validation.issues.filter(issue => issue.level === 'error');
     if (errors.length > 0) {
-      message.error(errors[0].message);
+      toast.error(errors[0].message);
       return;
     }
 
     setContent(manualInput);
     setMetadata(novelMetadata);
     onContentLoad(manualInput, novelMetadata);
-    message.success('内容导入成功');
+    toast.success('内容导入成功');
   };
 
   /**
@@ -173,109 +175,103 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
 
   return (
     <div className={styles.novelImporter}>
-      <Spin spinning={loading || isLoading} tip={isLoading ? "导入中..." : "加载中..."}>
-        {!content ? (
-          <div className={styles.uploadArea}>
-            <Card>
-              <div className={styles.uploadOptions}>
-                <div className={styles.uploadOption}>
-                  <h4>方式一：选择文件</h4>
-                  <p>支持 TXT、MD、DOCX 格式的小说或剧本文件</p>
-                  <Button
-                    type="primary"
-                    icon={<UploadOutlined />}
-                    onClick={handleSelectFile}
-                    loading={isLoading}
-                  >
-                    选择文件
-                  </Button>
-                </div>
+      {(loading || isLoading) && <Loading tip={isLoading ? "导入中..." : "加载中..."} />}
 
-                <div className={styles.divider}>
-                  <span>或</span>
-                </div>
-
-                <div className={styles.uploadOption}>
-                  <h4>方式二：直接输入</h4>
-                  <p>直接在下方输入框中粘贴或输入小说/剧本内容</p>
-                  <TextArea
-                    value={manualInput}
-                    onChange={(e) => setManualInput(e.target.value)}
-                    placeholder="请输入小说或剧本内容..."
-                    rows={6}
-                  />
-                  <Button
-                    type="primary"
-                    icon={<FileTextOutlined />}
-                    onClick={handleManualInput}
-                    disabled={!manualInput.trim()}
-                    style={{ marginTop: 8 }}
-                  >
-                    导入内容
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-        ) : (
-          <div className={styles.contentPreview}>
-            <Card
-              title={
-                <Space>
-                  <FileTextOutlined />
-                  <span>{metadata?.filename}</span>
-                </Space>
-              }
-              extra={
+      {!content ? (
+        <div className={styles.uploadArea}>
+          <Card>
+            <div className={styles.uploadOptions}>
+              <div className={styles.uploadOption}>
+                <h4>方式一：选择文件</h4>
+                <p>支持 TXT、MD、DOCX 格式的小说或剧本文件</p>
                 <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={handleRemove}
+                  onClick={handleSelectFile}
+                  disabled={isLoading}
                 >
-                  移除
+                  <Upload className="h-4 w-4 mr-2" />
+                  选择文件
                 </Button>
-              }
-            >
-              {metadata && (
-                <Alert
-                  message="文件信息"
-                  description={
-                    <Space direction="vertical">
-                      <span>文件名: {metadata.filename}</span>
-                      <span>字符数: {metadata.charCount.toLocaleString()}</span>
-                      <span>识别格式: {metadata.fileFormat.toUpperCase()}</span>
-                      <span>章节数: {metadata.chapterCount}</span>
-                      <span>预估章节数: {metadata.estimatedChapters}</span>
-                    </Space>
-                  }
-                  type="info"
-                  showIcon
-                  style={{ marginBottom: 16 }}
-                />
-              )}
-
-              <div className={styles.contentPreviewBox}>
-                <TextArea
-                  value={content}
-                  onChange={(e) => {
-                    setContent(e.target.value);
-                    if (metadata) {
-                      const newMetadata = buildMetadata(e.target.value, {
-                        filename: metadata.filename,
-                        sourceType: metadata.sourceType,
-                      });
-                      setMetadata(newMetadata);
-                      onContentLoad(e.target.value, newMetadata);
-                    }
-                  }}
-                  rows={10}
-                  placeholder="内容预览和编辑..."
-                />
               </div>
-            </Card>
-          </div>
-        )}
-      </Spin>
+
+              <div className={styles.divider}>
+                <span>或</span>
+              </div>
+
+              <div className={styles.uploadOption}>
+                <h4>方式二：直接输入</h4>
+                <p>直接在下方输入框中粘贴或输入小说/剧本内容</p>
+                <Textarea
+                  value={manualInput}
+                  onChange={(e) => setManualInput(e.target.value)}
+                  placeholder="请输入小说或剧本内容..."
+                  rows={6}
+                />
+                <Button
+                  onClick={handleManualInput}
+                  disabled={!manualInput.trim()}
+                  style={{ marginTop: 8 }}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  导入内容
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      ) : (
+        <div className={styles.contentPreview}>
+          <Card
+            title={
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <FileText className="h-4 w-4" />
+                <span>{metadata?.filename}</span>
+              </div>
+            }
+            extra={
+              <Button
+                variant="destructive"
+                onClick={handleRemove}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                移除
+              </Button>
+            }
+          >
+            {metadata && (
+              <Alert variant="info" className="mb-4">
+                <AlertDescription>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <span>文件名: {metadata.filename}</span>
+                    <span>字符数: {metadata.charCount.toLocaleString()}</span>
+                    <span>识别格式: {metadata.fileFormat.toUpperCase()}</span>
+                    <span>章节数: {metadata.chapterCount}</span>
+                    <span>预估章节数: {metadata.estimatedChapters}</span>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className={styles.contentPreviewBox}>
+              <Textarea
+                value={content}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                  if (metadata) {
+                    const newMetadata = buildMetadata(e.target.value, {
+                      filename: metadata.filename,
+                      sourceType: metadata.sourceType,
+                    });
+                    setMetadata(newMetadata);
+                    onContentLoad(e.target.value, newMetadata);
+                  }
+                }}
+                rows={10}
+                placeholder="内容预览和编辑..."
+              />
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

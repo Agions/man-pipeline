@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import styles from './AppLayout.module.less';
 import { AppLayoutProps } from './types';
@@ -24,7 +24,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({
 export default AppLayout;
 
 // Named slot exports for compositional API
-export const AppLayoutHeader: React.FC<{ children?: React.ReactNode }> = ({ children }) => children as any;
-export const AppLayoutSidebar: React.FC<{ children?: React.ReactNode }> = ({ children }) => children as any;
-export const AppLayoutContent: React.FC<{ children?: React.ReactNode }> = ({ children }) => children as any;
-export const AppLayoutFooter: React.FC<{ children?: React.ReactNode }> = ({ children }) => children as any;
+export const AppLayoutHeader: React.FC<PropsWithChildren> = ({ children }) => <>{children}</>;
+export const AppLayoutSidebar: React.FC<PropsWithChildren> = ({ children }) => <>{children}</>;
+export const AppLayoutContent: React.FC<PropsWithChildren> = ({ children }) => <>{children}</>;
+export const AppLayoutFooter: React.FC<PropsWithChildren> = ({ children }) => <>{children}</>;

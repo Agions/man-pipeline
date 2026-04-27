@@ -1,6 +1,12 @@
-import { ExportOutlined, FileTextOutlined, FilePdfOutlined, GlobalOutlined } from '@ant-design/icons';
-import { Card, Radio, Button, Input, Space, message, Tooltip } from 'antd';
+import { Download, FileText, FileType, Globe } from 'lucide-react';
 import React, { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Tooltip } from '@/components/ui/tooltip';
+import { toast } from '@/components/ui/sonner';
 
 import { tauriService } from '@/core/services';
 import type { ScriptData } from '@/core/types';
@@ -32,11 +38,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ script }) => {
   const [filename, setFilename] = useState<string>(`脚本_${script.id || 'draft'}`);
   const [exporting, setExporting] = useState(false);
 
-  // 处理导出格式变更 - 使用 any 类型来绕过类型检查
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleFormatChange = (e: any) => {
-    setExportFormat(e.target.value as ExportFormat);
-  };
+  // handleFormatChange is no longer needed - using RadioGroup onValueChange directly
 
   // 处理文件名变更
   const handleFilenameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,17 +48,17 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ script }) => {
   // 执行导出
   const handleExport = async () => {
     if (!filename.trim()) {
-      message.error('请输入有效的文件名');
+      toast.error('请输入有效的文件名');
       return;
     }
 
     setExporting(true);
     try {
       await exportScript(script, exportFormat as 'txt' | 'srt', filename);
-      message.success(`脚本已成功导出为${exportFormat.toUpperCase()}格式`);
+      toast.success(`脚本已成功导出为${exportFormat.toUpperCase()}格式`);
     } catch (error) {
       logger.error('导出失败:', error);
-      message.error('导出失败，请稍后重试');
+      toast.error('导出失败，请稍后重试');
     } finally {
       setExporting(false);
     }
@@ -66,15 +68,15 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ script }) => {
   const getFormatIcon = (format: ExportFormat) => {
     switch (format) {
       case 'txt':
-        return <FileTextOutlined />;
+        return <FileText size={16} />;
       case 'srt':
-        return <FileTextOutlined />;
+        return <FileText size={16} />;
       case 'pdf':
-        return <FilePdfOutlined />;
+        return <FileType size={16} />;
       case 'html':
-        return <GlobalOutlined />;
+        return <Globe size={16} />;
       default:
-        return <FileTextOutlined />;
+        return <FileText size={16} />;
     }
   };
 
@@ -83,10 +85,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ script }) => {
       title="导出脚本"
       className={styles.exportPanel}
       extra={
-        <Tooltip title="导出后的文件将保存到您选择的位置">
+        <Tooltip content="导出后的文件将保存到您选择的位置">
           <Button
-            type="primary"
-            icon={<ExportOutlined />}
+            variant="default"
+            icon={<Download size={16} />}
             onClick={handleExport}
             loading={exporting}
           >
@@ -109,34 +111,38 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ script }) => {
 
         <div className={styles.formatSection}>
           <label className={styles.label}>导出格式:</label>
-          <Radio.Group onChange={handleFormatChange} value={exportFormat}>
-            <Space direction="vertical">
-              <Radio value="txt">
-                <Space>
-                  <FileTextOutlined /> 纯文本 (.txt)
+          <RadioGroup value={exportFormat} onValueChange={(value) => setExportFormat(value as ExportFormat)}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RadioGroupItem value="txt" id="txt" />
+                <label htmlFor="txt" style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <FileText size={16} /> 纯文本 (.txt)
                   <span className={styles.formatDesc}>- 简单文本格式，适合通用场景</span>
-                </Space>
-              </Radio>
-              <Radio value="srt">
-                <Space>
-                  <FileTextOutlined /> 字幕文件 (.srt)
+                </label>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RadioGroupItem value="srt" id="srt" />
+                <label htmlFor="srt" style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <FileText size={16} /> 字幕文件 (.srt)
                   <span className={styles.formatDesc}>- 标准字幕格式，可导入视频编辑软件</span>
-                </Space>
-              </Radio>
-              <Radio value="pdf">
-                <Space>
-                  <FilePdfOutlined /> PDF文档 (.pdf)
+                </label>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RadioGroupItem value="pdf" id="pdf" />
+                <label htmlFor="pdf" style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <FileType size={16} /> PDF文档 (.pdf)
                   <span className={styles.formatDesc}>- 带格式的PDF文档，适合打印或分享</span>
-                </Space>
-              </Radio>
-              <Radio value="html">
-                <Space>
-                  <GlobalOutlined /> 网页 (.html)
+                </label>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <RadioGroupItem value="html" id="html" />
+                <label htmlFor="html" style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <Globe size={16} /> 网页 (.html)
                   <span className={styles.formatDesc}>- 可在浏览器中打开的网页格式</span>
-                </Space>
-              </Radio>
-            </Space>
-          </Radio.Group>
+                </label>
+              </div>
+            </div>
+          </RadioGroup>
         </div>
       </div>
     </Card>

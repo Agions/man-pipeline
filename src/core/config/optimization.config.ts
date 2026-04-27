@@ -103,7 +103,7 @@ export const CODE_OPTIMIZATION = {
     components: true,
     // 库级分割
     vendors: [
-      'antd',
+      'react',
       'framer-motion',
       'lodash-es'
     ]

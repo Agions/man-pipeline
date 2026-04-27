@@ -1,12 +1,9 @@
-import {
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  SoundOutlined,
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-} from '@ant-design/icons';
-import { Slider, Button, Tooltip } from 'antd';
+import { PlayCircle, PauseCircle, Volume2, Maximize, Minimize2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Tooltip } from '@/components/ui/tooltip';
 
 import styles from './VideoPlayer.module.less';
 
@@ -136,7 +133,7 @@ function VideoPlayer({
         />
         {!isPlaying && (
           <div className={styles.centerPlayButton} onClick={togglePlay}>
-            <PlayCircleOutlined />
+            <PlayCircle size={48} />
           </div>
         )}
       </div>
@@ -144,19 +141,18 @@ function VideoPlayer({
         <div className={styles.progressBar}>
           <Slider
             min={0}
-            max={duration}
+            max={duration || 100}
             value={currentTime}
-            onChange={handleSliderChange}
-            tooltip={{ visible: false }}
+            onValueChange={handleSliderChange}
           />
         </div>
         <div className={styles.controlButtons}>
           <div>
             <Button
-              type="text"
+              variant="ghost"
               className={styles.controlButton}
               onClick={togglePlay}
-              icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+              icon={isPlaying ? <PauseCircle size={18} /> : <PlayCircle size={18} />}
             />
             <span className={styles.timeDisplay}>
               {formatTime(currentTime)} / {formatTime(duration)}
@@ -169,29 +165,29 @@ function VideoPlayer({
               onMouseLeave={() => setShowVolumeSlider(false)}
             >
               <Button
-                type="text"
+                variant="ghost"
                 className={styles.controlButton}
-                icon={<SoundOutlined />}
+                icon={<Volume2 size={18} />}
               />
               {showVolumeSlider && (
                 <div className={styles.volumeSlider}>
                   <Slider
-                    vertical
                     min={0}
                     max={1}
                     step={0.01}
                     value={volume}
-                    onChange={handleVolumeChange}
-                    tooltip={{ visible: false }}
+                    onValueChange={handleVolumeChange}
+                    orientation="vertical"
+                    style={{ height: 80 }}
                   />
                 </div>
               )}
             </div>
             <Button
-              type="text"
+              variant="ghost"
               className={styles.controlButton}
               onClick={toggleFullscreen}
-              icon={isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+              icon={isFullscreen ? <Minimize2 size={18} /> : <Maximize size={18} />}
             />
           </div>
         </div>
@@ -199,11 +195,11 @@ function VideoPlayer({
       
       {/* 预览按钮 */}
       <div className={styles.previewButtonContainer}>
-        <Tooltip title="全屏预览">
+        <Tooltip content="全屏预览">
           <Button
-            type="primary"
-            size="large"
-            icon={isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+            variant="default"
+            size="lg"
+            icon={isFullscreen ? <Minimize2 size={18} /> : <Maximize size={18} />}
             onClick={toggleFullscreen}
           >
             {isFullscreen ? '退出预览' : '预览'}
