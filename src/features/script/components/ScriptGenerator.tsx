@@ -26,7 +26,7 @@ import { Text, Title, Paragraph } from '@/components/ui/typography';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, Radio, RadioButton } from '@/components/ui/antd-compat';
 import { Tag } from '@/components/ui/tag';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/antd-compat';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip as TooltipRoot, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -268,7 +268,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
         className={styles.form}
       >
         <Card title="脚本设置" className={styles.settingsCard}>
-          <Form.Item
+          <FormItem
             name="topic"
             label="脚本主题"
             rules={[{ required: true, message: '请输入脚本主题' }]}
@@ -277,9 +277,9 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
               placeholder="例如：如何制作一杯完美的拿铁咖啡"
               prefix={<FileText />}
             />
-          </Form.Item>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="keywords"
             label="关键词（可选）"
           >
@@ -288,48 +288,48 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
               placeholder="输入关键词，按回车添加"
               style={{ width: '100%' }}
             />
-          </Form.Item>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="style"
             label="脚本风格"
           >
-            <Radio.Group optionType="button" buttonStyle="solid">
+            <RadioGroup optionType="button" buttonStyle="solid">
               {STYLE_OPTIONS.map(opt => (
-                <Radio.Button key={opt.value} value={opt.value}>
+                <RadioButton key={opt.value} value={opt.value}>
                   <span title={opt.desc}>{opt.label}</span>
-                </Radio.Button>
+                </RadioButton>
               ))}
-            </Radio.Group>
-          </Form.Item>
+            </RadioGroup>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="tone"
             label="语气语调"
           >
-            <Radio.Group optionType="button">
+            <RadioGroup optionType="button">
               {TONE_OPTIONS.map(opt => (
-                <Radio.Button key={opt.value} value={opt.value}>
+                <RadioButton key={opt.value} value={opt.value}>
                   {opt.label}
-                </Radio.Button>
+                </RadioButton>
               ))}
-            </Radio.Group>
-          </Form.Item>
+            </RadioGroup>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="length"
             label="脚本长度"
           >
-            <Radio.Group optionType="button">
+            <RadioGroup optionType="button">
               {LENGTH_OPTIONS.map(opt => (
-                <Radio.Button key={opt.value} value={opt.value}>
+                <RadioButton key={opt.value} value={opt.value}>
                   <span title={`${opt.desc}，约${opt.words}`}>{opt.label}</span>
-                </Radio.Button>
+                </RadioButton>
               ))}
-            </Radio.Group>
-          </Form.Item>
+            </RadioGroup>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="audience"
             label="目标受众"
           >
@@ -338,19 +338,19 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
                 <Option key={opt.value} value={opt.value}>{opt.label}</Option>
               ))}
             </Select>
-          </Form.Item>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="language"
             label="语言"
           >
-            <Radio.Group>
+            <RadioGroup>
               <Radio value="zh">中文</Radio>
               <Radio value="en">English</Radio>
-            </Radio.Group>
-          </Form.Item>
+            </RadioGroup>
+          </FormItem>
 
-          <Form.Item
+          <FormItem
             name="requirements"
             label="特殊要求（可选）"
           >
@@ -358,7 +358,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
               rows={3}
               placeholder="例如：需要包含产品介绍、使用步骤、注意事项等"
             />
-          </Form.Item>
+          </FormItem>
         </Card>
 
         {/* 生成按钮 */}

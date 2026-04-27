@@ -579,7 +579,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                     placeholder="类型" 
                     style={{ width: '100%' }}
                     value={newClothingType}
-                    onChange={setNewClothingType}
+                    onChange={(v) => setNewClothingType(v as typeof newClothingType)}
                   >
                     <Option value="head">头部</Option>
                     <Option value="top">上衣</Option>
@@ -836,7 +836,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
             <Text className="font-bold">分类筛选：</Text>
             <Select 
               value={templateCategory} 
-              onChange={setTemplateCategory}
+              onChange={(v) => setTemplateCategory(v as string)}
               style={{ width: 150 }}
             >
               <Option value="all">全部</Option>
