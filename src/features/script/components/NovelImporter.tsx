@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Loading } from '@/shared/components/ui';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { toast } from 'sonner';
 
 import { scriptImportService, tauriService } from '@/core/services';
 import type { ScriptChapter, ScriptSource, ScriptValidationResult } from '@/core/types';
@@ -238,7 +240,7 @@ const NovelImporter: React.FC<NovelImporterProps> = ({
             }
           >
             {metadata && (
-              <Alert variant="info" className="mb-4">
+              <Alert className="mb-4">
                 <AlertDescription>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <span>文件名: {metadata.filename}</span>

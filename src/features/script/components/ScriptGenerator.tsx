@@ -16,15 +16,10 @@ import {
   DollarSign
 } from 'lucide-react';
 import { Card as CardBase } from '@/components/ui/card';
-import { Form, FormItem, useForm } from '@/components/ui/antd-compat';
-import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/antd-compat';
+import { Form, FormItem, useForm, Input, Select, Space, Divider, RadioGroup, Radio, RadioButton } from '@/components/ui/antd-compat';
 import { Button } from '@/components/ui/button';
-import { Space } from '@/components/ui/antd-compat';
-import { Divider } from '@/components/ui/antd-compat';
 import { Text, Title, Paragraph } from '@/components/ui/typography';
 import { Slider } from '@/components/ui/slider';
-import { RadioGroup, Radio, RadioButton } from '@/components/ui/antd-compat';
 import { Tag } from '@/components/ui/tag';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertTitle } from '@/components/ui/alert';
