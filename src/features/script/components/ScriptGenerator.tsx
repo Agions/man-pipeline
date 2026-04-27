@@ -18,9 +18,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormItem } from '@/components/ui/antd-compat';
 import { Input, Textarea } from '@/components/ui/input';
-import { Select } from '@/components/ui/antd-compat';
+import { Select, Option } from '@/components/ui/antd-compat';
 import { Button } from '@/components/ui/button';
 import { Space } from '@/components/ui/antd-compat';
+import { Divider } from '@/components/ui/antd-compat';
 import { Text, Title, Paragraph } from '@/components/ui/typography';
 import { Slider } from '@/components/ui/slider';
 import { RadioGroup, Radio, RadioButton } from '@/components/ui/antd-compat';
@@ -41,10 +42,6 @@ import type { ScriptData, ScriptSegment } from '@/core/types';
 import ModelSelector from '@/features/ai/components/ModelSelector';
 
 import styles from './ScriptGenerator.module.less';
-
-const { Title, Text, Paragraph } = Typography;
-const { TextArea } = Input;
-const { Option } = Select;
 
 // 脚本风格选项
 const STYLE_OPTIONS = [
@@ -300,9 +297,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
             <Radio.Group optionType="button" buttonStyle="solid">
               {STYLE_OPTIONS.map(opt => (
                 <Radio.Button key={opt.value} value={opt.value}>
-                  <Tooltip title={opt.desc}>
-                    {opt.label}
-                  </Tooltip>
+                  <span title={opt.desc}>{opt.label}</span>
                 </Radio.Button>
               ))}
             </Radio.Group>
@@ -328,9 +323,7 @@ export const ScriptGenerator: React.FC<ScriptGeneratorProps> = ({
             <Radio.Group optionType="button">
               {LENGTH_OPTIONS.map(opt => (
                 <Radio.Button key={opt.value} value={opt.value}>
-                  <Tooltip title={`${opt.desc}，约${opt.words}`}>
-                    {opt.label}
-                  </Tooltip>
+                  <span title={`${opt.desc}，约${opt.words}`}>{opt.label}</span>
                 </Radio.Button>
               ))}
             </Radio.Group>

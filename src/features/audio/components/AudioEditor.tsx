@@ -22,7 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { message, Space, Tag, Row, Col, Table, Empty, Card } from '@/components/ui/antd-compat';
-import { Popconfirm } from '@/components/ui/confirm-dialog';
+import { Popconfirm, AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/confirm-dialog';
 
 
 import { logger } from '@/core/utils/logger';
