@@ -234,13 +234,15 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
               <div className={styles.cardFooter}>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <Tooltip title={`上下文: ${(model.contextWindow / 1000).toFixed(0)}K tokens`}>
-                    <Badge variant="outline" icon={<Bot size={12} />}>
+                    <Badge variant="outline">
+                      <Bot size={12} style={{ marginRight: 4 }} />
                       {(model.contextWindow / 1000).toFixed(0)}K
                     </Badge>
                   </Tooltip>
                   {showCost && cost && (
                     <Tooltip title="预估成本（500字脚本）">
-                      <Badge variant="outline" icon={<DollarSign size={12} />} style={{ color: '#52c41a', borderColor: '#b7eb8f' }}>
+                      <Badge variant="outline" style={{ color: '#52c41a', borderColor: '#b7eb8f' }}>
+                        <DollarSign size={12} style={{ marginRight: 4 }} />
                         {cost}
                       </Badge>
                     </Tooltip>

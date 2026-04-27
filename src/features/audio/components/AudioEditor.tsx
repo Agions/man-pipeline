@@ -18,10 +18,11 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { message, Space, Tag, Row, Col, Table, Empty, Card } from '@/components/ui/antd-compat';
+import { Popconfirm } from '@/components/ui/confirm-dialog';
 
 
 import { logger } from '@/core/utils/logger';
@@ -662,14 +663,21 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
       key: 'action',
       width: 80,
       render: (_: unknown, record: VoiceTrack) => (
-        <Popconfirm
-          title="确认移除此配音?"
-          onConfirm={() => handleVoiceRemove(record.id)}
-          okText="确认"
-          cancelText="取消"
-        >
-          <Button type="text" danger icon={<Trash2 />} />
-        </Popconfirm>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button type="text" danger icon={<Trash2 />} />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>确认移除此配音?</AlertDialogTitle>
+              <AlertDialogDescription />
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogAction onClick={() => handleVoiceRemove(record.id)}>确认</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       ),
     },
   ];
@@ -747,14 +755,21 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
       key: 'action',
       width: 80,
       render: (_: unknown, record: SoundEffect) => (
-        <Popconfirm
-          title="确认移除此音效?"
-          onConfirm={() => handleSfxRemove(record.id)}
-          okText="确认"
-          cancelText="取消"
-        >
-          <Button type="text" danger icon={<Trash2 />} />
-        </Popconfirm>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button type="text" danger icon={<Trash2 />} />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>确认移除此音效?</AlertDialogTitle>
+              <AlertDialogDescription />
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogAction onClick={() => handleSfxRemove(record.id)}>确认</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       ),
     },
   ];

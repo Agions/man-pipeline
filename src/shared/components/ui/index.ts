@@ -26,7 +26,6 @@ export { default as toast, notify, closeAll } from './Toast';
 // 确认对话框
 export {
   ConfirmDialog,
-  AsyncConfirmDialog,
   useConfirm,
 } from './ConfirmDialog';
 

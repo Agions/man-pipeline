@@ -15,18 +15,6 @@ import {
   Settings,
   DollarSign
 } from 'lucide-react';
-import {
-  Edit,
-  Zap,
-  Clock,
-  FileText,
-  User,
-  Globe,
-  CheckCircle,
-  Loader,
-  Settings,
-  DollarSign
-} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormItem } from '@/components/ui/antd-compat';
 import { Input, Textarea } from '@/components/ui/input';

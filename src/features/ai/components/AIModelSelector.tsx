@@ -9,7 +9,7 @@ import {
   Zap,
   Settings,
   Search,
-  Picture
+  Image as ImageIcon
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';

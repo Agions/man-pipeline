@@ -15,7 +15,7 @@ import {
   Input,
   Select,
   ColorPicker,
-  Upload,
+  Upload as AntDUpload,
   Space,
   Avatar,
   Divider,
@@ -30,6 +30,10 @@ import {
   Paragraph,
   Option,
   TextArea,
+  FormItem,
+  ListItem,
+  useForm,
+  type RcFile,
 } from '@/components/ui/antd-compat';
 import React, { useState, useCallback } from 'react';
 
@@ -88,7 +92,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
   onChange,
   projectId: _projectId,
 }) => {
-  const [form] = Form.useForm();
+  const [, form] = useForm();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>();
@@ -327,7 +331,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
       <Card.Meta
         title={template.name}
         description={
-          <Space direction="vertical" size={2}>
+          <Space className="flex-col" size={2}>
             <Text type="secondary">{template.category}</Text>
             <Text type="secondary" style={{ fontSize: 12 }}>
               {template.description}
@@ -384,7 +388,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
           grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4 }}
           dataSource={characters}
           renderItem={(character) => (
-            <List.Item>
+            <ListItem>
               <Card
                 className={styles.characterCard}
                 hoverable
@@ -397,7 +401,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   avatar={<Avatar size={64} src={undefined} icon={<User />} />}
                   title={character.name}
                   description={
-                    <Space direction="vertical" size={2}>
+                    <Space className="flex-col" size={2}>
                       <Tag color={character.role === 'protagonist' ? 'gold' : character.role === 'antagonist' ? 'red' : 'blue'}>
                         {character.role === 'protagonist' ? '主角' : character.role === 'antagonist' ? '反派' : character.role === 'supporting' ? '配角' : character.role}
                       </Tag>
@@ -420,7 +424,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   ))}
                 </Space>
               </Card>
-            </List.Item>
+            </ListItem>
           )}
         />
       )}
@@ -442,91 +446,91 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
         <Form form={form} layout="vertical" initialValues={{ appearance: DEFAULT_APPEARANCE }}>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item 
+              <FormItem 
                 name="name" 
                 label="角色名称" 
                 rules={[{ required: true, message: '请输入角色名称' }]}
               >
                 <Input placeholder="如：张三" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={12}>
-              <Form.Item name="role" label="角色定位">
+              <FormItem name="role" label="角色定位">
                 <Select placeholder="选择角色定位">
                   <Option value="protagonist">主角</Option>
                   <Option value="antagonist">反派</Option>
                   <Option value="supporting">配角</Option>
                   <Option value="minor">群众角色</Option>
                 </Select>
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
-          <Form.Item name="description" label="角色描述">
+          <FormItem name="description" label="角色描述">
             <TextArea rows={2} placeholder="描述角色的性格、背景故事等" />
-          </Form.Item>
+          </FormItem>
 
           <Divider orientation="left">外观配置</Divider>
 
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item name={['appearance', 'gender']} label="性别">
+              <FormItem name={['appearance', 'gender']} label="性别">
                 <Select>
                   <Option value="male">男</Option>
                   <Option value="female">女</Option>
                   <Option value="other">其他</Option>
                 </Select>
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={8}>
-              <Form.Item name={['appearance', 'age']} label="年龄">
+              <FormItem name={['appearance', 'age']} label="年龄">
                 <Input type="number" min={1} max={120} />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={8}>
-              <Form.Item name={['appearance', 'bodyType']} label="体型">
+              <FormItem name={['appearance', 'bodyType']} label="体型">
                 <Select>
                   <Option value="slim">瘦弱</Option>
                   <Option value="average">普通</Option>
                   <Option value="athletic">健壮</Option>
                   <Option value="heavy">丰满</Option>
                 </Select>
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item name={['appearance', 'hairStyle']} label="发型">
+              <FormItem name={['appearance', 'hairStyle']} label="发型">
                 <Input placeholder="如：短发、长发、卷发" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={8}>
-              <Form.Item name={['appearance', 'hairColor']} label="发色">
+              <FormItem name={['appearance', 'hairColor']} label="发色">
                 <ColorPicker showText size="small" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={8}>
-              <Form.Item name={['appearance', 'eyeColor']} label="眼色">
+              <FormItem name={['appearance', 'eyeColor']} label="眼色">
                 <ColorPicker showText size="small" />
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name={['appearance', 'skinTone']} label="肤色">
+              <FormItem name={['appearance', 'skinTone']} label="肤色">
                 <ColorPicker showText size="small" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={12}>
-              <Form.Item name={['appearance', 'height']} label="身高 (cm)">
+              <FormItem name={['appearance', 'height']} label="身高 (cm)">
                 <Input type="number" placeholder="可选" />
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
-          <Form.Item name={['appearance', 'features']} label="特殊特征">
+          <FormItem name={['appearance', 'features']} label="特殊特征">
             <Select mode="tags" placeholder="如：疤痕、纹身、戴眼镜">
               <Option value="scar">疤痕</Option>
               <Option value="tattoo">纹身</Option>
@@ -534,12 +538,12 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
               <Option value="freckles">雀斑</Option>
               <Option value="beard">胡须</Option>
             </Select>
-          </Form.Item>
+          </FormItem>
 
           <Divider orientation="left">服装装备</Divider>
 
           <div className={styles.clothingEditor}>
-            <Form.Item name="clothing" label="当前服装">
+            <FormItem name="clothing" label="当前服装">
               <Select mode="tags" placeholder="已添加的服装项目">
                 {clothingItems && clothingItems.length > 0 ? (
                   clothingItems.map((item, idx) => (
@@ -551,21 +555,21 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   <Option value="" disabled>暂无服装，请添加</Option>
                 )}
               </Select>
-            </Form.Item>
+            </FormItem>
 
             <div className={styles.clothingAddPanel}>
               <Row gutter={8} align="middle">
                 <Col span={5}>
-                  <Text strong>类型:</Text>
+                  <Text className="font-bold">类型:</Text>
                 </Col>
                 <Col span={5}>
-                  <Text strong>名称:</Text>
+                  <Text className="font-bold">名称:</Text>
                 </Col>
                 <Col span={5}>
-                  <Text strong>颜色:</Text>
+                  <Text className="font-bold">颜色:</Text>
                 </Col>
                 <Col span={6}>
-                  <Text strong>操作:</Text>
+                  <Text className="font-bold">操作:</Text>
                 </Col>
               </Row>
               
@@ -625,7 +629,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
               {/* 快速选择常用服装 */}
               <div className={styles.quickClothing}>
                 <Text type="secondary" style={{ marginRight: 8 }}>快速添加:</Text>
-                <Space wrap>
+                <Space className="flex-wrap">
                   <Button 
                     size="small" 
                     onClick={() => quickAddClothing('top', 'T恤', '#ffffff')}
@@ -679,9 +683,9 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                           </Button>
                         }
                       >
-                        <Space direction="vertical" style={{ width: '100%' }}>
+                        <Space className="flex-col" style={{ width: '100%' }}>
                           <Tag color="blue">{CLOTHING_TYPE_LABELS[item.type]}</Tag>
-                          <Text strong>{item.name}</Text>
+                          <Text className="font-bold">{item.name}</Text>
                           <Space>
                             <div 
                               className={styles.colorSwatch}
@@ -702,7 +706,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
 
           <Row gutter={16}>
             <Col span={12}>
-              <Upload
+              <AntDUpload
                 listType="picture-card"
                 showUploadList={false}
                 beforeUpload={handleAvatarUpload}
@@ -716,7 +720,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                     <div style={{ marginTop: 8 }}>上传头像</div>
                   </div>
                 )}
-              </Upload>
+              </AntDUpload>
               <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginTop: 8 }}>
                 角色形象参考图
               </Text>
@@ -746,18 +750,18 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name={['consistency', 'seed']} label="随机种子">
+              <FormItem name={['consistency', 'seed']} label="随机种子">
                 <Input type="number" placeholder="留空自动生成，锁定后保证生成一致" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={12}>
-              <Form.Item label="种子权重配置（高级）">
-                <Space direction="vertical" style={{ width: '100%' }}>
+              <FormItem label="种子权重配置（高级）">
+                <Space className="flex-col" style={{ width: '100%' }}>
                   <Text type="secondary">外观权重: <Input type="range" min={0} max={1} step={0.1} /></Text>
                   <Text type="secondary">声音权重: <Input type="range" min={0} max={1} step={0.1} /></Text>
                   <Text type="secondary">行为权重: <Input type="range" min={0} max={1} step={0.1} /></Text>
                 </Space>
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
@@ -765,7 +769,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name={['voice', 'provider']} label="TTS 提供商">
+              <FormItem name={['voice', 'provider']} label="TTS 提供商">
                 <Select placeholder="选择语音提供商">
                   <Option value="edge">Edge TTS</Option>
                   <Option value="azure">Azure</Option>
@@ -773,31 +777,31 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   <Option value="baidu">百度</Option>
                   <Option value="cosyvoice">CosyVoice</Option>
                 </Select>
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={12}>
-              <Form.Item name={['voice', 'voiceId']} label="音色 ID">
+              <FormItem name={['voice', 'voiceId']} label="音色 ID">
                 <Input placeholder="语音模型 ID" />
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name={['voice', 'pitch']} label="音调">
+              <FormItem name={['voice', 'pitch']} label="音调">
                 <Input type="number" step={0.1} min={0.5} max={2} placeholder="0.5-2.0" />
-              </Form.Item>
+              </FormItem>
             </Col>
             <Col span={12}>
-              <Form.Item name={['voice', 'speed']} label="语速">
+              <FormItem name={['voice', 'speed']} label="语速">
                 <Input type="number" step={0.1} min={0.5} max={2} placeholder="0.5-2.0" />
-              </Form.Item>
+              </FormItem>
             </Col>
           </Row>
 
           <Divider orientation="left">标签</Divider>
 
-          <Form.Item name="tags" label="角色标签">
+          <FormItem name="tags" label="角色标签">
             <Select mode="tags" placeholder="添加标签，如：英雄、反派、幽默等">
               <Option value="hero">英雄</Option>
               <Option value="villain">反派</Option>
@@ -807,7 +811,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
               <Option value="sidekick">助手</Option>
               <Option value="romance">恋爱</Option>
             </Select>
-          </Form.Item>
+          </FormItem>
         </Form>
       </Modal>
 
@@ -829,7 +833,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
       >
         <div style={{ marginBottom: 16 }}>
           <Space align="center">
-            <Text strong>分类筛选：</Text>
+            <Text className="font-bold">分类筛选：</Text>
             <Select 
               value={templateCategory} 
               onChange={setTemplateCategory}
@@ -880,7 +884,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
             <Col span={16}>
               <Collapse defaultActiveKey={['1']}>
                 <Panel header="外观信息" key="1">
-                  <Space direction="vertical">
+                  <Space className="flex-col">
                     <Text>性别: {selectedTemplate.appearance.gender}</Text>
                     <Text>年龄: {selectedTemplate.appearance.age}</Text>
                     <Text>发型: {selectedTemplate.appearance.hairStyle}</Text>
@@ -889,14 +893,14 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                   </Space>
                 </Panel>
                 <Panel header="服装装备" key="2">
-                  <Space direction="vertical">
+                  <Space className="flex-col">
                     {selectedTemplate.clothing.map((item, idx) => (
                       <Text key={idx}>{item.type}: {item.name} ({item.color})</Text>
                     ))}
                   </Space>
                 </Panel>
                 <Panel header="标签" key="3">
-                  <Space wrap>
+                  <Space className="flex-wrap">
                     {selectedTemplate.tags.map(tag => (
                       <Tag key={tag}>{tag}</Tag>
                     ))}
@@ -905,7 +909,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
               </Collapse>
               <Divider />
               <Form layout="inline">
-                <Form.Item label="角色名称">
+                <FormItem label="角色名称">
                   <Input 
                     placeholder={selectedTemplate.name}
                     style={{ width: 200 }}
@@ -913,7 +917,7 @@ const CharacterDesigner: React.FC<CharacterDesignerProps> = ({
                       // 可以在这里处理自定义名称
                     }}
                   />
-                </Form.Item>
+                </FormItem>
               </Form>
             </Col>
           </Row>
