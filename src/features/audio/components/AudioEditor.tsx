@@ -21,7 +21,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { message, Space, Tag, Row, Col, Table, Empty, Card } from '@/components/ui/antd-compat';
+import { message, Space, Tag, Row, Col, Table, Empty, Progress } from '@/components/ui/antd-compat';
 import { Popconfirm, AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/confirm-dialog';
 
 
@@ -804,7 +804,7 @@ const AudioEditor: React.FC<AudioEditorProps> = ({
     >
       <Tabs
         activeKey={activeTab}
-        onChange={setActiveTab}
+        onChange={(key) => setActiveTab(key)}
         items={[
           {
             key: 'voice',
