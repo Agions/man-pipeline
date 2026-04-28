@@ -465,7 +465,7 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
                   min={12}
                   max={72}
                   value={previewStyle.fontSize}
-                  onValueChange={(value) => updateStyle({ fontSize: value })}
+                  onValueChange={(value) => updateStyle({ fontSize: Array.isArray(value) ? value[0] : value })}
                   style={{ width: 100 }}
                   disabled={readonly}
                 />

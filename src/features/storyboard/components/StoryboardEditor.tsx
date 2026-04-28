@@ -349,10 +349,9 @@ const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
           <div className={styles.formRow}>
             <label className={styles.formLabel} htmlFor="frame-composition">构图方式</label>
             <Select
-              id="frame-composition"
               value={selectedFrame.composition}
               onChange={(value) =>
-                updateFrame(selectedFrame.id, 'composition', value)
+                updateFrame(selectedFrame.id, 'composition', Array.isArray(value) ? value[0] : value)
               }
               style={{ width: '100%' }}
             >

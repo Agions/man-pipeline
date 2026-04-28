@@ -504,7 +504,7 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
       </Card>
 
       <Dialog open={previewVisible} onOpenChange={setPreviewVisible}>
-        <DialogContent width={700}>
+        <DialogContent style={{ maxWidth: 700 }}>
           <DialogHeader>
             <DialogTitle>预览片段</DialogTitle>
           </DialogHeader>

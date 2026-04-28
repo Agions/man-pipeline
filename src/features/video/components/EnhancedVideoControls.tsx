@@ -123,13 +123,13 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
   };
 
   // 处理进度条点击
-  const handleProgressChange = (value: number) => {
-    onSeek(value);
+  const handleProgressChange = (value: number | number[]) => {
+    onSeek(Array.isArray(value) ? value[0] : value);
   };
 
   // 处理音量变化
-  const handleVolumeChange = (value: number) => {
-    onVolumeChange(value / 100);
+  const handleVolumeChange = (value: number | number[]) => {
+    onVolumeChange((Array.isArray(value) ? value[0] : value) / 100);
   };
 
   // 播放速率菜单

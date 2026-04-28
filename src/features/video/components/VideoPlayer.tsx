@@ -85,20 +85,22 @@ function VideoPlayer({
     setIsPlaying(!isPlaying);
   };
 
-  const handleSliderChange = (value: number) => {
+  const handleSliderChange = (value: number | number[]) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
+    const v = Array.isArray(value) ? value[0] : value;
 
-    videoElement.currentTime = value;
-    setCurrentTime(value);
+    videoElement.currentTime = v;
+    setCurrentTime(v);
   };
 
-  const handleVolumeChange = (value: number) => {
+  const handleVolumeChange = (value: number | number[]) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
+    const v = Array.isArray(value) ? value[0] : value;
 
-    videoElement.volume = value;
-    setVolume(value);
+    videoElement.volume = v;
+    setVolume(v);
   };
 
   const toggleFullscreen = () => {
