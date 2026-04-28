@@ -1,0 +1,1 @@
+export{s as default,s as storageService}from"./index-ce18dc52.js";import"./react-vendor-beba35db.js";import"@tauri-apps/api/window";import"@tauri-apps/api/core";import"@tauri-apps/api/event";import"@tauri-apps/api/path";
