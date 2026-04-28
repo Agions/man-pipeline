@@ -280,7 +280,7 @@ const VideoExporter: React.FC<VideoExporterProps> = ({
               <Settings size={16} />
               <span style={{ fontWeight: 600 }}>分辨率</span>
             </div>
-            <Select value={resolution} onValueChange={(v) => setResolution(v as Resolution)} disabled={exporting} className={styles.select}>
+            <Select value={resolution} onValueChange={(v) => setResolution(v as Resolution)} disabled={exporting}>
               <SelectTrigger className={styles.select}>
                 <SelectValue />
               </SelectTrigger>

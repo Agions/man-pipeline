@@ -287,7 +287,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
       {/* 任务推荐 */}
       {taskType && (
         <div className={styles.recommendations}>
-          <span type="secondary" className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
+          <span className={styles.sectionTitle} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 8 }}>
             <Star size={14} /> 推荐模型
           </span>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>

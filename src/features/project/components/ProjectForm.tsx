@@ -33,7 +33,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
 
   return (
     <form
-      layout="vertical"
       onSubmit={handleSubmit(handleFormSubmit)}
       className={styles.form}
     >

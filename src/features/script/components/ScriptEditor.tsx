@@ -461,7 +461,6 @@ const ScriptEditor: React.FC<ScriptEditorProps> = ({
                 <Select
                   value={editFormValues.type}
                   onValueChange={(v) => setEditFormValues({ ...editFormValues, type: v })}
-                  style={{ width: '100%' }}
                 >
                   <SelectTrigger>
                     <SelectValue />
